@@ -1,0 +1,206 @@
+/* Custom Select with Multiple Select Support */
+.custom-select {
+  position: relative;
+  width: 100%;
+}
+
+.custom-select select {
+  appearance: none;
+  -webkit-appearance: none;
+  width: 100%;
+  padding: 15px;
+  border-radius: var(--radius-md);
+  border: 1px solid transparent;
+  background-color: white;
+  font-size: 16px;
+  color: var(--text-dark);
+  box-shadow: var(--shadow-sm);
+  transition: all 0.3s ease;
+  cursor: pointer;
+}
+
+.custom-select select:focus {
+  border-color: var(--primary-light);
+  box-shadow: 0 0 0 2px rgba(90, 107, 255, 0.2);
+  outline: none;
+}
+
+.select-arrow {
+  position: absolute;
+  top: 50%;
+  right: 15px;
+  transform: translateY(-50%);
+  color: var(--primary-color);
+  pointer-events: none;
+  transition: transform 0.3s ease;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  height: 20px; /* Set a fixed height */
+  line-height: 1; /* Ensure proper line height */
+}
+
+.custom-select:focus-within .select-arrow {
+  transform: translateY(-50%) rotate(180deg);
+}
+
+/* Custom multi-select */
+.multiselect-wrapper {
+  position: relative;
+  width: 100%;
+}
+
+.multiselect-trigger {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  width: 100%;
+  padding: 15px;
+  border-radius: var(--radius-md);
+  border: 1px solid transparent;
+  background-color: white;
+  font-size: 16px;
+  color: var(--text-dark);
+  box-shadow: var(--shadow-sm);
+  cursor: pointer;
+  transition: all 0.3s ease;
+  text-align: left;
+  position: relative;
+  height: 54px; /* Set a fixed height to match other form elements */
+}
+
+.multiselect-trigger:hover {
+  background-color: #f9f9ff;
+}
+
+.multiselect-trigger:focus {
+  border-color: var(--primary-light);
+  box-shadow: 0 0 0 2px rgba(90, 107, 255, 0.2);
+  outline: none;
+}
+
+.multiselect-dropdown {
+  position: absolute;
+  top: 100%;
+  left: 0;
+  right: 0;
+  background-color: white;
+  border-radius: var(--radius-md);
+  margin-top: 5px;
+  box-shadow: var(--shadow-md);
+  border: 1px solid var(--primary-light);
+  z-index: 1000; /* Ensure it appears above other elements */
+  max-height: 200px; /* Fixed smaller height to prevent overflow */
+  overflow-y: auto; /* Enable vertical scrolling */
+  display: none;
+}
+
+/* Positioning for different situations */
+.multiselect-dropdown.active {
+  display: block;
+  animation: fadeInDown 0.2s ease;
+}
+
+/* Make sure dropdown stays visible near page bottom */
+.form-row:last-of-type .multiselect-dropdown {
+  bottom: auto;
+  top: auto;
+  margin-top: -210px; /* Position above the trigger instead of below */
+}
+
+.multiselect-dropdown-item {
+  padding: 12px 15px;
+  cursor: pointer;
+  transition: all 0.2s ease;
+  display: flex;
+  align-items: center;
+}
+
+.multiselect-dropdown-item:hover {
+  background-color: var(--primary-light);
+}
+
+.multiselect-dropdown-item.selected {
+  background-color: rgba(90, 107, 255, 0.1);
+}
+
+.multiselect-dropdown-item input[type="checkbox"] {
+  margin-right: 10px;
+}
+
+.selected-tags {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 5px;
+  margin-top: 8px;
+  min-height: 24px;
+}
+
+.selected-tag {
+  background-color: var(--primary-light);
+  color: var(--primary-color);
+  padding: 3px 10px;
+  border-radius: 15px;
+  font-size: 14px;
+  display: flex;
+  align-items: center;
+  gap: 5px;
+}
+
+.tag-remove {
+  cursor: pointer;
+  font-size: 12px;
+  font-weight: bold;
+}
+
+.tag-remove:hover {
+  color: var(--primary-dark);
+}
+
+.tag-placeholder {
+  color: var(--text-light);
+  opacity: 0.7;
+}
+
+@keyframes fadeInDown {
+  from {
+    opacity: 0;
+    transform: translateY(-10px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+/* For screen readers - hide the native select */
+.hidden-select {
+  position: absolute;
+  width: 1px;
+  height: 1px;
+  padding: 0;
+  margin: -1px;
+  overflow: hidden;
+  clip: rect(0, 0, 0, 0);
+  white-space: nowrap;
+  border: 0;
+}
+
+/* Add custom scrollbar for better UX */
+.multiselect-dropdown::-webkit-scrollbar {
+  width: 6px;
+}
+
+.multiselect-dropdown::-webkit-scrollbar-track {
+  background: #f1f1f1;
+  border-radius: 10px;
+}
+
+.multiselect-dropdown::-webkit-scrollbar-thumb {
+  background: #ccd0ff;
+  border-radius: 10px;
+}
+
+.multiselect-dropdown::-webkit-scrollbar-thumb:hover {
+  background: var(--primary-light);
+}

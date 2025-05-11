@@ -1,4 +1,4 @@
-<!-- Help Center Popup -->
+<!-- components/help-center-popup.html -->
 <div id="help-center-popup" class="help-center-popup">
   <div class="help-center-content">
     <!-- Close button -->
@@ -13,14 +13,15 @@
     <div class="help-center-main">
       <h1 class="help-center-title">BẠN CẦN TRỢ GIÚP GÌ?</h1>
       
-      <!-- Top question -->
-      <div class="help-question">
-        <div class="question-icon">
-          <i class="fas fa-info-circle"></i>
+      <!-- Search input instead of top question -->
+      <div class="help-search-form">
+        <div class="search-icon">
+          <i class="fas fa-search"></i>
         </div>
-        <div class="question-text">
-          <a href="#">Làm sao để tải một bộ dữ liệu lên? <i class="fas fa-chevron-right"></i></a>
-        </div>
+        <input type="text" placeholder="Làm sao để tải dữ liệu lên?" class="help-search-input">
+        <button class="help-search-button">
+          <i class="fas fa-arrow-right"></i>
+        </button>
       </div>
       
       <!-- Common topics -->
@@ -79,9 +80,9 @@
         </a>
       </div>
       
-      <!-- Search section -->
+      <!-- Search section with OpenAskAI as a link -->
       <div class="help-search">
-        <p>Tìm kiếm câu trả lời nhanh hơn với <strong>OpenAskAI</strong></p>
+        <p>Tìm kiếm câu trả lời nhanh hơn với <a href="/pages/openaskai.html" class="openaskai-link">OpenAskAI</a></p>
       </div>
     </div>
   </div>

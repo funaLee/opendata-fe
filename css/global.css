@@ -19,6 +19,7 @@
 @import './components/header-dropdown.css';
 /* In global.css */
 @import './components/help-center-popup.css';
+@import './pages/upload-dataset.css';
 
 
 

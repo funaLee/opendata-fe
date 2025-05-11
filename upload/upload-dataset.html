@@ -1,0 +1,148 @@
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Upload Dataset - OpenData</title>
+    <link href="../css/global.css" rel="stylesheet">
+    <link href="../css/pages/upload.css" rel="stylesheet">
+    <link href="../css/components/custom-select.css" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.4/css/all.min.css">
+</head>
+<body>
+    <div class="container">
+        <!-- HEADER -->
+        <div data-include="/components/header.html"></div>
+
+        <!-- Overlay -->
+        <div id="overlay" class="overlay"></div>
+        
+        <!-- Sidebar -->
+        <div data-include="/components/slidebar.html"></div>
+
+        <!-- Upload Dataset Form -->
+        <div class="upload-form-container">
+            <h1 class="upload-title">Upload dataset</h1>
+            <p class="upload-description">
+                Bộ dữ liệu mà bạn tải lên phải là bộ dữ liệu được công bố trong một bài báo khoa học uy tín, chúng tôi sẽ kiểm tra thông tin mà bạn cung cấp, vậy nên hãy đảm bảo thông tin chính xác.
+            </p>
+            
+            <form id="uploadDatasetForm" class="upload-form">
+                <div class="form-row">
+                    <div class="form-group full-width">
+                        <label for="datasetName">Tên bộ dữ liệu <span class="required">*</span></label>
+                        <input type="text" id="datasetName" placeholder="Nhập tên bộ dữ liệu" required>
+                    </div>
+                </div>
+                
+                <div class="form-row">
+                    <div class="form-group full-width">
+                        <label for="datasetLink">Liên kết <span class="required">*</span></label>
+                        <input type="url" id="datasetLink" placeholder="Nhập liên kết của bộ dữ liệu" required>
+                    </div>
+                </div>
+                
+                <div class="form-row">
+                    <div class="form-group full-width">
+                        <label for="datasetDescription">Mô tả bộ dữ liệu <span class="required">*</span></label>
+                        <textarea id="datasetDescription" placeholder="Nhập mô tả về bộ dữ liệu" required></textarea>
+                    </div>
+                </div>
+                
+                <div class="form-row three-columns">
+                    <div class="form-group">
+                        <label for="datasetSize">Kích thước <span class="required">*</span></label>
+                        <input type="text" id="datasetSize" placeholder="Nhập kích thước (đơn vị GB)" required pattern="[0-9]+(\.[0-9]+)?" title="Vui lòng nhập số">
+                    </div>
+                    
+                    <div class="form-group">
+                        <label for="sampleCount">Số lượng mẫu <span class="required">*</span></label>
+                        <input type="number" id="sampleCount" placeholder="Nhập số lượng mẫu của bộ dữ liệu" required min="1">
+                    </div>
+                    
+                    <div class="form-group">
+                        <label for="licenseSelect">Licence <span class="required">*</span></label>
+                        <div class="custom-select">
+                            <select id="licenseSelect" required>
+                                <option value="" disabled selected>Chọn giấy phép, bản quyền</option>
+                                <option value="CC BY 4.0">CC BY 4.0</option>
+                                <option value="CC BY-SA 4.0">CC BY-SA 4.0</option>
+                                <option value="CC BY-NC 4.0">CC BY-NC 4.0</option>
+                                <option value="CC BY-ND 4.0">CC BY-ND 4.0</option>
+                                <option value="CC0 1.0">CC0 1.0</option>
+                                <option value="Public Domain">Public Domain</option>
+                                <option value="MIT License">MIT License</option>
+                                <option value="Apache 2.0">Apache 2.0</option>
+                                <option value="Proprietary">Proprietary</option>
+                                <option value="Custom License">Custom License</option>
+                            </select>
+                            <i class="fas fa-chevron-down select-arrow"></i>
+                        </div>
+                    </div>
+                </div>
+                
+                <div class="form-row two-columns">
+                    <div class="form-group">
+                        <label for="tagsSelect">Tag <span class="required">*</span></label>
+                        <div class="custom-select">
+                            <select id="tagsSelect" multiple required>
+                                <option value="" disabled>Chọn danh sách tag cho bộ dữ liệu</option>
+                                <option value="Image Classification">Image Classification</option>
+                                <option value="Object Detection">Object Detection</option>
+                                <option value="Segmentation">Segmentation</option>
+                                <option value="NLP">Natural Language Processing</option>
+                                <option value="Speech Recognition">Speech Recognition</option>
+                                <option value="Reinforcement Learning">Reinforcement Learning</option>
+                                <option value="Time Series">Time Series</option>
+                                <option value="Generative AI">Generative AI</option>
+                                <option value="Multimodal">Multimodal</option>
+                                <option value="Benchmark">Benchmark</option>
+                            </select>
+                            <i class="fas fa-chevron-down select-arrow"></i>
+                        </div>
+                    </div>
+                    
+                    <div class="form-group">
+                        <label for="modalitySelect">Loại dữ liệu <span class="required">*</span></label>
+                        <div class="custom-select">
+                            <select id="modalitySelect" required>
+                                <option value="" disabled selected>Chọn 1 loại dữ liệu cho bộ dữ liệu</option>
+                                <option value="image">Image</option>
+                                <option value="text">Text</option>
+                                <option value="audio">Audio</option>
+                                <option value="video">Video</option>
+                                <option value="multimodal">Multimodal</option>
+                                <option value="tabular">Tabular</option>
+                                <option value="time-series">Time Series</option>
+                                <option value="graph">Graph</option>
+                                <option value="other">Other</option>
+                            </select>
+                            <i class="fas fa-chevron-down select-arrow"></i>
+                        </div>
+                    </div>
+                </div>
+                
+                <div class="form-actions">
+                    <button type="submit" class="submit-button">
+                        <i class="fas fa-file-import"></i> Nhập bài báo
+                    </button>
+                </div>
+            </form>
+        </div>
+
+        <!-- Help Button -->
+        <button class="help-button">
+            <i class="fas fa-question"></i>
+        </button>
+        
+        <!-- Include Help Center Popup -->
+        <div data-include="/components/help-center-popup.html"></div>
+    </div>
+
+    <script src="../js/include.js"></script>
+    <script src="../js/header-dropdown.js"></script>
+    <script src="../js/help-center.js"></script>
+    <script src="../js/custom-select.js"></script>
+    <script src="../js/upload-form.js"></script>
+</body>
+</html>
