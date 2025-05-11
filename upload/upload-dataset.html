@@ -7,6 +7,7 @@
     <link href="../css/global.css" rel="stylesheet">
     <link href="../css/pages/upload.css" rel="stylesheet">
     <link href="../css/components/custom-select.css" rel="stylesheet">
+    <link href="../css/components/enhanced-select.css" rel="stylesheet">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.4/css/all.min.css">
 </head>
 <body>
@@ -62,63 +63,66 @@
                     
                     <div class="form-group">
                         <label for="licenseSelect">Licence <span class="required">*</span></label>
-                        <div class="custom-select">
-                            <select id="licenseSelect" required>
-                                <option value="" disabled selected>Chọn giấy phép, bản quyền</option>
-                                <option value="CC BY 4.0">CC BY 4.0</option>
-                                <option value="CC BY-SA 4.0">CC BY-SA 4.0</option>
-                                <option value="CC BY-NC 4.0">CC BY-NC 4.0</option>
-                                <option value="CC BY-ND 4.0">CC BY-ND 4.0</option>
-                                <option value="CC0 1.0">CC0 1.0</option>
-                                <option value="Public Domain">Public Domain</option>
-                                <option value="MIT License">MIT License</option>
-                                <option value="Apache 2.0">Apache 2.0</option>
-                                <option value="Proprietary">Proprietary</option>
-                                <option value="Custom License">Custom License</option>
-                            </select>
-                            <i class="fas fa-chevron-down select-arrow"></i>
-                        </div>
+                        <select id="licenseSelect" required>
+                            <option value="" disabled selected>Chọn giấy phép, bản quyền</option>
+                            <option value="MIT License">MIT License</option>
+                            <option value="CC BY 4.0">CC BY 4.0</option>
+                            <option value="LDC Proprietary">LDC Proprietary</option>
+                            <option value="CC BY-ND 4.0">CC BY-ND 4.0</option>
+                            <option value="CC BY-SA 4.0">CC BY-SA 4.0</option>
+                            <option value="CC BY-NC 4.0">CC BY-NC 4.0</option>
+                            <option value="CC0 1.0">CC0 1.0</option>
+                            <option value="Public Domain">Public Domain</option>
+                            <option value="Apache 2.0">Apache 2.0</option>
+                            <option value="Proprietary">Proprietary</option>
+                            <option value="Custom License">Custom License</option>
+                            <option value="ImageNet custom">ImageNet custom</option>
+                            <option value="VOC licence">VOC licence</option>
+                            <option value="GLUE licence">GLUE licence</option>
+                            <option value="MS MARCO licence">MS MARCO licence</option>
+                            <option value="CC BY-SA 3.0">CC BY-SA 3.0</option>
+                        </select>
                     </div>
                 </div>
                 
                 <div class="form-row two-columns">
                     <div class="form-group">
                         <label for="tagsSelect">Tag <span class="required">*</span></label>
-                        <div class="custom-select">
-                            <select id="tagsSelect" multiple required>
-                                <option value="" disabled>Chọn danh sách tag cho bộ dữ liệu</option>
-                                <option value="Image Classification">Image Classification</option>
-                                <option value="Object Detection">Object Detection</option>
-                                <option value="Segmentation">Segmentation</option>
-                                <option value="NLP">Natural Language Processing</option>
-                                <option value="Speech Recognition">Speech Recognition</option>
-                                <option value="Reinforcement Learning">Reinforcement Learning</option>
-                                <option value="Time Series">Time Series</option>
-                                <option value="Generative AI">Generative AI</option>
-                                <option value="Multimodal">Multimodal</option>
-                                <option value="Benchmark">Benchmark</option>
-                            </select>
-                            <i class="fas fa-chevron-down select-arrow"></i>
-                        </div>
+                        <select id="tagsSelect" multiple required>
+                            <option value="" disabled>Chọn danh sách tag cho bộ dữ liệu</option>
+                            <option value="Image Classification">Image Classification</option>
+                            <option value="Object Detection">Object Detection</option>
+                            <option value="Segmentation">Segmentation</option>
+                            <option value="NLP">Natural Language Processing</option>
+                            <option value="Speech Recognition">Speech Recognition</option>
+                            <option value="Reinforcement Learning">Reinforcement Learning</option>
+                            <option value="Time Series">Time Series</option>
+                            <option value="Generative AI">Generative AI</option>
+                            <option value="Multimodal">Multimodal</option>
+                            <option value="Benchmark">Benchmark</option>
+                            <option value="Low-Resolution Images">Low-Resolution Images</option>
+                            <option value="Computer Vision">Computer Vision</option>
+                            <option value="Video Analysis">Video Analysis</option>
+                            <option value="Question Answering">Question Answering</option>
+                            <option value="Machine Translation">Machine Translation</option>
+                            <option value="Language Modeling">Language Modeling</option>
+                        </select>
                     </div>
                     
                     <div class="form-group">
                         <label for="modalitySelect">Loại dữ liệu <span class="required">*</span></label>
-                        <div class="custom-select">
-                            <select id="modalitySelect" required>
-                                <option value="" disabled selected>Chọn 1 loại dữ liệu cho bộ dữ liệu</option>
-                                <option value="image">Image</option>
-                                <option value="text">Text</option>
-                                <option value="audio">Audio</option>
-                                <option value="video">Video</option>
-                                <option value="multimodal">Multimodal</option>
-                                <option value="tabular">Tabular</option>
-                                <option value="time-series">Time Series</option>
-                                <option value="graph">Graph</option>
-                                <option value="other">Other</option>
-                            </select>
-                            <i class="fas fa-chevron-down select-arrow"></i>
-                        </div>
+                        <select id="modalitySelect" required>
+                            <option value="" disabled selected>Chọn 1 loại dữ liệu cho bộ dữ liệu</option>
+                            <option value="image">Image</option>
+                            <option value="text">Text</option>
+                            <option value="audio">Audio</option>
+                            <option value="video">Video</option>
+                            <option value="multimodal">Multimodal</option>
+                            <option value="tabular">Tabular</option>
+                            <option value="time-series">Time Series</option>
+                            <option value="graph">Graph</option>
+                            <option value="other">Other</option>
+                        </select>
                     </div>
                 </div>
                 
@@ -142,7 +146,6 @@
     <script src="../js/include.js"></script>
     <script src="../js/header-dropdown.js"></script>
     <script src="../js/help-center.js"></script>
-    <script src="../js/custom-select.js"></script>
-    <script src="../js/upload-form.js"></script>
+    <script src="../js/enhanced-select.js"></script>
 </body>
 </html>
