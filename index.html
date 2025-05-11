@@ -101,22 +101,29 @@
 
     </div>
 
-    <script src="/js/include.js"></script>
-    <script src="/js/dataset-render.js"></script>
+    <script src="js/include.js"></script>
+    <script src="js/dataset-render.js"></script>
+    <script src="js/header-dropdown.js"></script>
     <script>
         window.addEventListener('load', () => {
             renderDatasetCard('#dataset-card-container__cifar10', {
-            image: 'assets/images/cifar-10.png',
-            title: 'CIFAR-10 (Canadian Institute for Advanced Research, 10 classes)',
-            author: 'Krizhevsky et al.',
-            paperUrl: 'http://www.cs.utoronto.ca/~kriz/learning-features-2009-TR.pdf',
-            paperTitle: 'Learning multiple layers of features from tiny images',
-            homepage: '#',
-            tags: ['Image Classification', 'Low-Resolution Images']
+                image: 'assets/images/cifar-10.png',
+                title: 'CIFAR-10 (Canadian Institute for Advanced Research, 10 classes)',
+                author: 'Krizhevsky et al.',
+                paperUrl: 'http://www.cs.utoronto.ca/~kriz/learning-features-2009-TR.pdf',
+                paperTitle: 'Learning multiple layers of features from tiny images',
+                homepage: '#',
+                tags: ['Image Classification', 'Low-Resolution Images']
             });
+            
+            // Initialize dropdown functionality (if not auto-initialized)
+            if (typeof initHeaderDropdowns === 'function') {
+                initHeaderDropdowns();
+            }
+            
+            // Log that the page has fully loaded
+            console.log('Page fully loaded with all components');
         });
     </script>
-    <script src="/js/header-dropdown.js"></script>
-    <script src="/js/help-center.js"></script>
 </body>
 </html>

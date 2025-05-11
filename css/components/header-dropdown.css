@@ -1,6 +1,6 @@
 /* Header with Dropdown Navigation Styles */
 
-/* Base header styling */
+/* Base header styling - maintained as in your original */
 .header {
   display: flex;
   justify-content: space-between;
@@ -17,33 +17,78 @@
   border: 1px solid rgba(255, 255, 255, 0.8);
 }
 
-.left-section {
-  display: flex;
-  align-items: center;
-}
-
-.menu-button {
-  background: none;
-  border: none;
-  font-size: 24px;
-  color: var(--primary-color);
-  margin-right: 18px;
-  cursor: pointer;
+/* Dropdown container and toggle */
+.dropdown-container {
   position: relative;
-  width: 40px;
-  height: 40px;
+  display: inline-block;
+}
+
+.dropdown-toggle {
   display: flex;
   align-items: center;
-  justify-content: center;
-  border-radius: 50%;
+  gap: 5px;
 }
 
-.menu-button:hover {
+.dropdown-toggle .chevron {
+  font-size: 12px;
+  transition: transform 0.3s ease;
+}
+
+.dropdown-toggle.active .chevron {
+  transform: rotate(-180deg); /* Chevron points up when active */
+}
+
+/* Dropdown menu */
+.dropdown-menu {
+  position: absolute;
+  top: 100%;
+  left: 0;
+  background-color: white;
+  min-width: 220px;
+  box-shadow: var(--shadow-md);
+  border-radius: var(--radius-md);
+  padding: 10px 0;
+  opacity: 0;
+  visibility: hidden;
+  display: none;
+  transform: translateY(10px);
+  transition: all 0.3s ease;
+  z-index: 100;
+  border: 1px solid rgba(90, 107, 255, 0.1);
+  overflow: hidden;
+}
+
+/* Dropdown items */
+.dropdown-item {
+  display: flex;
+  align-items: center;
+  padding: 12px 20px;
+  color: var(--text-dark);
+  text-decoration: none;
+  transition: all 0.2s ease;
+  font-size: 15px;
+}
+
+.dropdown-item i {
+  color: var(--primary-color);
+  margin-right: 10px;
+  font-size: 16px;
+  width: 20px;
+  text-align: center;
+  transition: all 0.2s ease;
+}
+
+.dropdown-item:hover {
   background-color: var(--primary-light);
-  transform: rotate(90deg);
+  color: var(--primary-color);
+  transform: translateX(5px);
 }
 
-/* Navigation links */
+.dropdown-item:hover i {
+  transform: scale(1.2);
+}
+
+/* Additional styles to ensure dropdowns work properly */
 .nav-links {
   display: flex;
   align-items: center;
