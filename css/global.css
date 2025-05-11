@@ -18,11 +18,19 @@
 @import './components/dataset-card.css';
 @import './components/help-button.css';
 @import './components/header-dropdown.css';
-/* In global.css */
 @import './components/help-center-popup.css';
-@import './pages/upload-dataset.css';
 @import './components/custom-select.css';
 @import './components/enhanced-select.css';
+@import './components/custom-popup.css';
+@import './components/tag-input-popup.css';
+
+/*page*/
+@import './pages/about.css';
+@import './pages/dataset.css';
+@import './pages/upload-dataset.css';
+@import './pages/map.css';
+@import './pages/paper.css';
+
 
 
 .hot-topic { 

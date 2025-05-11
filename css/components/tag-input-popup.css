@@ -1,0 +1,179 @@
+/* Tag Input Popup Styling */
+.tag-input-popup-overlay {
+  position: fixed;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background-color: rgba(0, 0, 0, 0.5);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  z-index: 2000;
+  animation: fadeIn 0.2s ease;
+}
+
+.tag-input-popup {
+  background: white;
+  border-radius: 20px;
+  width: 90%;
+  max-width: 550px;
+  display: flex;
+  flex-direction: column;
+  animation: zoomIn 0.3s ease;
+  box-shadow: 0 10px 25px rgba(0, 0, 0, 0.15);
+  overflow: hidden;
+}
+
+.tag-input-header {
+  padding: 25px 30px 15px;
+  text-align: center;
+}
+
+.tag-input-title {
+  color: var(--primary-color);
+  font-size: 34px;
+  font-weight: 700;
+  margin-bottom: 15px;
+  text-align: center;
+}
+
+.tag-input-subtitle {
+  color: var(--text-light);
+  font-size: 16px;
+  line-height: 1.5;
+  text-align: center;
+  margin-bottom: 20px;
+}
+
+.tag-input-content {
+  padding: 0 30px 20px;
+}
+
+.tag-input-field {
+  margin-bottom: 20px;
+}
+
+.tag-input-field-label {
+  display: block;
+  color: var(--primary-color);
+  font-weight: 500;
+  margin-bottom: 10px;
+  font-size: 18px;
+}
+
+.tag-input-field-label .required {
+  color: var(--primary-color);
+  margin-left: 3px;
+}
+
+.tag-input-field input,
+.tag-input-field textarea {
+  width: 100%;
+  padding: 15px;
+  border-radius: 12px;
+  border: 1px solid #dfe1f5;
+  background-color: white;
+  font-size: 16px;
+  transition: all 0.3s ease;
+}
+
+.tag-input-field input:focus,
+.tag-input-field textarea:focus {
+  border-color: var(--primary-color);
+  box-shadow: 0 0 0 2px rgba(90, 107, 255, 0.1);
+  outline: none;
+}
+
+.tag-input-field textarea {
+  min-height: 140px;
+  resize: vertical;
+}
+
+.tag-input-actions {
+  display: flex;
+  justify-content: space-between;
+  gap: 20px;
+  padding: 0 30px 25px;
+}
+
+.tag-input-button {
+  flex: 1;
+  padding: 14px;
+  border-radius: 30px;
+  font-weight: 600;
+  font-size: 16px;
+  cursor: pointer;
+  transition: all 0.3s ease;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 10px;
+  border: none;
+}
+
+.tag-input-button.back {
+  background-color: white;
+  color: var(--primary-color);
+  border: 1px solid #dfe1f5;
+}
+
+.tag-input-button.back:hover {
+  background-color: #f8f9ff;
+  border-color: var(--primary-color);
+}
+
+.tag-input-button.submit {
+  background-color: var(--primary-color);
+  color: white;
+}
+
+.tag-input-button.submit:hover {
+  background-color: var(--primary-dark);
+  transform: translateY(-2px);
+  box-shadow: 0 4px 12px rgba(90, 107, 255, 0.2);
+}
+
+.tag-input-button i {
+  font-size: 15px;
+}
+
+/* Animations */
+@keyframes fadeIn {
+  from { opacity: 0; }
+  to { opacity: 1; }
+}
+
+@keyframes zoomIn {
+  from {
+    opacity: 0;
+    transform: scale(0.95);
+  }
+  to {
+    opacity: 1;
+    transform: scale(1);
+  }
+}
+
+/* Responsive Adjustments */
+@media (max-width: 768px) {
+  .tag-input-popup {
+    width: 95%;
+  }
+  
+  .tag-input-header,
+  .tag-input-content,
+  .tag-input-actions {
+    padding-left: 20px;
+    padding-right: 20px;
+  }
+  
+  .tag-input-title {
+    font-size: 28px;
+  }
+  
+  .tag-input-button {
+    padding: 12px 10px;
+    font-size: 15px;
+  }
+}

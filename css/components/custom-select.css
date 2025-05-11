@@ -204,3 +204,23 @@
 .multiselect-dropdown::-webkit-scrollbar-thumb:hover {
   background: var(--primary-light);
 }
+
+.multiselect-trigger .select-arrow i.fa-chevron-down {
+  transition: transform 0.3s ease;
+}
+
+#tagsSelect + .multiselect-wrapper .multiselect-dropdown {
+  top: auto !important;
+  bottom: 100% !important;
+  margin-top: 0 !important;
+  margin-bottom: 5px !important;
+  animation: fadeInUp 0.2s ease !important;
+}
+
+#tagsSelect + .multiselect-wrapper .select-arrow i.fa-chevron-down {
+  transform: rotate(180deg); /* Flip the chevron by default */
+}
+
+#tagsSelect + .multiselect-wrapper:focus-within .select-arrow i.fa-chevron-down {
+  transform: rotate(0deg); /* Return to normal when dropdown open */
+}
