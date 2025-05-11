@@ -1,0 +1,118 @@
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>OpenData</title>
+    <link href="css/global.css" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.4/css/all.min.css">
+</head>
+<body>
+    <div class="container">
+        <!-- HEADER -->
+        <div data-include="/components/header.html"></div>
+
+        <!-- Overlay -->
+        <div id="overlay" class="overlay"></div>
+
+        <!-- Sidebar -->
+        <div data-include="/components/slidebar.html"></div>
+
+        <!-- Main Search Content -->
+        <div class="main-content">
+            <h1 class="search-title">BẠN MUỐN TÌM KIẾM GÌ?</h1>
+            
+            <div class="search-big">
+                <i class="fas fa-search search-icon"></i>
+                <input type="text" placeholder="What do you find now?">
+                <button class="search-button">
+                    <i class="fas fa-arrow-right"></i>
+                </button>
+            </div>
+
+            <!-- Category Icons -->
+            <div class="category-icons">
+                <div class="category-item">
+                    <div class="icon-circle hot-topic">
+                        <img src="assets/images/hot-topic-icon.png" alt="Hot Topic">
+                    </div>
+                    <span class="category-name">Hot topic</span>
+                </div>
+                <div class="category-item">
+                    <div class="icon-circle dataset">
+                        <img src="assets/images/dataset-icon.png" alt="Dataset">
+                    </div>
+                    <span class="category-name">Dataset</span>
+                </div>
+                <div class="category-item">
+                    <div class="icon-circle paper">
+                        <img src="assets/images/paper-icon.png" alt="Paper">
+                    </div>
+                    <span class="category-name">Paper</span>
+                </div>
+                <div class="category-item">
+                    <div class="icon-circle model">
+                        <img src="assets/images/model-icon.png" alt="Model">
+                    </div>
+                    <span class="category-name">Model</span>
+                </div>
+                <div class="category-item">
+                    <div class="icon-circle benchmark">
+                        <img src="assets/images/benchmark-icon.png" alt="Benchmark">
+                    </div>
+                    <span class="category-name">Benchmark</span>
+                </div>
+                <div class="category-item">
+                    <div class="icon-circle author">
+                        <img src="assets/images/author-icon.png" alt="Author">
+                    </div>
+                    <span class="category-name">Author</span>
+                </div>
+                <div class="category-item">
+                    <div class="icon-circle upload">
+                        <img src="assets/images/upload-icon.png" alt="Upload">
+                    </div>
+                    <span class="category-name">Upload</span>
+                </div>
+                <div class="category-item">
+                    <div class="icon-circle others">
+                        <img src="assets/images/others-icon.png" alt="Others">
+                    </div>
+                    <span class="category-name">Others</span>
+                </div>
+            </div>
+        </div>
+
+        <!-- Recent Datasets -->
+        <h2 class="recent-section-title">Bộ dữ liệu đã mở gần đây</h2>
+
+        <!-- Container nơi hiển thị -->
+        <div id="dataset-card-container__cifar10"></div>
+        <div data-include="/components/dataset-card.html"></div>
+
+
+        <!-- Help Button -->
+        <button class="help-button">
+            <a href="pages/help.html">
+            <i class="fas fa-question"></i></a>
+        </button>
+    </div>
+
+    <script src="/js/include.js"></script>
+    <script src="/js/dataset-render.js"></script>
+    <script>
+        window.addEventListener('load', () => {
+            renderDatasetCard('#dataset-card-container__cifar10', {
+            image: 'assets/images/cifar-10.png',
+            title: 'CIFAR-10 (Canadian Institute for Advanced Research, 10 classes)',
+            author: 'Krizhevsky et al.',
+            paperUrl: 'http://www.cs.utoronto.ca/~kriz/learning-features-2009-TR.pdf',
+            paperTitle: 'Learning multiple layers of features from tiny images',
+            homepage: '#',
+            tags: ['Image Classification', 'Low-Resolution Images']
+            });
+        });
+    </script>
+    <script src="/js/header-dropdown.js"></script>
+</body>
+</html>

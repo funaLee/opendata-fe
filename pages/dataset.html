@@ -1,0 +1,270 @@
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Datasets - OpenData</title>
+    <link href="../css/global.css" rel="stylesheet">
+    <link href="../css/pages/dataset.css" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.4/css/all.min.css">
+</head>
+<body>
+    <div class="container">
+        <!-- Load template first -->
+        <div data-include="/components/dataset-card.html"></div>
+
+        <!-- HEADER -->
+        <div data-include="/components/header.html"></div>
+
+        <!-- Overlay -->
+        <div id="overlay" class="overlay"></div>
+        
+        <!-- Sidebar -->
+        <div data-include="/components/slidebar.html"></div>
+
+        <!-- Main Content -->
+        <div class="main-content">
+            <h1 class="search-title">Datasets</h1>
+            <p class="subtitle">Khám phá, phân tích và chia sẻ các bộ dữ liệu chất lượng cho nghiên cứu và ứng dụng.</p>
+            
+            <!-- Action Buttons -->
+            <div class="action-buttons">
+                <a href="../upload/upload-dataset.html" class="action-button upload">
+                    <i class="fas fa-upload"></i>
+                    Upload Dataset
+                </a>
+                <a href="#" class="action-button your-dataset">
+                    <i class="fas fa-database"></i>
+                    Your Dataset
+                </a>
+            </div>
+
+            <!-- Search Bar -->
+            <div class="search-big dataset-search">
+                <i class="fas fa-search search-icon"></i>
+                <input type="text" placeholder="Search Dataset">
+                <button class="filter-button">
+                    <i class="fas fa-filter"></i>
+                    Filters
+                </button>
+            </div>
+        </div>
+
+        <!-- Modality Tabs -->
+        <div class="modality-tabs">
+            <button class="modality-tab active" data-modality="all">All Modalities</button>
+            <button class="modality-tab" data-modality="image">Image</button>
+            <button class="modality-tab" data-modality="text">Text</button>
+            <button class="modality-tab" data-modality="audio">Audio</button>
+            <button class="modality-tab" data-modality="video">Video</button>
+            <button class="modality-tab" data-modality="multimodal">Multimodal</button>
+            <button class="modality-tab" data-modality="more">
+                <i class="fas fa-ellipsis-h"></i>
+            </button>
+        </div>
+
+        <!-- Dataset List -->
+        <div class="datasets-container">
+            <!-- Image Datasets -->
+            <div class="modality-section" id="image">
+                <h2 class="modality-title">Image <span class="dataset-count">43 datasets</span></h2>
+                
+                <div class="datasets-grid">
+                    <!-- CIFAR-10 Dataset -->
+                    <div id="dataset-card-container__cifar10"></div>
+                    
+                    <!-- ImageNet Dataset -->
+                    <div id="dataset-card-container__imagenet"></div>
+                </div>
+                
+                <button class="load-more-button">
+                    Load More Datasets <i class="fas fa-chevron-down"></i>
+                </button>
+            </div>
+
+            <!-- Text Datasets -->
+            <div class="modality-section" id="text">
+                <h2 class="modality-title">Text <span class="dataset-count">38 datasets</span></h2>
+                
+                <div class="datasets-grid">
+                    <!-- Sample Text Dataset 1 -->
+                    <div class="dataset-card">
+                        <img class="dataset-image" src="../assets/images/glue.jpg" alt="GLUE Benchmark">
+                        <div class="dataset-info">
+                            <h3 class="dataset-title">GLUE (General Language Understanding Evaluation)</h3>
+                            <p class="dataset-author">
+                                Introduced by <span class="dataset-author-name">Wang et al.</span> in
+                                <a class="dataset-link" href="https://arxiv.org/abs/1804.07461" target="_blank">GLUE: A Multi-Task Benchmark and Analysis Platform for Natural Language Understanding</a>
+                            </p>
+                            <div class="dataset-links-and-tags">
+                                <a class="dataset-link-button" href="https://gluebenchmark.com/" target="_blank">Homepage</a>
+                                <div class="dataset-tags">
+                                    <span class="tag">Natural Language Understanding</span>
+                                    <span class="tag">Benchmark</span>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Sample Text Dataset 2 -->
+                    <div class="dataset-card">
+                        <img class="dataset-image" src="../assets/images/squad.jpg" alt="SQuAD Dataset">
+                        <div class="dataset-info">
+                            <h3 class="dataset-title">SQuAD: Stanford Question Answering Dataset</h3>
+                            <p class="dataset-author">
+                                Introduced by <span class="dataset-author-name">Rajpurkar et al.</span> in
+                                <a class="dataset-link" href="https://arxiv.org/abs/1606.05250" target="_blank">SQuAD: 100,000+ Questions for Machine Comprehension of Text</a>
+                            </p>
+                            <div class="dataset-links-and-tags">
+                                <a class="dataset-link-button" href="https://rajpurkar.github.io/SQuAD-explorer/" target="_blank">Homepage</a>
+                                <div class="dataset-tags">
+                                    <span class="tag">Question Answering</span>
+                                    <span class="tag">Reading Comprehension</span>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                
+                <button class="load-more-button">
+                    Load More Datasets <i class="fas fa-chevron-down"></i>
+                </button>
+            </div>
+
+            <!-- Audio Datasets -->
+            <div class="modality-section" id="audio">
+                <h2 class="modality-title">Audio <span class="dataset-count">17 datasets</span></h2>
+                
+                <div class="datasets-grid">
+                    <!-- Sample Audio Dataset -->
+                    <div class="dataset-card">
+                        <img class="dataset-image" src="../assets/images/librispeech.jpg" alt="LibriSpeech Dataset">
+                        <div class="dataset-info">
+                            <h3 class="dataset-title">LibriSpeech ASR Corpus</h3>
+                            <p class="dataset-author">
+                                Introduced by <span class="dataset-author-name">Panayotov et al.</span> in
+                                <a class="dataset-link" href="https://www.danielpovey.com/files/2015_icassp_librispeech.pdf" target="_blank">LibriSpeech: An ASR corpus based on public domain audio books</a>
+                            </p>
+                            <div class="dataset-links-and-tags">
+                                <a class="dataset-link-button" href="https://www.openslr.org/12" target="_blank">Homepage</a>
+                                <div class="dataset-tags">
+                                    <span class="tag">Speech Recognition</span>
+                                    <span class="tag">Audio</span>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                
+                <button class="load-more-button">
+                    Load More Datasets <i class="fas fa-chevron-down"></i>
+                </button>
+            </div>
+
+            <!-- Video Datasets -->
+            <div class="modality-section" id="video">
+                <h2 class="modality-title">Video <span class="dataset-count">15 datasets</span></h2>
+                
+                <div class="datasets-grid">
+                    <!-- Sample Video Dataset -->
+                    <div class="dataset-card">
+                        <img class="dataset-image" src="../assets/images/ucf101.jpg" alt="UCF101 Dataset">
+                        <div class="dataset-info">
+                            <h3 class="dataset-title">UCF101: Action Recognition Data Set</h3>
+                            <p class="dataset-author">
+                                Introduced by <span class="dataset-author-name">Soomro et al.</span> in
+                                <a class="dataset-link" href="https://arxiv.org/abs/1212.0402" target="_blank">UCF101: A Dataset of 101 Human Actions Classes From Videos in The Wild</a>
+                            </p>
+                            <div class="dataset-links-and-tags">
+                                <a class="dataset-link-button" href="https://www.crcv.ucf.edu/data/UCF101.php" target="_blank">Homepage</a>
+                                <div class="dataset-tags">
+                                    <span class="tag">Action Recognition</span>
+                                    <span class="tag">Video Classification</span>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                
+                <button class="load-more-button">
+                    Load More Datasets <i class="fas fa-chevron-down"></i>
+                </button>
+            </div>
+
+            <!-- Multimodal Datasets -->
+            <div class="modality-section" id="multimodal">
+                <h2 class="modality-title">Multimodal <span class="dataset-count">22 datasets</span></h2>
+                
+                <div class="datasets-grid">
+                    <!-- Sample Multimodal Dataset -->
+                    <div class="dataset-card">
+                        <img class="dataset-image" src="../assets/images/coco.jpg" alt="COCO Dataset">
+                        <div class="dataset-info">
+                            <h3 class="dataset-title">COCO: Common Objects in Context</h3>
+                            <p class="dataset-author">
+                                Introduced by <span class="dataset-author-name">Lin et al.</span> in
+                                <a class="dataset-link" href="https://arxiv.org/abs/1405.0312" target="_blank">Microsoft COCO: Common Objects in Context</a>
+                            </p>
+                            <div class="dataset-links-and-tags">
+                                <a class="dataset-link-button" href="https://cocodataset.org/" target="_blank">Homepage</a>
+                                <div class="dataset-tags">
+                                    <span class="tag">Object Detection</span>
+                                    <span class="tag">Image Captioning</span>
+                                    <span class="tag">Multimodal</span>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                
+                <button class="load-more-button">
+                    Load More Datasets <i class="fas fa-chevron-down"></i>
+                </button>
+            </div>
+        </div>
+
+        <!-- Help Button -->
+        <button class="help-button">
+            <a href="help.html">
+                <i class="fas fa-question"></i>
+            </a>
+        </button>
+    </div>
+
+    <script src="../js/include.js"></script>
+    <script src="../js/dataset-render.js"></script>
+    <script src="../js/dataset-modality.js"></script>
+    <script>
+        document.addEventListener('DOMContentLoaded', () => {
+            // Wait for components to be loaded
+            const checkComponents = setInterval(() => {
+                if (document.getElementById('dataset-card-template')) {
+                    clearInterval(checkComponents);
+                    
+                    // Render CIFAR-10 Dataset
+                    renderDatasetCard('#dataset-card-container__cifar10', {
+                        image: '../assets/images/cifar-10.png',
+                        title: 'CIFAR-10 (Canadian Institute for Advanced Research, 10 classes)',
+                        author: 'Krizhevsky et al.',
+                        paperUrl: 'http://www.cs.utoronto.ca/~kriz/learning-features-2009-TR.pdf',
+                        paperTitle: 'Learning multiple layers of features from tiny images',
+                        homepage: '#',
+                        tags: ['Image Classification', 'Low-Resolution Images']
+                    });
+
+                    // Render ImageNet Dataset
+                    renderDatasetCard('#dataset-card-container__imagenet', {
+                        image: '../assets/images/imagenet.jpg',
+                        title: 'ImageNet',
+                        author: 'Jia Deng et al.',
+                        paperUrl: 'http://www.image-net.org/papers/imagenet_cvpr09.pdf',
+                        paperTitle: 'ImageNet: A large-scale hierarchical image database',
+                        homepage: '#',
+                        tags: ['Image Classification', 'Large-Scale Dataset']
+                    });
+                }
+            }, 100);
+        });
+    </script>
+</body>
+</html>

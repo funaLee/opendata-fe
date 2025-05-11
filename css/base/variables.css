@@ -1,0 +1,87 @@
+:root {
+    /* Colors */
+    --primary-color: #5a6bff;
+    --primary-light: #e6e9ff;
+    --primary-dark: #4152e0;
+    --text-dark: #333;
+    --text-light: #666;
+    --bg-light: #f5f7fa;
+    --bg-main: #f0f2f5;
+    --white: #ffffff;
+    
+    /* Gradients */
+    --gradient-primary: linear-gradient(145deg, var(--primary-color), var(--primary-dark));
+    --gradient-hot-topic: linear-gradient(145deg, #f98d72, #e27d60);
+    --gradient-dataset: linear-gradient(145deg, #7c8af5, #6c7ae0);
+    --gradient-paper: linear-gradient(145deg, #9deccd, #8dd7bf);
+    --gradient-model: linear-gradient(145deg, #b879d2, #a86cc1);
+    --gradient-benchmark: linear-gradient(145deg, #f5d47c, #e0c16c);
+    --gradient-author: linear-gradient(145deg, #79dbe5, #69c4cd);
+    --gradient-upload: linear-gradient(145deg, #f0f0f0, #e0e0e0);
+    --gradient-others: linear-gradient(145deg, #f0f0f0, #e0e0e0);
+    
+    /* Shadows */
+    --shadow-sm: 0 2px 8px rgba(0, 0, 0, 0.05);
+    --shadow-md: 0 4px 12px rgba(0, 0, 0, 0.08);
+    --shadow-lg: 0 8px 24px rgba(0, 0, 0, 0.12);
+    
+    /* Border Radius */
+    --radius-sm: 10px;
+    --radius-md: 15px;
+    --radius-lg: 20px;
+    --radius-xl: 30px;
+    
+    /* Spacing */
+    --spacing-xs: 0.25rem;  /* 4px */
+    --spacing-sm: 0.5rem;   /* 8px */
+    --spacing-md: 1rem;     /* 16px */
+    --spacing-lg: 1.5rem;   /* 24px */
+    --spacing-xl: 2rem;     /* 32px */
+    --spacing-2xl: 3rem;    /* 48px */
+    
+    /* Transitions */
+    --transition-fast: 0.2s ease;
+    --transition-base: 0.3s ease;
+    --transition-slow: 0.4s ease;
+    --transition-bounce: 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+}
+
+/* Animation keyframes */
+@keyframes fadeIn {
+  from { opacity: 0; }
+  to { opacity: 1; }
+}
+
+@keyframes fadeInDown {
+  from {
+    opacity: 0;
+    transform: translateY(-20px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+@keyframes fadeInUp {
+  from {
+    opacity: 0;
+    transform: translateY(20px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+@keyframes pulse {
+  0% { opacity: 0.6; }
+  50% { opacity: 1; }
+  100% { opacity: 0.6; }
+}
+
+/* Animation utility classes */
+.animate-fadeIn { animation: fadeIn 0.8s ease-out; }
+.animate-fadeInDown { animation: fadeInDown 0.8s ease-out; }
+.animate-fadeInUp { animation: fadeInUp 0.8s ease-out; }
+.animate-pulse { animation: pulse 2s infinite; }

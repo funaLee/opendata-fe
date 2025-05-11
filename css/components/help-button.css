@@ -1,0 +1,87 @@
+/* Help Button Component */
+.help-button {
+  position: fixed;
+  bottom: 35px;
+  right: 35px;
+  width: 65px;
+  height: 65px;
+  background: linear-gradient(145deg, var(--primary-color), var(--primary-dark));
+  border-radius: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  color: var(--white);
+  font-size: 26px;
+  box-shadow: 0 5px 15px rgba(90, 107, 255, 0.3);
+  border: none;
+  cursor: pointer;
+  transition: all 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+  z-index: 1000;
+}
+
+.help-button a {
+  color: var(--white);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 100%;
+  height: 100%;
+  border-radius: 50%;
+}
+
+.help-button::before {
+  content: '';
+  position: absolute;
+  inset: 0;
+  border-radius: 50%;
+  background: inherit;
+  z-index: -1;
+  opacity: 0.6;
+  filter: blur(10px);
+  transform: scale(0);
+  transition: transform 0.4s ease;
+}
+
+.help-button:hover {
+  transform: translateY(-5px) scale(1.05);
+  box-shadow: 0 8px 25px rgba(90, 107, 255, 0.4),
+              0 0 0 15px rgba(90, 107, 255, 0.1);
+}
+
+.help-button:hover::before {
+  opacity: 0.8;
+  transform: scale(1.5);
+}
+
+.help-button:active {
+  transform: translateY(0) scale(0.95);
+  box-shadow: var(--shadow-sm);
+}
+
+/* Animation */
+@keyframes pulse-glow {
+  0% {
+    box-shadow: 0 5px 15px rgba(90, 107, 255, 0.3);
+  }
+  50% {
+    box-shadow: 0 5px 25px rgba(90, 107, 255, 0.5);
+  }
+  100% {
+    box-shadow: 0 5px 15px rgba(90, 107, 255, 0.3);
+  }
+}
+
+.help-button {
+  animation: pulse-glow 3s infinite ease-in-out;
+}
+
+/* Responsive Adjustments */
+@media (max-width: 768px) {
+  .help-button {
+    width: 55px;
+    height: 55px;
+    font-size: 22px;
+    bottom: 25px;
+    right: 25px;
+  }
+}
