@@ -345,3 +345,11 @@
   display: block;
 }
 
+.dropdown-toggle .chevron {
+  transition: transform 0.3s ease;
+}
+
+.dropdown-toggle.active .chevron,
+.dropdown-container:hover .dropdown-toggle .chevron {
+  transform: rotate(-180deg); /* This will flip the chevron to point up */
+}
