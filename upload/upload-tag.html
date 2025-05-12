@@ -1,0 +1,69 @@
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Upload Tag - OpenData</title>
+    <link href="../css/global.css" rel="stylesheet">
+    <link href="../css/pages/upload-tag.css" rel="stylesheet">
+    <link rel="stylesheet" href="../css/components/character-counter.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.4/css/all.min.css">
+</head>
+<body>
+    <div class="container">
+        <!-- HEADER -->
+        <div data-include="/components/header.html"></div>
+
+        <!-- Overlay -->
+        <div id="overlay" class="overlay"></div>
+        
+        <!-- Sidebar -->
+        <div data-include="/components/slidebar.html"></div>
+
+        <!-- Upload Tag Form -->
+        <div class="upload-tag-container">
+            <h1 class="upload-tag-title">Nhập tag</h1>
+            <p class="upload-tag-subtitle">
+                Vui lòng cung cấp thông tin chính xác. Dữ liệu sẽ được kiểm tra trước khi phê duyệt.
+            </p>
+            
+            <form id="uploadTagForm" class="upload-tag-form">
+                <div class="form-group">
+                    <label for="tagName">Tên tag <span class="required">*</span></label>
+                    <input type="text" id="tagName" placeholder="Nhập tên tag" required>
+                </div>
+                
+                <div class="form-group">
+                    <label for="tagDescription">Mô tả <span class="required">*</span></label>
+                    <textarea id="tagDescription" placeholder="Nhập mô tả cho tag" required></textarea>
+                </div>
+                
+
+                <div class="form-actions">
+                    <button type="button" class="back-button" id="backButton">
+                        <i class="fas fa-chevron-left"></i> 
+                        <span>Quay lại</span>
+                    </button>
+                    <button type="submit" class="submit-button">
+                        <span>Hoàn tất</span>
+                        <i class="fas fa-chevron-right"></i>
+                    </button>
+                </div>
+            </form>
+        </div>
+
+        <!-- Help Button -->
+        <button class="help-button">
+            <i class="fas fa-question"></i>
+        </button>
+        
+        <!-- Include Help Center Popup -->
+        <div data-include="/components/help-center-popup.html"></div>
+    </div>
+
+    <script src="../js/include.js"></script>
+    <script src="../js/header-dropdown.js"></script>
+    <script src="../js/help-center.js"></script>
+    <script src="../js/upload-tag.js"></script>
+</body>
+</html>

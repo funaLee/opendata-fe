@@ -203,66 +203,87 @@ document.addEventListener('DOMContentLoaded', function() {
       popupOverlay.className = 'popup-overlay';
       
       const popup = document.createElement('div');
-      popup.className = 'select-popup';
+      popup.className = 'entry-popup';
       
       // Create header
       const popupHeader = document.createElement('div');
-      popupHeader.className = 'popup-header';
+      popupHeader.className = 'entry-popup-header';
       
-      const popupTitle = document.createElement('h3');
-      popupTitle.textContent = `Thêm ${selectId === 'licenseSelect' ? 'bản quyền' : selectId === 'modalitySelect' ? 'loại dữ liệu' : 'tag'} mới`;
+      const popupTitle = document.createElement('h2');
+      popupTitle.className = 'entry-popup-title';
+      popupTitle.textContent = selectId === 'licenseSelect' ? 'Nhập bản quyền' : 'Nhập loại dữ liệu';
       
-      const closeButton = document.createElement('button');
-      closeButton.className = 'popup-close';
-      closeButton.innerHTML = '&times;';
-      closeButton.addEventListener('click', () => {
-        document.body.removeChild(popupOverlay);
-      });
+      const popupSubtitle = document.createElement('p');
+      popupSubtitle.className = 'entry-popup-subtitle';
+      popupSubtitle.textContent = 'Vui lòng cung cấp thông tin chính xác. Dữ liệu sẽ được kiểm tra trước khi phê duyệt.';
       
       popupHeader.appendChild(popupTitle);
-      popupHeader.appendChild(closeButton);
+      popupHeader.appendChild(popupSubtitle);
       
       // Create content
       const popupContent = document.createElement('div');
-      popupContent.className = 'popup-content';
+      popupContent.className = 'entry-popup-content';
       
-      // Create input field
-      const inputGroup = document.createElement('div');
-      inputGroup.className = 'popup-input-group';
+      // Create name field
+      const nameGroup = document.createElement('div');
+      nameGroup.className = 'entry-form-group';
       
-      const inputLabel = document.createElement('label');
-      inputLabel.textContent = `${selectId === 'licenseSelect' ? 'Bản quyền' : selectId === 'modalitySelect' ? 'Loại dữ liệu' : 'Tag'} mới:`;
-      inputLabel.htmlFor = 'customInput';
+      const nameLabel = document.createElement('label');
+      nameLabel.htmlFor = 'customName';
+      nameLabel.innerHTML = (selectId === 'licenseSelect' ? 'Tên bản quyền' : 'Tên loại dữ liệu') + ' <span class="required">*</span>';
       
-      const inputField = document.createElement('input');
-      inputField.type = 'text';
-      inputField.id = 'customInput';
-      inputField.placeholder = 'Nhập giá trị mới...';
+      const nameInput = document.createElement('input');
+      nameInput.type = 'text';
+      nameInput.id = 'customName';
+      nameInput.placeholder = selectId === 'licenseSelect' ? 'Nhập tên bản quyền' : 'Nhập tên loại dữ liệu';
+      nameInput.required = true;
       
-      inputGroup.appendChild(inputLabel);
-      inputGroup.appendChild(inputField);
+      nameGroup.appendChild(nameLabel);
+      nameGroup.appendChild(nameInput);
       
-      // Create buttons
-      const buttonGroup = document.createElement('div');
-      buttonGroup.className = 'popup-button-group';
+      // Create description field
+      const descGroup = document.createElement('div');
+      descGroup.className = 'entry-form-group';
       
-      const cancelButton = document.createElement('button');
-      cancelButton.className = 'popup-button secondary';
-      cancelButton.textContent = 'Huỷ';
-      cancelButton.addEventListener('click', () => {
+      const descLabel = document.createElement('label');
+      descLabel.htmlFor = 'customDescription';
+      descLabel.innerHTML = 'Mô tả <span class="required">*</span>';
+      
+      const descInput = document.createElement('textarea');
+      descInput.id = 'customDescription';
+      descInput.placeholder = selectId === 'licenseSelect' ? 'Nhập mô tả cho bản quyền' : 'Nhập mô tả cho loại dữ liệu';
+      descInput.required = true;
+      
+      descGroup.appendChild(descLabel);
+      descGroup.appendChild(descInput);
+      
+      // Add form groups to content
+      popupContent.appendChild(nameGroup);
+      popupContent.appendChild(descGroup);
+      
+      // Create action buttons
+      const actionsDiv = document.createElement('div');
+      actionsDiv.className = 'entry-popup-actions';
+      
+      const backButton = document.createElement('button');
+      backButton.className = 'entry-popup-button back';
+      backButton.innerHTML = '<i class="fas fa-chevron-left"></i> Quay lại';
+      backButton.addEventListener('click', () => {
         document.body.removeChild(popupOverlay);
       });
       
       const submitButton = document.createElement('button');
-      submitButton.className = 'popup-button primary';
-      submitButton.textContent = 'Thêm';
+      submitButton.className = 'entry-popup-button submit';
+      submitButton.innerHTML = 'Hoàn tất <i class="fas fa-chevron-right"></i>';
       submitButton.addEventListener('click', () => {
-        const customValue = inputField.value.trim();
-        if (customValue) {
+        const customName = nameInput.value.trim();
+        const customDesc = descInput.value.trim();
+        
+        if (customName && customDesc) {
           // Add new option to the original select
           const newOption = document.createElement('option');
-          newOption.value = 'custom_' + customValue.toLowerCase().replace(/\s+/g, '_');
-          newOption.textContent = customValue;
+          newOption.value = 'custom_' + customName.toLowerCase().replace(/\s+/g, '_');
+          newOption.textContent = customName;
           originalSelect.appendChild(newOption);
           
           // Select the new option
@@ -270,24 +291,27 @@ document.addEventListener('DOMContentLoaded', function() {
           
           // Close popup
           document.body.removeChild(popupOverlay);
+        } else {
+          // Show validation messages (simplified)
+          if (!customName) nameInput.style.borderColor = 'red';
+          if (!customDesc) descInput.style.borderColor = 'red';
         }
       });
       
-      buttonGroup.appendChild(cancelButton);
-      buttonGroup.appendChild(submitButton);
+      actionsDiv.appendChild(backButton);
+      actionsDiv.appendChild(submitButton);
       
       // Assemble popup
-      popupContent.appendChild(inputGroup);
-      popupContent.appendChild(buttonGroup);
       popup.appendChild(popupHeader);
       popup.appendChild(popupContent);
+      popup.appendChild(actionsDiv);
       popupOverlay.appendChild(popup);
       
       // Add to document
       document.body.appendChild(popupOverlay);
       
       // Focus input field
-      setTimeout(() => inputField.focus(), 100);
+      setTimeout(() => nameInput.focus(), 100);
       
       // Close when clicking outside
       popupOverlay.addEventListener('click', function(e) {
@@ -303,9 +327,14 @@ document.addEventListener('DOMContentLoaded', function() {
       e.stopPropagation();
     });
     
-    // Handle "Khác..." button click
+    // Handle "Khác..." button click - Updated for tag redirect
     khacItem.addEventListener('click', function(e) {
-      showCustomInputPopup();
+      if (selectId === 'tagsSelect') {
+        // For tags, redirect to upload tag page
+        window.location.href = '../upload/upload-tag.html';
+      } else {
+        showCustomInputPopup();
+      }
       e.stopPropagation();
     });
     
@@ -640,196 +669,6 @@ document.addEventListener('DOMContentLoaded', function() {
       popupOverlay.className = 'popup-overlay';
       
       const popup = document.createElement('div');
-      popup.className = 'select-popup';
-      
-      // Create header
-      const popupHeader = document.createElement('div');
-      popupHeader.className = 'popup-header';
-      
-      const popupTitle = document.createElement('h3');
-      popupTitle.textContent = 'Thêm tag mới';
-      
-      const closeButton = document.createElement('button');
-      closeButton.className = 'popup-close';
-      closeButton.innerHTML = '&times;';
-      closeButton.addEventListener('click', () => {
-        document.body.removeChild(popupOverlay);
-      });
-      
-      popupHeader.appendChild(popupTitle);
-      popupHeader.appendChild(closeButton);
-      
-      // Create content
-      const popupContent = document.createElement('div');
-      popupContent.className = 'popup-content';
-      
-      // Create input field
-      const inputGroup = document.createElement('div');
-      inputGroup.className = 'popup-input-group';
-      
-      const inputLabel = document.createElement('label');
-      inputLabel.textContent = 'Tag mới:';
-      inputLabel.htmlFor = 'customTagInput';
-      
-      const inputField = document.createElement('input');
-      inputField.type = 'text';
-      inputField.id = 'customTagInput';
-      inputField.placeholder = 'Nhập tag mới...';
-      
-      inputGroup.appendChild(inputLabel);
-      inputGroup.appendChild(inputField);
-      
-      // Create buttons
-      const buttonGroup = document.createElement('div');
-      buttonGroup.className = 'popup-button-group';
-      
-      const cancelButton = document.createElement('button');
-      cancelButton.className = 'popup-button secondary';
-      cancelButton.textContent = 'Huỷ';
-      cancelButton.addEventListener('click', () => {
-        document.body.removeChild(popupOverlay);
-      });
-      
-      const submitButton = document.createElement('button');
-      submitButton.className = 'popup-button primary';
-      submitButton.textContent = 'Thêm';
-      submitButton.addEventListener('click', () => {
-        const customValue = inputField.value.trim();
-        if (customValue) {
-          // Add new option to the original select
-          const newOption = document.createElement('option');
-          newOption.value = 'custom_' + customValue.toLowerCase().replace(/\s+/g, '_');
-          newOption.textContent = customValue;
-          newOption.selected = true;
-          originalSelect.appendChild(newOption);
-          
-          // Dispatch change event
-          const event = new Event('change', { bubbles: true });
-          originalSelect.dispatchEvent(event);
-          
-          // Update UI
-          updateSelectedTags();
-          
-          // Close popup
-          document.body.removeChild(popupOverlay);
-        }
-      });
-      
-      buttonGroup.appendChild(cancelButton);
-      buttonGroup.appendChild(submitButton);
-      
-      // Assemble popup
-      popupContent.appendChild(inputGroup);
-      popupContent.appendChild(buttonGroup);
-      popup.appendChild(popupHeader);
-      popup.appendChild(popupContent);
-      popupOverlay.appendChild(popup);
-      
-      // Add to document
-      document.body.appendChild(popupOverlay);
-      
-      // Focus input field
-      setTimeout(() => inputField.focus(), 100);
-      
-      // Close when clicking outside
-      popupOverlay.addEventListener('click', function(e) {
-        if (e.target === popupOverlay) {
-          document.body.removeChild(popupOverlay);
-        }
-      });
-    }
-    
-    // Handle "Thêm..." button click
-    themItem.addEventListener('click', function(e) {
-      showAllOptionsPopup();
-      e.stopPropagation();
-    });
-    
-    // Handle "Khác..." button click
-    khacItem.addEventListener('click', function(e) {
-      showCustomTagPopup();
-      e.stopPropagation();
-    });
-
-    // Function to determine optimal dropdown position
-    function positionDropdown() {
-      // Reset any previous positioning classes
-      dropdown.classList.remove('dropdown-up');
-      
-      // Get dimensions and positions
-      const triggerRect = trigger.getBoundingClientRect();
-      const dropdownHeight = dropdown.offsetHeight;
-      const viewportHeight = window.innerHeight;
-      const spaceBelow = viewportHeight - triggerRect.bottom;
-      
-      // Check if there's enough space below
-      if (spaceBelow < dropdownHeight && triggerRect.top > dropdownHeight) {
-        // Not enough space below, but enough space above
-        dropdown.classList.add('dropdown-up');
-        dropdown.style.bottom = `${trigger.offsetHeight + 5}px`;
-        dropdown.style.top = 'auto';
-      } else {
-        // Default position (below)
-        dropdown.style.top = `${trigger.offsetHeight + 5}px`;
-        dropdown.style.bottom = 'auto';
-      }
-    }
-    
-    // Handle trigger click to show/hide dropdown
-    trigger.addEventListener('click', function(e) {
-      const isActive = dropdown.classList.contains('active');
-      
-      // Close any other open dropdowns first
-      document.querySelectorAll('.multiselect-dropdown.active, .enhanced-select-dropdown.active').forEach(d => {
-        if (d !== dropdown) d.classList.remove('active');
-      });
-      
-      // Toggle the dropdown
-      dropdown.classList.toggle('active');
-      
-      // If opening, position it correctly
-      if (!isActive && dropdown.classList.contains('active')) {
-        positionDropdown();
-      }
-      
-      e.stopPropagation();
-    });
-    
-    // Close dropdown when clicking outside
-    document.addEventListener('click', function() {
-      dropdown.classList.remove('active');
-    });
-    
-    // Add components to DOM
-    wrapper.appendChild(trigger);
-    wrapper.appendChild(selectedTagsContainer);
-    wrapper.appendChild(dropdown);
-    originalSelect.parentNode.insertBefore(wrapper, originalSelect);
-    
-    // Initialize selected tags
-    updateSelectedTags();
-    
-    // Update dropdown items when original select changes
-    originalSelect.addEventListener('change', function() {
-      // Update checkboxes
-      Array.from(originalSelect.options).forEach(option => {
-        const checkbox = dropdown.querySelector(`input[value="${option.value}"]`);
-        if (checkbox) checkbox.checked = option.selected;
-      });
-      
-      // Update selected tags display
-      updateSelectedTags();
-    });
-  }
-});
-
-// Function to create the "Custom Input" popup for tags
-    function showCustomTagPopup() {
-      // Create popup container
-      const popupOverlay = document.createElement('div');
-      popupOverlay.className = 'popup-overlay';
-      
-      const popup = document.createElement('div');
       popup.className = 'entry-popup';
       
       // Create header
@@ -952,128 +791,88 @@ document.addEventListener('DOMContentLoaded', function() {
         }
       });
     }
+    
+    // Handle "Thêm..." button click
+    themItem.addEventListener('click', function(e) {
+      showAllOptionsPopup();
+      e.stopPropagation();
+    });
+    
+    // Handle "Khác..." button click - Updated to redirect to upload tag page
+    khacItem.addEventListener('click', function(e) {
+      // For tags, redirect to upload tag page
+      window.location.href = '../upload/upload-tag.html';
+      e.stopPropagation();
+    });
 
-    // Function to create the "Custom Input" popup
-    function showCustomInputPopup() {
-      // Create popup container
-      const popupOverlay = document.createElement('div');
-      popupOverlay.className = 'popup-overlay';
+    // Function to determine optimal dropdown position
+    function positionDropdown() {
+      // Reset any previous positioning classes
+      dropdown.classList.remove('dropdown-up');
       
-      const popup = document.createElement('div');
-      popup.className = 'entry-popup';
+      // Get dimensions and positions
+      const triggerRect = trigger.getBoundingClientRect();
+      const dropdownHeight = dropdown.offsetHeight;
+      const viewportHeight = window.innerHeight;
+      const spaceBelow = viewportHeight - triggerRect.bottom;
       
-      // Create header
-      const popupHeader = document.createElement('div');
-      popupHeader.className = 'entry-popup-header';
-      
-      const popupTitle = document.createElement('h2');
-      popupTitle.className = 'entry-popup-title';
-      popupTitle.textContent = selectId === 'licenseSelect' ? 'Nhập bản quyền' : 'Nhập loại dữ liệu';
-      
-      const popupSubtitle = document.createElement('p');
-      popupSubtitle.className = 'entry-popup-subtitle';
-      popupSubtitle.textContent = 'Vui lòng cung cấp thông tin chính xác. Dữ liệu sẽ được kiểm tra trước khi phê duyệt.';
-      
-      popupHeader.appendChild(popupTitle);
-      popupHeader.appendChild(popupSubtitle);
-      
-      // Create content
-      const popupContent = document.createElement('div');
-      popupContent.className = 'entry-popup-content';
-      
-      // Create name field
-      const nameGroup = document.createElement('div');
-      nameGroup.className = 'entry-form-group';
-      
-      const nameLabel = document.createElement('label');
-      nameLabel.htmlFor = 'customName';
-      nameLabel.innerHTML = (selectId === 'licenseSelect' ? 'Tên bản quyền' : 'Tên loại dữ liệu') + ' <span class="required">*</span>';
-      
-      const nameInput = document.createElement('input');
-      nameInput.type = 'text';
-      nameInput.id = 'customName';
-      nameInput.placeholder = selectId === 'licenseSelect' ? 'Nhập tên bản quyền' : 'Nhập tên loại dữ liệu';
-      nameInput.required = true;
-      
-      nameGroup.appendChild(nameLabel);
-      nameGroup.appendChild(nameInput);
-      
-      // Create description field
-      const descGroup = document.createElement('div');
-      descGroup.className = 'entry-form-group';
-      
-      const descLabel = document.createElement('label');
-      descLabel.htmlFor = 'customDescription';
-      descLabel.innerHTML = 'Mô tả <span class="required">*</span>';
-      
-      const descInput = document.createElement('textarea');
-      descInput.id = 'customDescription';
-      descInput.placeholder = selectId === 'licenseSelect' ? 'Nhập mô tả cho bản quyền' : 'Nhập mô tả cho loại dữ liệu';
-      descInput.required = true;
-      
-      descGroup.appendChild(descLabel);
-      descGroup.appendChild(descInput);
-      
-      // Add form groups to content
-      popupContent.appendChild(nameGroup);
-      popupContent.appendChild(descGroup);
-      
-      // Create action buttons
-      const actionsDiv = document.createElement('div');
-      actionsDiv.className = 'entry-popup-actions';
-      
-      const backButton = document.createElement('button');
-      backButton.className = 'entry-popup-button back';
-      backButton.innerHTML = '<i class="fas fa-chevron-left"></i> Quay lại';
-      backButton.addEventListener('click', () => {
-        document.body.removeChild(popupOverlay);
-      });
-      
-      const submitButton = document.createElement('button');
-      submitButton.className = 'entry-popup-button submit';
-      submitButton.innerHTML = 'Hoàn tất <i class="fas fa-chevron-right"></i>';
-      submitButton.addEventListener('click', () => {
-        const customName = nameInput.value.trim();
-        const customDesc = descInput.value.trim();
-        
-        if (customName && customDesc) {
-          // Add new option to the original select
-          const newOption = document.createElement('option');
-          newOption.value = 'custom_' + customName.toLowerCase().replace(/\s+/g, '_');
-          newOption.textContent = customName;
-          originalSelect.appendChild(newOption);
-          
-          // Select the new option
-          selectOption(newOption.value, newOption.textContent);
-          
-          // Close popup
-          document.body.removeChild(popupOverlay);
-        } else {
-          // Show validation messages (simplified)
-          if (!customName) nameInput.style.borderColor = 'red';
-          if (!customDesc) descInput.style.borderColor = 'red';
-        }
-      });
-      
-      actionsDiv.appendChild(backButton);
-      actionsDiv.appendChild(submitButton);
-      
-      // Assemble popup
-      popup.appendChild(popupHeader);
-      popup.appendChild(popupContent);
-      popup.appendChild(actionsDiv);
-      popupOverlay.appendChild(popup);
-      
-      // Add to document
-      document.body.appendChild(popupOverlay);
-      
-      // Focus input field
-      setTimeout(() => nameInput.focus(), 100);
-      
-      // Close when clicking outside
-      popupOverlay.addEventListener('click', function(e) {
-        if (e.target === popupOverlay) {
-          document.body.removeChild(popupOverlay);
-        }
-      });
+      // Check if there's enough space below
+      if (spaceBelow < dropdownHeight && triggerRect.top > dropdownHeight) {
+        // Not enough space below, but enough space above
+        dropdown.classList.add('dropdown-up');
+        dropdown.style.bottom = `${trigger.offsetHeight + 5}px`;
+        dropdown.style.top = 'auto';
+      } else {
+        // Default position (below)
+        dropdown.style.top = `${trigger.offsetHeight + 5}px`;
+        dropdown.style.bottom = 'auto';
+      }
     }
+    
+    // Handle trigger click to show/hide dropdown
+    trigger.addEventListener('click', function(e) {
+      const isActive = dropdown.classList.contains('active');
+      
+      // Close any other open dropdowns first
+      document.querySelectorAll('.multiselect-dropdown.active, .enhanced-select-dropdown.active').forEach(d => {
+        if (d !== dropdown) d.classList.remove('active');
+      });
+      
+      // Toggle the dropdown
+      dropdown.classList.toggle('active');
+      
+      // If opening, position it correctly
+      if (!isActive && dropdown.classList.contains('active')) {
+        positionDropdown();
+      }
+      
+      e.stopPropagation();
+    });
+    
+    // Close dropdown when clicking outside
+    document.addEventListener('click', function() {
+      dropdown.classList.remove('active');
+    });
+    
+    // Add components to DOM
+    wrapper.appendChild(trigger);
+    wrapper.appendChild(selectedTagsContainer);
+    wrapper.appendChild(dropdown);
+    originalSelect.parentNode.insertBefore(wrapper, originalSelect);
+    
+    // Initialize selected tags
+    updateSelectedTags();
+    
+    // Update dropdown items when original select changes
+    originalSelect.addEventListener('change', function() {
+      // Update checkboxes
+      Array.from(originalSelect.options).forEach(option => {
+        const checkbox = dropdown.querySelector(`input[value="${option.value}"]`);
+        if (checkbox) checkbox.checked = option.selected;
+      });
+      
+      // Update selected tags display
+      updateSelectedTags();
+    });
+  }
+});
