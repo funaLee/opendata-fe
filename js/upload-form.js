@@ -1,5 +1,5 @@
 /**
- * Upload Dataset Form Functionality - Enhanced to match upload-tag
+ * Upload Dataset Form Functionality - Enhanced with Paper Field
  */
 document.addEventListener('DOMContentLoaded', function() {
   // Wait for all components to load
@@ -16,6 +16,8 @@ document.addEventListener('DOMContentLoaded', function() {
     const tagsSelect = document.getElementById('tagsSelect');
     const licenseSelect = document.getElementById('licenseSelect');
     const modalitySelect = document.getElementById('modalitySelect');
+    const paperSelect = document.getElementById('paperSelect');
+    const uploadPaperBtn = document.getElementById('uploadPaperBtn');
     const sizeInput = document.getElementById('datasetSize');
     const submitButton = document.querySelector('.submit-button');
     
@@ -27,6 +29,31 @@ document.addEventListener('DOMContentLoaded', function() {
 
     // Add character counter for description
     addCharacterCounter(descriptionInput, 500);
+
+    // Paper selection handling
+    if (paperSelect) {
+      paperSelect.addEventListener('change', function() {
+        if (this.value === 'upload_new') {
+          // Save current form data before navigating
+          saveFormData();
+          // Navigate to upload paper page
+          window.location.href = '../upload/upload-paper.html';
+        } else {
+          validateField(this);
+          updateButtonStates();
+        }
+      });
+    }
+
+    // Upload paper button handling
+    if (uploadPaperBtn) {
+      uploadPaperBtn.addEventListener('click', function() {
+        // Save current form data before navigating
+        saveFormData();
+        // Navigate to upload paper page
+        window.location.href = '../upload/upload-paper.html';
+      });
+    }
 
     // Real-time validation
     nameInput.addEventListener('input', function() {
@@ -118,6 +145,7 @@ document.addEventListener('DOMContentLoaded', function() {
           license: licenseSelect.value,
           tags: Array.from(tagsSelect.selectedOptions).map(option => option.value),
           modality: modalitySelect.value,
+          paper: paperSelect.value,
           timestamp: new Date().toISOString()
         };
         
@@ -132,6 +160,9 @@ document.addEventListener('DOMContentLoaded', function() {
         
         // Simulate form submission with realistic timing
         setTimeout(() => {
+          // Clear saved form data on successful submission
+          sessionStorage.removeItem('uploadDatasetFormData');
+          
           // Show success message
           showSubmissionMessage(true, 'Dataset information has been submitted successfully!');
           
@@ -147,9 +178,72 @@ document.addEventListener('DOMContentLoaded', function() {
       });
     }
 
+    // Load saved form data if returning from paper upload
+    loadFormData();
+
+    // Function to save form data
+    function saveFormData() {
+      const formData = {
+        datasetName: nameInput.value,
+        datasetLink: linkInput.value,
+        datasetDescription: descriptionInput.value,
+        datasetSize: sizeInput.value,
+        sampleCount: sampleCountInput.value,
+        license: licenseSelect.value,
+        tags: Array.from(tagsSelect.selectedOptions).map(option => option.value),
+        modality: modalitySelect.value,
+        timestamp: Date.now()
+      };
+      sessionStorage.setItem('uploadDatasetFormData', JSON.stringify(formData));
+    }
+
+    // Function to load saved form data
+    function loadFormData() {
+      const savedData = sessionStorage.getItem('uploadDatasetFormData');
+      if (savedData) {
+        try {
+          const formData = JSON.parse(savedData);
+          
+          // Only load data if it's less than 1 hour old
+          if (Date.now() - formData.timestamp < 3600000) {
+            nameInput.value = formData.datasetName || '';
+            linkInput.value = formData.datasetLink || '';
+            descriptionInput.value = formData.datasetDescription || '';
+            sizeInput.value = formData.datasetSize || '';
+            sampleCountInput.value = formData.sampleCount || '';
+            licenseSelect.value = formData.license || '';
+            modalitySelect.value = formData.modality || '';
+            
+            // Restore tags selection
+            if (formData.tags && formData.tags.length > 0) {
+              Array.from(tagsSelect.options).forEach(option => {
+                option.selected = formData.tags.includes(option.value);
+              });
+            }
+            
+            // Validate restored fields
+            [nameInput, linkInput, descriptionInput, sizeInput, sampleCountInput].forEach(field => {
+              if (field.value) validateField(field);
+            });
+            
+            updateButtonStates();
+          }
+        } catch (e) {
+          console.error('Error loading saved form data:', e);
+        }
+      }
+    }
+
     // Enhanced validation with more specific rules
     function validateForm() {
       let isValid = true;
+
+      if (!paperSelect.value) {
+        markInvalid(paperSelect, 'Vui lòng chọn bài báo liên quan');
+        isValid = false;
+      } else {
+        markValid(paperSelect);
+      }
       
       // Validate dataset name
       const name = nameInput.value.trim();
@@ -218,6 +312,14 @@ document.addEventListener('DOMContentLoaded', function() {
         isValid = false;
       } else {
         markValid(sampleCountInput);
+      }
+      
+      // Validate paper selection
+      if (!paperSelect.value || paperSelect.value === 'upload_new') {
+        markInvalid(paperSelect, 'Vui lòng chọn bài báo công bố dataset');
+        isValid = false;
+      } else {
+        markValid(paperSelect);
       }
       
       // Validate license
@@ -320,7 +422,11 @@ document.addEventListener('DOMContentLoaded', function() {
         } else {
           markValid(field);
         }
-      } else if ([licenseSelect, modalitySelect, tagsSelect].includes(field)) {
+      } else if ([licenseSelect, modalitySelect, tagsSelect, paperSelect].includes(field)) {
+        if (field === paperSelect && field.value === 'upload_new') {
+          // Don't validate if "upload new" is selected
+          return;
+        }
         if (field.value || (field === tagsSelect && field.selectedOptions.length > 0)) {
           markValid(field);
         } else {
@@ -385,7 +491,7 @@ document.addEventListener('DOMContentLoaded', function() {
     }
 
     function clearAllValidation() {
-      [nameInput, linkInput, descriptionInput, sizeInput, sampleCountInput, licenseSelect, modalitySelect, tagsSelect].forEach(field => {
+      [nameInput, linkInput, descriptionInput, sizeInput, sampleCountInput, licenseSelect, modalitySelect, tagsSelect, paperSelect].forEach(field => {
         if (field) clearValidation(field);
       });
     }
@@ -406,7 +512,7 @@ document.addEventListener('DOMContentLoaded', function() {
     }
 
     function setFormDisabled(disabled) {
-      [nameInput, linkInput, descriptionInput, sizeInput, sampleCountInput, licenseSelect, modalitySelect, tagsSelect].forEach(field => {
+      [nameInput, linkInput, descriptionInput, sizeInput, sampleCountInput, licenseSelect, modalitySelect, tagsSelect, paperSelect].forEach(field => {
         if (field) field.disabled = disabled;
       });
       submitButton.disabled = disabled;
@@ -483,4 +589,13 @@ document.addEventListener('DOMContentLoaded', function() {
     // Initial validation state
     updateButtonStates();
   }
+});
+
+document.getElementById('addPaperBtn').addEventListener('click', function() {
+  // Store current form data
+  const formData = gatherFormData();
+  sessionStorage.setItem('uploadDatasetFormData', JSON.stringify(formData));
+  
+  // Navigate to upload paper page
+  window.openUploadPaperPage('../upload/upload-dataset.html');
 });

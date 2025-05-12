@@ -1,0 +1,162 @@
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Upload Paper - OpenData</title>
+    <link href="../css/global.css" rel="stylesheet">
+    <link href="../css/pages/upload-paper.css" rel="stylesheet">
+    <link href="../css/components/custom-select.css" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.4/css/all.min.css">
+</head>
+<body>
+    <div class="container">
+        <!-- HEADER -->
+        <div data-include="../components/header.html"></div>
+
+        <!-- Overlay -->
+        <div id="overlay" class="overlay"></div>
+        
+        <!-- Sidebar -->
+        <div data-include="../components/slidebar.html"></div>
+
+        <!-- Upload Paper Form -->
+        <div class="upload-form-container">
+            <h1 class="upload-title">Upload Paper</h1>
+            <p class="upload-description">
+                Bài báo mà bạn tải lên phải là bài báo khoa học được xuất bản trên các hội nghị, tạp chí uy tín. Chúng tôi sẽ kiểm tra thông tin mà bạn cung cấp, vậy nên hãy đảm bảo thông tin chính xác.
+            </p>
+            
+            <form id="uploadPaperForm" class="upload-form">
+                <div class="form-row">
+                    <div class="form-group full-width">
+                        <label for="paperTitle">Tiêu đề bài báo <span class="required">*</span></label>
+                        <input type="text" id="paperTitle" placeholder="Nhập tiêu đề bài báo" required>
+                    </div>
+                </div>
+                
+                <div class="form-row">
+                    <div class="form-group full-width">
+                        <label for="paperAuthors">Tác giả <span class="required">*</span></label>
+                        <div class="author-select-container">
+                            <select id="paperAuthors" multiple required>
+                                <option value="" disabled>Chọn tác giả cho bài báo</option>
+                                <option value="au_nguyen_van_a">Dr. Nguyễn Văn A</option>
+                                <option value="au_tran_thi_b">Dr. Trần Thị B</option>
+                                <option value="au_pham_van_c">Prof. Phạm Văn C</option>
+                                <option value="au_le_thi_d">Dr. Lê Thị D</option>
+                                <option value="au_hoang_van_e">Prof. Hoàng Văn E</option>
+                                <option value="au_vo_thi_f">Dr. Võ Thị F</option>
+                                <option value="au_bui_van_g">Dr. Bùi Văn G</option>
+                                <option value="au_john_doe">Prof. John Doe</option>
+                                <option value="au_jane_smith">Dr. Jane Smith</option>
+                                <option value="au_michael_johnson">Dr. Michael Johnson</option>
+                                <option value="au_sarah_wilson">Prof. Sarah Wilson</option>
+                                <option value="au_david_brown">Dr. David Brown</option>
+                            </select>
+                        </div>
+                        <div class="field-hint">Chọn các tác giả của bài báo. Nếu tác giả chưa có trong danh sách, click "Thêm tác giả mới"</div>
+                    </div>
+                </div>
+                
+                <div class="form-row">
+                    <div class="form-group full-width">
+                        <label for="paperAbstract">Tóm tắt <span class="required">*</span></label>
+                        <textarea id="paperAbstract" placeholder="Nhập tóm tắt bài báo" required rows="6"></textarea>
+                    </div>
+                </div>
+                
+                <div class="form-row two-columns">
+                    <div class="form-group">
+                        <label for="paperUrl">Link bài báo <span class="required">*</span></label>
+                        <input type="url" id="paperUrl" placeholder="https://example.com/paper.pdf" required>
+                    </div>
+                    
+                    <div class="form-group">
+                        <label for="paperDoi">DOI</label>
+                        <input type="text" id="paperDoi" placeholder="10.1000/xyz123">
+                        <div class="field-hint">Digital Object Identifier (tùy chọn)</div>
+                    </div>
+                </div>
+                
+                <div class="form-row three-columns">
+                    <div class="form-group">
+                        <label for="publicationSelect">Hội nghị/Tạp chí <span class="required">*</span></label>
+                        <select id="publicationSelect" required>
+                            <option value="" disabled selected>Chọn nơi xuất bản</option>
+                            <option value="pub_neurips">NeurIPS</option>
+                            <option value="pub_icml">ICML</option>
+                            <option value="pub_iclr">ICLR</option>
+                            <option value="pub_cvpr">CVPR</option>
+                            <option value="pub_iccv">ICCV</option>
+                            <option value="pub_eccv">ECCV</option>
+                            <option value="pub_acl">ACL</option>
+                            <option value="pub_emnlp">EMNLP</option>
+                            <option value="pub_naacl">NAACL</option>
+                            <option value="pub_ijcai">IJCAI</option>
+                            <option value="pub_aaai">AAAI</option>
+                            <option value="pub_sigkdd">SIGKDD</option>
+                            <option value="pub_other">Khác</option>
+                        </select>
+                    </div>
+                    
+                    <div class="form-group">
+                        <label for="areaSelect">Lĩnh vực nghiên cứu <span class="required">*</span></label>
+                        <select id="areaSelect" required>
+                            <option value="" disabled selected>Chọn lĩnh vực</option>
+                            <option value="area_computer_vision">Computer Vision</option>
+                            <option value="area_natural_language_processing">Natural Language Processing</option>
+                            <option value="area_machine_learning">Machine Learning</option>
+                            <option value="area_deep_learning">Deep Learning</option>
+                            <option value="area_reinforcement_learning">Reinforcement Learning</option>
+                            <option value="area_robotics">Robotics</option>
+                            <option value="area_speech_processing">Speech Processing</option>
+                            <option value="area_information_retrieval">Information Retrieval</option>
+                            <option value="area_data_mining">Data Mining</option>
+                            <option value="area_other">Khác</option>
+                        </select>
+                    </div>
+                    
+                    <div class="form-group">
+                        <label for="publicationYear">Năm xuất bản <span class="required">*</span></label>
+                        <input type="number" id="publicationYear" placeholder="2024" min="1990" max="2025" required>
+                    </div>
+                </div>
+                
+                <div class="form-row">
+                    <div class="form-group full-width">
+                        <label for="paperKeywords">Từ khóa</label>
+                        <input type="text" id="paperKeywords" placeholder="Nhập từ khóa (cách nhau bằng dấu phẩy)">
+                        <div class="field-hint">Ví dụ: deep learning, computer vision, neural networks</div>
+                    </div>
+                </div>
+                
+                <div class="form-actions">
+                    <button type="button" class="back-button" id="backButton">
+                        <i class="fas fa-chevron-left"></i> 
+                        <span>Quay lại</span>
+                    </button>
+                    <button type="submit" class="submit-button">
+                        <span>Hoàn tất</span>
+                        <i class="fas fa-file-alt"></i>
+                    </button>
+                </div>
+            </form>
+        </div>
+
+        <!-- Help Button -->
+        <button class="help-button">
+            <i class="fas fa-question"></i>
+        </button>
+        
+        <!-- Include Help Center Popup -->
+        <div data-include="../components/help-center-popup.html"></div>
+    </div>
+
+    <script src="../js/include.js"></script>
+    <script src="../js/header-dropdown.js"></script>
+    <script src="../js/help-center.js"></script>
+    <script src="../js/enhanced-select.js"></script>
+    <script src="../js/upload-paper.js"></script>
+</body>
+</html>
