@@ -1,15 +1,7 @@
 /**
- * Author Map Functionality
+ * Author Map Functionality - Fixed Version with No Jump on Hover
  */
 document.addEventListener('DOMContentLoaded', function() {
-  const checkMapContainer = setInterval(() => {
-    const mapContainer = document.getElementById('map');
-    if (mapContainer) {
-      clearInterval(checkMapContainer);
-      initializeAuthorMap();
-    }
-  }, 100);
-
   let map;
   let markers = [];
   let filteredAuthors = [];
@@ -120,31 +112,44 @@ document.addEventListener('DOMContentLoaded', function() {
     }
   ];
 
+  // Wait for all components to be loaded
+  const checkMapContainer = setInterval(() => {
+    const mapContainer = document.getElementById('map');
+    if (mapContainer && typeof L !== 'undefined') {
+      clearInterval(checkMapContainer);
+      initializeAuthorMap();
+    }
+  }, 100);
+
   function initializeAuthorMap() {
-    // Initialize the map
-    map = L.map('map').setView(vietnamCenter, defaultZoom);
+    try {
+      // Initialize the map
+      map = L.map('map').setView(vietnamCenter, defaultZoom);
 
-    // Add tile layer
-    L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
-      attribution: '© OpenStreetMap contributors',
-      maxZoom: 18,
-      tileSize: 512,
-      zoomOffset: -1,
-    }).addTo(map);
+      // Add tile layer
+      L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
+        attribution: '© OpenStreetMap contributors',
+        maxZoom: 18,
+        tileSize: 512,
+        zoomOffset: -1,
+      }).addTo(map);
 
-    // Initialize with all authors
-    filteredAuthors = [...authors];
-    showAuthors();
-    updateCounter();
+      // Initialize with all authors
+      filteredAuthors = [...authors];
+      showAuthors();
+      updateCounter();
 
-    // Setup filters
-    setupFilters();
+      // Setup filters
+      setupFilters();
 
-    // Setup search functionality
-    setupSearch();
+      // Setup search functionality
+      setupSearch();
 
-    // Add animations
-    addMapAnimations();
+      // Add animations
+      addMapAnimations();
+    } catch (error) {
+      console.error('Error initializing map:', error);
+    }
   }
 
   function setupFilters() {
@@ -155,22 +160,31 @@ document.addEventListener('DOMContentLoaded', function() {
     const hIndexValue = document.getElementById('hIndexValue');
     const cityFilter = document.getElementById('cityFilter');
 
+    if (!filterToggle || !filterContent) return;
+
     // Toggle filter panel
-    filterToggle.addEventListener('click', () => {
+    filterToggle.addEventListener('click', (e) => {
+      e.preventDefault();
       filterContent.classList.toggle('active');
     });
 
     // Research field filter
-    researchFieldFilter.addEventListener('change', applyFilters);
+    if (researchFieldFilter) {
+      researchFieldFilter.addEventListener('change', applyFilters);
+    }
 
     // H-index range filter
-    hIndexRange.addEventListener('input', function() {
-      hIndexValue.textContent = this.value;
-      applyFilters();
-    });
+    if (hIndexRange && hIndexValue) {
+      hIndexRange.addEventListener('input', function() {
+        hIndexValue.textContent = this.value;
+        applyFilters();
+      });
+    }
 
     // City filter
-    cityFilter.addEventListener('change', applyFilters);
+    if (cityFilter) {
+      cityFilter.addEventListener('change', applyFilters);
+    }
 
     // Close filter panel when clicking outside
     document.addEventListener('click', (e) => {
@@ -181,9 +195,9 @@ document.addEventListener('DOMContentLoaded', function() {
   }
 
   function applyFilters() {
-    const fieldFilter = document.getElementById('researchField').value;
-    const hIndexFilter = parseInt(document.getElementById('hIndexRange').value);
-    const cityFilter = document.getElementById('cityFilter').value;
+    const fieldFilter = document.getElementById('researchField')?.value || '';
+    const hIndexFilter = parseInt(document.getElementById('hIndexRange')?.value || '0');
+    const cityFilter = document.getElementById('cityFilter')?.value || '';
 
     filteredAuthors = authors.filter(author => {
       const matchesField = !fieldFilter || author.researchField === fieldFilter;
@@ -200,6 +214,8 @@ document.addEventListener('DOMContentLoaded', function() {
   function setupSearch() {
     const searchInput = document.getElementById('mapSearch');
     const searchBtn = document.getElementById('searchBtn');
+
+    if (!searchInput || !searchBtn) return;
 
     searchBtn.addEventListener('click', performSearch);
     searchInput.addEventListener('keypress', function(e) {
@@ -218,7 +234,7 @@ document.addEventListener('DOMContentLoaded', function() {
   }
 
   function performSearch() {
-    const searchQuery = document.getElementById('mapSearch').value.trim().toLowerCase();
+    const searchQuery = document.getElementById('mapSearch')?.value?.trim()?.toLowerCase() || '';
     
     if (!searchQuery) return;
 
@@ -253,7 +269,6 @@ document.addEventListener('DOMContentLoaded', function() {
       author.affiliation.toLowerCase().includes(query) ||
       author.fields.toLowerCase().includes(query)
     );
-
     // You can add a dropdown with suggestions here
   }
 
@@ -268,6 +283,8 @@ document.addEventListener('DOMContentLoaded', function() {
       markers.push(marker);
     });
   }
+
+  let currentPreview = null;
 
   function createAuthorMarker(author) {
     // Create custom marker icon with color based on h-index
@@ -293,21 +310,37 @@ document.addEventListener('DOMContentLoaded', function() {
       autoPanPadding: [50, 50]
     });
 
-    // Add click and hover events
+    // Add click event
     marker.on('click', function() {
       this.openPopup();
     });
 
-    marker.on('mouseover', function() {
-      this.getElement().style.transform = 'scale(1.2)';
-      // Show mini preview
-      const preview = createAuthorPreview(author);
-      showPreview(preview, this.getElement());
+    // Add hover events with proper preview handling
+    marker.on('mouseover', function(e) {
+      // Close any existing preview first
+      hidePreview();
+      
+      if (this.getElement()) {
+        // Store the marker element for later
+        this._originalTransform = this.getElement().style.transform;
+        this.getElement().style.transform = 'scale(1.2)';
+        
+        // Create and show preview with a small delay to prevent jumping
+        setTimeout(() => {
+          const preview = createAuthorPreview(author);
+          showPreview(preview, this.getElement(), e);
+        }, 100);
+      }
     });
 
     marker.on('mouseout', function() {
-      this.getElement().style.transform = 'scale(1)';
-      hidePreview();
+      if (this.getElement() && this._originalTransform !== undefined) {
+        this.getElement().style.transform = this._originalTransform;
+      }
+      // Hide preview with a small delay to allow moving to preview
+      setTimeout(() => {
+        hidePreview();
+      }, 100);
     });
 
     return marker;
@@ -321,19 +354,42 @@ document.addEventListener('DOMContentLoaded', function() {
 
   function createAuthorPopup(author) {
     const template = document.getElementById('author-popup-template');
+    if (!template) {
+      // Fallback if template doesn't exist
+      return `
+        <div class="custom-popup">
+          <h3>${author.name}</h3>
+          <p>${author.affiliation}</p>
+          <p>H-index: ${author.hIndex}</p>
+          <p>Số bài báo: ${author.paperCount}</p>
+          <p>Lĩnh vực: ${author.fields}</p>
+          <a href="${author.profile}" target="_blank">Chi tiết</a>
+        </div>
+      `;
+    }
+
     const popup = template.cloneNode(true);
     popup.style.display = 'block';
 
-    // Fill in the content
-    popup.querySelector('.author-name').textContent = author.name;
-    popup.querySelector('.author-affiliation').textContent = author.affiliation;
-    popup.querySelector('.author-h-index').textContent = author.hIndex;
-    popup.querySelector('.author-papers').textContent = author.paperCount;
-    popup.querySelector('.author-fields').textContent = author.fields;
-    popup.querySelector('.author-institution').textContent = author.institution;
+    // Fill in the content safely
+    const elements = {
+      '.author-name': author.name,
+      '.author-affiliation': author.affiliation,
+      '.author-h-index': author.hIndex,
+      '.author-papers': author.paperCount,
+      '.author-fields': author.fields,
+      '.author-institution': author.institution
+    };
+
+    Object.entries(elements).forEach(([selector, value]) => {
+      const element = popup.querySelector(selector);
+      if (element) element.textContent = value;
+    });
     
     const viewButton = popup.querySelector('.view-details-btn');
-    viewButton.href = author.profile || '#';
+    if (viewButton) {
+      viewButton.href = author.profile || '#';
+    }
 
     return popup.innerHTML;
   }
@@ -348,52 +404,109 @@ document.addEventListener('DOMContentLoaded', function() {
     `;
   }
 
-  function showPreview(content, element) {
+  function showPreview(content, element, event) {
+    // Remove any existing preview
+    hidePreview();
+    
     const preview = document.createElement('div');
     preview.className = 'map-preview';
     preview.innerHTML = content;
+    
+    // Style the preview with fixed positioning to prevent overflow issues
     preview.style.cssText = `
-      position: absolute;
+      position: fixed;
       background: white;
       padding: 10px;
       border-radius: 8px;
       box-shadow: 0 4px 12px rgba(0,0,0,0.15);
-      z-index: 2000;
+      z-index: 3000;
       font-size: 14px;
       max-width: 200px;
-      pointer-events: none;
+      pointer-events: auto;
+      white-space: nowrap;
+      border: 1px solid #e0e0e0;
     `;
-
+    
+    // Store reference to current preview
+    currentPreview = preview;
+    
+    // Append to body first to get dimensions
     document.body.appendChild(preview);
-
-    // Position the preview near the marker
+    
+    // Calculate position based on marker position
     const rect = element.getBoundingClientRect();
-    preview.style.left = (rect.left + rect.width + 10) + 'px';
-    preview.style.top = (rect.top - preview.offsetHeight / 2) + 'px';
+    const previewRect = preview.getBoundingClientRect();
+    
+    // Calculate position to avoid going off screen
+    let left = rect.left + rect.width + 10;
+    let top = rect.top + (rect.height / 2) - (previewRect.height / 2);
+    
+    // Adjust if would go off right edge
+    if (left + previewRect.width > window.innerWidth) {
+      left = rect.left - previewRect.width - 10;
+    }
+    
+    // Adjust if would go off top edge
+    if (top < 0) {
+      top = 10;
+    }
+    
+    // Adjust if would go off bottom edge
+    if (top + previewRect.height > window.innerHeight) {
+      top = window.innerHeight - previewRect.height - 10;
+    }
+    
+    preview.style.left = left + 'px';
+    preview.style.top = top + 'px';
+    
+    // Fade in animation
+    preview.style.opacity = '0';
+    preview.style.transition = 'opacity 0.2s ease';
+    requestAnimationFrame(() => {
+      preview.style.opacity = '1';
+    });
+    
+    // Allow hover over preview to keep it visible
+    preview.addEventListener('mouseenter', () => {
+      preview.style.opacity = '1';
+    });
+    
+    preview.addEventListener('mouseleave', () => {
+      hidePreview();
+    });
   }
 
   function hidePreview() {
-    const preview = document.querySelector('.map-preview');
-    if (preview) {
-      preview.remove();
+    if (currentPreview && currentPreview.parentNode) {
+      currentPreview.style.opacity = '0';
+      setTimeout(() => {
+        if (currentPreview && currentPreview.parentNode) {
+          currentPreview.parentNode.removeChild(currentPreview);
+          currentPreview = null;
+        }
+      }, 200);
     }
   }
 
   function updateCounter() {
     const countDisplay = document.getElementById('countDisplay');
-    const count = filteredAuthors.length;
-    countDisplay.textContent = `Showing ${count} author${count !== 1 ? 's' : ''}`;
+    if (countDisplay) {
+      const count = filteredAuthors.length;
+      countDisplay.textContent = `Showing ${count} author${count !== 1 ? 's' : ''}`;
+    }
   }
 
   function highlightMarker(marker) {
     const element = marker.getElement();
-    element.style.transform = 'scale(1.3)';
-    element.style.animation = 'pulse 2s infinite';
-    
-    setTimeout(() => {
-      element.style.transform = 'scale(1)';
-      element.style.animation = '';
-    }, 3000);
+    if (element) {
+      element.style.transform = 'scale(1.3)';
+      element.style.animation = 'pulse 2s infinite';
+      
+      setTimeout(() => {
+        element.style.transform = 'scale(1)';
+        element.style.animation = '';
+      }, 3000);
+    }
   }
 
   function showNotification(message, type = 'info') {
@@ -419,12 +532,16 @@ document.addEventListener('DOMContentLoaded', function() {
     setTimeout(() => {
       notification.style.animation = 'slideOut 0.3s ease-out';
       setTimeout(() => {
-        document.body.removeChild(notification);
+        if (notification.parentNode) {
+          notification.parentNode.removeChild(notification);
+        }
       }, 300);
     }, 3000);
   }
 
   function addMapAnimations() {
+    if (!map) return;
+
     // Add loading animation for map tiles
     map.on('loading', function() {
       document.body.style.cursor = 'wait';
@@ -436,6 +553,9 @@ document.addEventListener('DOMContentLoaded', function() {
 
     // Add zoom animation effects
     map.on('zoomstart', function() {
+      // Hide any preview during zoom
+      hidePreview();
+      
       markers.forEach(marker => {
         const element = marker.getElement();
         if (element) {
@@ -454,6 +574,11 @@ document.addEventListener('DOMContentLoaded', function() {
       });
     });
   }
+
+  // Hide preview when map is moved
+  map.on('drag', function() {
+    hidePreview();
+  });
 
   // Add page animations
   function addPageAnimations() {
@@ -490,6 +615,16 @@ document.addEventListener('DOMContentLoaded', function() {
     @keyframes pulse {
       0%, 100% { opacity: 1; }
       50% { opacity: 0.5; }
+    }
+    
+    /* Prevent body scroll when preview is visible */
+    .map-preview {
+      user-select: none;
+    }
+    
+    /* Ensure map container doesn't overflow */
+    .map-container {
+      overflow: hidden;
     }
   `;
   document.head.appendChild(style);

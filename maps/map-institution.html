@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Map - OpenData</title>
+    <title>Institution Map - OpenData</title>
     <link href="../css/global.css" rel="stylesheet">
     <link href="../css/pages/map-institution.css" rel="stylesheet">
     <link rel="stylesheet" href="../css/components/map-animation.css">
@@ -25,8 +25,8 @@
 
         <!-- Main Content -->
         <div class="main-content">
-            <h1 class="search-title">Map</h1>
-            <p class="subtitle">Khám phá, phân tích và chia sẻ các bộ dữ liệu chất lượng.</p>
+            <h1 class="search-title">Institution Map</h1>
+            <p class="subtitle">Khám phá các tổ chức nghiên cứu và giáo dục trên bản đồ Việt Nam.</p>
             
             <!-- Action Buttons -->
             <div class="action-buttons">
@@ -49,11 +49,45 @@
             <div class="map-search-container">
                 <div class="map-search">
                     <i class="fas fa-search search-icon"></i>
-                    <input type="text" placeholder="Tìm kiếm địa điểm..." id="mapSearch">
+                    <input type="text" placeholder="Tìm kiếm tổ chức..." id="mapSearch">
                     <button class="search-button" id="searchBtn">
                         <i class="fas fa-search"></i>
                     </button>
                 </div>
+            </div>
+            
+            <!-- Filter Panel -->
+            <div class="map-filter-panel">
+                <button class="filter-toggle" id="filterToggle">
+                    <i class="fas fa-filter"></i>
+                    <span>Filters</span>
+                </button>
+                <div class="filter-content" id="filterContent">
+                    <div class="filter-group">
+                        <label>Loại tổ chức:</label>
+                        <select id="institutionType">
+                            <option value="">Tất cả</option>
+                            <option value="university">Đại học</option>
+                            <option value="research">Viện nghiên cứu</option>
+                            <option value="company">Công ty</option>
+                        </select>
+                    </div>
+                    <div class="filter-group">
+                        <label>Tỉnh/Thành phố:</label>
+                        <select id="cityFilter">
+                            <option value="">Tất cả</option>
+                            <option value="hanoi">Hà Nội</option>
+                            <option value="hcm">TP. Hồ Chí Minh</option>
+                            <option value="cantho">Cần Thơ</option>
+                            <option value="danang">Đà Nẵng</option>
+                        </select>
+                    </div>
+                </div>
+            </div>
+            
+            <!-- Institution Count -->
+            <div class="institution-count">
+                <span id="countDisplay">Showing 0 institutions</span>
             </div>
             
             <!-- Legend -->
@@ -70,7 +104,7 @@
             </div>
         </div>
 
-        <!-- Custom Popup Template -->
+        <!-- Institution Popup Template -->
         <div id="institution-popup-template" class="popup-template" style="display: none;">
             <div class="custom-popup">
                 <div class="popup-header">
@@ -93,37 +127,9 @@
                         <span class="label">Số bài báo:</span>
                         <span class="value paper-count"></span>
                     </div>
-                </div>
-                <div class="popup-footer">
-                    <a href="#" class="view-details-btn">Xem chi tiết <i class="fas fa-arrow-right"></i></a>
-                </div>
-            </div>
-        </div>
-
-        <!-- Author Popup Template -->
-        <div id="author-popup-template" class="popup-template" style="display: none;">
-            <div class="custom-popup">
-                <div class="popup-header">
-                    <div class="author-avatar">
-                        <i class="fas fa-user"></i>
-                    </div>
-                    <div class="author-info">
-                        <h3 class="author-name"></h3>
-                        <p class="author-affiliation"></p>
-                    </div>
-                </div>
-                <div class="popup-content">
-                    <div class="info-row">
-                        <span class="label">H-index:</span>
-                        <span class="value author-h-index"></span>
-                    </div>
-                    <div class="info-row">
-                        <span class="label">Số bài báo:</span>
-                        <span class="value author-papers"></span>
-                    </div>
                     <div class="info-row">
                         <span class="label">Lĩnh vực:</span>
-                        <span class="value author-fields"></span>
+                        <span class="value main-fields"></span>
                     </div>
                 </div>
                 <div class="popup-footer">

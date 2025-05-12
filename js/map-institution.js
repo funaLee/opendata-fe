@@ -1,15 +1,7 @@
 /**
- * Institution Map Functionality
+ * Institution Map Functionality - Fixed Version with No Jump on Hover
  */
 document.addEventListener('DOMContentLoaded', function() {
-  const checkMapContainer = setInterval(() => {
-    const mapContainer = document.getElementById('map');
-    if (mapContainer) {
-      clearInterval(checkMapContainer);
-      initializeInstitutionMap();
-    }
-  }, 100);
-
   let map;
   let markers = [];
   let filteredInstitutions = [];
@@ -127,31 +119,44 @@ document.addEventListener('DOMContentLoaded', function() {
     }
   ];
 
+  // Wait for all components to be loaded
+  const checkMapContainer = setInterval(() => {
+    const mapContainer = document.getElementById('map');
+    if (mapContainer && typeof L !== 'undefined') {
+      clearInterval(checkMapContainer);
+      initializeInstitutionMap();
+    }
+  }, 100);
+
   function initializeInstitutionMap() {
-    // Initialize the map
-    map = L.map('map').setView(vietnamCenter, defaultZoom);
+    try {
+      // Initialize the map
+      map = L.map('map').setView(vietnamCenter, defaultZoom);
 
-    // Add tile layer
-    L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
-      attribution: '© OpenStreetMap contributors',
-      maxZoom: 18,
-      tileSize: 512,
-      zoomOffset: -1,
-    }).addTo(map);
+      // Add tile layer
+      L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
+        attribution: '© OpenStreetMap contributors',
+        maxZoom: 18,
+        tileSize: 512,
+        zoomOffset: -1,
+      }).addTo(map);
 
-    // Initialize with all institutions
-    filteredInstitutions = [...institutions];
-    showInstitutions();
-    updateCounter();
+      // Initialize with all institutions
+      filteredInstitutions = [...institutions];
+      showInstitutions();
+      updateCounter();
 
-    // Setup filters
-    setupFilters();
+      // Setup filters
+      setupFilters();
 
-    // Setup search functionality
-    setupSearch();
+      // Setup search functionality
+      setupSearch();
 
-    // Add animations
-    addMapAnimations();
+      // Add animations
+      addMapAnimations();
+    } catch (error) {
+      console.error('Error initializing map:', error);
+    }
   }
 
   function setupFilters() {
@@ -160,16 +165,23 @@ document.addEventListener('DOMContentLoaded', function() {
     const institutionTypeFilter = document.getElementById('institutionType');
     const cityFilter = document.getElementById('cityFilter');
 
+    if (!filterToggle || !filterContent) return;
+
     // Toggle filter panel
-    filterToggle.addEventListener('click', () => {
+    filterToggle.addEventListener('click', (e) => {
+      e.preventDefault();
       filterContent.classList.toggle('active');
     });
 
     // Institution type filter
-    institutionTypeFilter.addEventListener('change', applyFilters);
+    if (institutionTypeFilter) {
+      institutionTypeFilter.addEventListener('change', applyFilters);
+    }
 
     // City filter
-    cityFilter.addEventListener('change', applyFilters);
+    if (cityFilter) {
+      cityFilter.addEventListener('change', applyFilters);
+    }
 
     // Close filter panel when clicking outside
     document.addEventListener('click', (e) => {
@@ -180,8 +192,8 @@ document.addEventListener('DOMContentLoaded', function() {
   }
 
   function applyFilters() {
-    const typeFilter = document.getElementById('institutionType').value;
-    const cityFilter = document.getElementById('cityFilter').value;
+    const typeFilter = document.getElementById('institutionType')?.value || '';
+    const cityFilter = document.getElementById('cityFilter')?.value || '';
 
     filteredInstitutions = institutions.filter(institution => {
       const matchesType = !typeFilter || institution.category === typeFilter;
@@ -197,6 +209,8 @@ document.addEventListener('DOMContentLoaded', function() {
   function setupSearch() {
     const searchInput = document.getElementById('mapSearch');
     const searchBtn = document.getElementById('searchBtn');
+
+    if (!searchInput || !searchBtn) return;
 
     searchBtn.addEventListener('click', performSearch);
     searchInput.addEventListener('keypress', function(e) {
@@ -215,7 +229,7 @@ document.addEventListener('DOMContentLoaded', function() {
   }
 
   function performSearch() {
-    const searchQuery = document.getElementById('mapSearch').value.trim().toLowerCase();
+    const searchQuery = document.getElementById('mapSearch')?.value?.trim()?.toLowerCase() || '';
     
     if (!searchQuery) return;
 
@@ -244,12 +258,10 @@ document.addEventListener('DOMContentLoaded', function() {
 
   function showSearchSuggestions(query) {
     // Implementation for search suggestions can be added here
-    // For now, we'll just highlight matching institutions
     const matchingInstitutions = filteredInstitutions.filter(institution =>
       institution.name.toLowerCase().includes(query) ||
       institution.location.toLowerCase().includes(query)
     );
-
     // You can add a dropdown with suggestions here
   }
 
@@ -264,6 +276,8 @@ document.addEventListener('DOMContentLoaded', function() {
       markers.push(marker);
     });
   }
+
+  let currentPreview = null;
 
   function createInstitutionMarker(institution) {
     // Create custom marker icon
@@ -288,17 +302,37 @@ document.addEventListener('DOMContentLoaded', function() {
       autoPanPadding: [50, 50]
     });
 
-    // Add click and hover events
+    // Add click event
     marker.on('click', function() {
       this.openPopup();
     });
 
-    marker.on('mouseover', function() {
-      this.getElement().style.transform = 'scale(1.2)';
+    // Add hover events with proper preview handling
+    marker.on('mouseover', function(e) {
+      // Close any existing preview first
+      hidePreview();
+      
+      if (this.getElement()) {
+        // Store the marker element for later
+        this._originalTransform = this.getElement().style.transform;
+        this.getElement().style.transform = 'scale(1.2)';
+        
+        // Create and show preview with a small delay to prevent jumping
+        setTimeout(() => {
+          const preview = createInstitutionPreview(institution);
+          showPreview(preview, this.getElement(), e);
+        }, 100);
+      }
     });
 
     marker.on('mouseout', function() {
-      this.getElement().style.transform = 'scale(1)';
+      if (this.getElement() && this._originalTransform !== undefined) {
+        this.getElement().style.transform = this._originalTransform;
+      }
+      // Hide preview with a small delay to allow moving to preview
+      setTimeout(() => {
+        hidePreview();
+      }, 100);
     });
 
     return marker;
@@ -306,45 +340,170 @@ document.addEventListener('DOMContentLoaded', function() {
 
   function createInstitutionPopup(institution) {
     const template = document.getElementById('institution-popup-template');
+    if (!template) {
+      // Fallback if template doesn't exist
+      return `
+        <div class="custom-popup">
+          <h3>${institution.name}</h3>
+          <p>${institution.type}</p>
+          <p>Vị trí: ${institution.location}</p>
+          <p>Số tác giả: ${institution.authorCount}</p>
+          <p>Số bài báo: ${institution.paperCount}</p>
+          <a href="${institution.website}" target="_blank">Chi tiết</a>
+        </div>
+      `;
+    }
+
     const popup = template.cloneNode(true);
     popup.style.display = 'block';
 
     // Fill in the content
-    popup.querySelector('.institution-image').src = institution.image || '/assets/images/placeholder-institution.jpg';
-    popup.querySelector('.institution-image').onerror = function() {
-      this.src = '/assets/images/placeholder-institution.jpg';
+    const institutionImage = popup.querySelector('.institution-image');
+    if (institutionImage) {
+      institutionImage.src = institution.image || '/assets/images/placeholder-institution.jpg';
+      institutionImage.onerror = function() {
+        this.src = '/assets/images/placeholder-institution.jpg';
+      };
+    }
+
+    const elements = {
+      '.institution-name': institution.name,
+      '.institution-type': institution.type,
+      '.institution-location': institution.location,
+      '.author-count': institution.authorCount,
+      '.paper-count': institution.paperCount,
+      '.main-fields': institution.mainFields
     };
-    popup.querySelector('.institution-name').textContent = institution.name;
-    popup.querySelector('.institution-type').textContent = institution.type;
-    popup.querySelector('.institution-location').textContent = institution.location;
-    popup.querySelector('.author-count').textContent = institution.authorCount;
-    popup.querySelector('.paper-count').textContent = institution.paperCount;
-    popup.querySelector('.main-fields').textContent = institution.mainFields;
+
+    Object.entries(elements).forEach(([selector, value]) => {
+      const element = popup.querySelector(selector);
+      if (element) element.textContent = value;
+    });
     
     const viewButton = popup.querySelector('.view-details-btn');
-    viewButton.href = institution.website || '#';
-    if (institution.website && institution.website !== '#') {
-      viewButton.target = '_blank';
+    if (viewButton) {
+      viewButton.href = institution.website || '#';
+      if (institution.website && institution.website !== '#') {
+        viewButton.target = '_blank';
+      }
     }
 
     return popup.innerHTML;
   }
 
+  function createInstitutionPreview(institution) {
+    return `
+      <div class="institution-preview">
+        <strong>${institution.name}</strong><br>
+        <span>${institution.type}</span><br>
+        <span>Tác giả: ${institution.authorCount}</span><br>
+        <span>Bài báo: ${institution.paperCount}</span>
+      </div>
+    `;
+  }
+
+  function showPreview(content, element, event) {
+    // Remove any existing preview
+    hidePreview();
+    
+    const preview = document.createElement('div');
+    preview.className = 'map-preview';
+    preview.innerHTML = content;
+    
+    // Style the preview with fixed positioning to prevent overflow issues
+    preview.style.cssText = `
+      position: fixed;
+      background: white;
+      padding: 10px;
+      border-radius: 8px;
+      box-shadow: 0 4px 12px rgba(0,0,0,0.15);
+      z-index: 3000;
+      font-size: 14px;
+      max-width: 250px;
+      pointer-events: auto;
+      border: 1px solid #e0e0e0;
+    `;
+    
+    // Store reference to current preview
+    currentPreview = preview;
+    
+    // Append to body first to get dimensions
+    document.body.appendChild(preview);
+    
+    // Calculate position based on marker position
+    const rect = element.getBoundingClientRect();
+    const previewRect = preview.getBoundingClientRect();
+    
+    // Calculate position to avoid going off screen
+    let left = rect.left + rect.width + 10;
+    let top = rect.top + (rect.height / 2) - (previewRect.height / 2);
+    
+    // Adjust if would go off right edge
+    if (left + previewRect.width > window.innerWidth) {
+      left = rect.left - previewRect.width - 10;
+    }
+    
+    // Adjust if would go off top edge
+    if (top < 0) {
+      top = 10;
+    }
+    
+    // Adjust if would go off bottom edge
+    if (top + previewRect.height > window.innerHeight) {
+      top = window.innerHeight - previewRect.height - 10;
+    }
+    
+    preview.style.left = left + 'px';
+    preview.style.top = top + 'px';
+    
+    // Fade in animation
+    preview.style.opacity = '0';
+    preview.style.transition = 'opacity 0.2s ease';
+    requestAnimationFrame(() => {
+      preview.style.opacity = '1';
+    });
+    
+    // Allow hover over preview to keep it visible
+    preview.addEventListener('mouseenter', () => {
+      preview.style.opacity = '1';
+    });
+    
+    preview.addEventListener('mouseleave', () => {
+      hidePreview();
+    });
+  }
+
+  function hidePreview() {
+    if (currentPreview && currentPreview.parentNode) {
+      currentPreview.style.opacity = '0';
+      setTimeout(() => {
+        if (currentPreview && currentPreview.parentNode) {
+          currentPreview.parentNode.removeChild(currentPreview);
+          currentPreview = null;
+        }
+      }, 200);
+    }
+  }
+
   function updateCounter() {
     const countDisplay = document.getElementById('countDisplay');
-    const count = filteredInstitutions.length;
-    countDisplay.textContent = `Showing ${count} institution${count !== 1 ? 's' : ''}`;
+    if (countDisplay) {
+      const count = filteredInstitutions.length;
+      countDisplay.textContent = `Showing ${count} institution${count !== 1 ? 's' : ''}`;
+    }
   }
 
   function highlightMarker(marker) {
     const element = marker.getElement();
-    element.style.transform = 'scale(1.3)';
-    element.style.animation = 'pulse 2s infinite';
-    
-    setTimeout(() => {
-      element.style.transform = 'scale(1)';
-      element.style.animation = '';
-    }, 3000);
+    if (element) {
+      element.style.transform = 'scale(1.3)';
+      element.style.animation = 'pulse 2s infinite';
+      
+      setTimeout(() => {
+        element.style.transform = 'scale(1)';
+        element.style.animation = '';
+      }, 3000);
+    }
   }
 
   function showNotification(message, type = 'info') {
@@ -370,12 +529,16 @@ document.addEventListener('DOMContentLoaded', function() {
     setTimeout(() => {
       notification.style.animation = 'slideOut 0.3s ease-out';
       setTimeout(() => {
-        document.body.removeChild(notification);
+        if (notification.parentNode) {
+          notification.parentNode.removeChild(notification);
+        }
       }, 300);
     }, 3000);
   }
 
   function addMapAnimations() {
+    if (!map) return;
+
     // Add loading animation for map tiles
     map.on('loading', function() {
       document.body.style.cursor = 'wait';
@@ -387,6 +550,9 @@ document.addEventListener('DOMContentLoaded', function() {
 
     // Add zoom animation effects
     map.on('zoomstart', function() {
+      // Hide any preview during zoom
+      hidePreview();
+      
       markers.forEach(marker => {
         const element = marker.getElement();
         if (element) {
@@ -403,6 +569,17 @@ document.addEventListener('DOMContentLoaded', function() {
           element.style.transform = 'scale(1)';
         }
       });
+    });
+  }
+
+  // Hide preview when map is moved or zoomed
+  if (map) {
+    map.on('drag', function() {
+      hidePreview();
+    });
+    
+    map.on('zoom', function() {
+      hidePreview();
     });
   }
 
@@ -425,7 +602,7 @@ document.addEventListener('DOMContentLoaded', function() {
   // Initialize animations
   addPageAnimations();
 
-  // Add CSS for notifications
+  // Add CSS for notifications and animations
   const style = document.createElement('style');
   style.textContent = `
     @keyframes slideIn {
@@ -436,6 +613,21 @@ document.addEventListener('DOMContentLoaded', function() {
     @keyframes slideOut {
       from { transform: translateX(0); opacity: 1; }
       to { transform: translateX(100%); opacity: 0; }
+    }
+    
+    @keyframes pulse {
+      0%, 100% { opacity: 1; }
+      50% { opacity: 0.5; }
+    }
+    
+    /* Prevent body scroll when preview is visible */
+    .map-preview {
+      user-select: none;
+    }
+    
+    /* Ensure map container doesn't overflow */
+    .map-container {
+      overflow: hidden;
     }
   `;
   document.head.appendChild(style);
