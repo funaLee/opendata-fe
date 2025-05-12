@@ -29,6 +29,7 @@
 @import './pages/upload-dataset.css';
 @import './pages/map.css';
 @import './pages/paper.css';
+@import './pages/benchmark.css';
 /* @import './pages/upload-tag.css'; */
 
 /* Shared validation styles */

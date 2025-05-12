@@ -1,0 +1,129 @@
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Upload Benchmark - OpenData</title>
+    <link href="../css/global.css" rel="stylesheet">
+    <link href="../css/pages/upload.css" rel="stylesheet">
+    <link href="../css/components/custom-select.css" rel="stylesheet">
+    <link href="../css/components/enhanced-select.css" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.4/css/all.min.css">
+</head>
+<body>
+    <div class="container">
+        <!-- HEADER -->
+        <div data-include="../components/header.html"></div>
+
+        <!-- Overlay -->
+        <div id="overlay" class="overlay"></div>
+        
+        <!-- Sidebar -->
+        <div data-include="../components/slidebar.html"></div>
+
+        <!-- Upload Benchmark Form -->
+        <div class="upload-form-container">
+            <h1 class="upload-title">Upload benchmark</h1>
+            <p class="upload-description">
+                Benchmark mà bạn tải lên phải được sử dụng để đánh giá hiệu suất của các mô hình trong một bài báo khoa học uy tín. Chúng tôi sẽ kiểm tra thông tin mà bạn cung cấp, vậy nên hãy đảm bảo thông tin chính xác.
+            </p>
+            
+            <form id="uploadBenchmarkForm" class="upload-form">
+                <div class="form-row">
+                    <div class="form-group full-width">
+                        <label for="benchmarkName">Tên benchmark <span class="required">*</span></label>
+                        <input type="text" id="benchmarkName" placeholder="Nhập tên benchmark" required>
+                    </div>
+                </div>
+                
+                <div class="form-row">
+                    <div class="form-group full-width">
+                        <label for="benchmarkDescription">Mô tả benchmark <span class="required">*</span></label>
+                        <textarea id="benchmarkDescription" placeholder="Nhập mô tả chi tiết về benchmark" required></textarea>
+                    </div>
+                </div>
+                
+                <div class="form-row two-columns">
+                    <div class="form-group">
+                        <label for="datasetSelect">Dataset sử dụng <span class="required">*</span></label>
+                        <select id="datasetSelect" required>
+                            <option value="" disabled selected>Chọn dataset cho benchmark</option>
+                            <option value="ds_imagenet">ImageNet</option>
+                            <option value="ds_cifar10">CIFAR-10</option>
+                            <option value="ds_cifar100">CIFAR-100</option>
+                            <option value="ds_coco">MS COCO</option>
+                            <option value="ds_glue">GLUE</option>
+                            <option value="ds_squad">SQuAD</option>
+                            <option value="ds_librispeech">LibriSpeech</option>
+                            <option value="ds_wmt">WMT</option>
+                            <option value="ds_openai_gym">OpenAI Gym</option>
+                            <option value="ds_atari">Atari Games</option>
+                        </select>
+                    </div>
+                    
+                    <div class="form-group">
+                        <label for="taskSelect">Task <span class="required">*</span></label>
+                        <select id="taskSelect" required>
+                            <option value="" disabled selected>Chọn task cho benchmark</option>
+                            <option value="task_image_classification">Image Classification</option>
+                            <option value="task_object_detection">Object Detection</option>
+                            <option value="task_semantic_segmentation">Semantic Segmentation</option>
+                            <option value="task_instance_segmentation">Instance Segmentation</option>
+                            <option value="task_text_classification">Text Classification</option>
+                            <option value="task_named_entity_recognition">Named Entity Recognition</option>
+                            <option value="task_question_answering">Question Answering</option>
+                            <option value="task_machine_translation">Machine Translation</option>
+                            <option value="task_speech_recognition">Speech Recognition</option>
+                            <option value="task_reinforcement_learning">Reinforcement Learning</option>
+                        </select>
+                    </div>
+                </div>
+                
+                <div class="form-row">
+                    <div class="form-group full-width">
+                        <label for="metricsSelect">Metrics <span class="required">*</span></label>
+                        <select id="metricsSelect" multiple required>
+                            <option value="" disabled>Chọn danh sách metrics cho benchmark</option>
+                            <option value="metric_accuracy">Accuracy</option>
+                            <option value="metric_precision">Precision</option>
+                            <option value="metric_recall">Recall</option>
+                            <option value="metric_f1_score">F1 Score</option>
+                            <option value="metric_iou">IoU (Intersection over Union)</option>
+                            <option value="metric_map">mAP (mean Average Precision)</option>
+                            <option value="metric_bleu">BLEU Score</option>
+                            <option value="metric_rouge">ROUGE Score</option>
+                            <option value="metric_wer">WER (Word Error Rate)</option>
+                            <option value="metric_reward">Reward</option>
+                            <option value="metric_success_rate">Success Rate</option>
+                            <option value="metric_top1_error">Top-1 Error</option>
+                            <option value="metric_top5_error">Top-5 Error</option>
+                            <option value="metric_perplexity">Perplexity</option>
+                            <option value="metric_cer">CER (Character Error Rate)</option>
+                        </select>
+                    </div>
+                </div>
+                
+                <div class="form-actions">
+                    <button type="submit" class="submit-button">
+                        <i class="fas fa-chart-line"></i> Tạo benchmark
+                    </button>
+                </div>
+            </form>
+        </div>
+
+        <!-- Help Button -->
+        <button class="help-button">
+            <i class="fas fa-question"></i>
+        </button>
+        
+        <!-- Include Help Center Popup -->
+        <div data-include="../components/help-center-popup.html"></div>
+    </div>
+
+    <script src="../js/include.js"></script>
+    <script src="../js/header-dropdown.js"></script>
+    <script src="../js/help-center.js"></script>
+    <script src="../js/enhanced-select.js"></script>
+    <script src="../js/upload-benchmark.js"></script>
+</body>
+</html>
