@@ -1,5 +1,5 @@
 /**
- * Author Map Functionality - Fixed Version with No Jump on Hover
+ * Author Map Functionality - Complete Fix
  */
 document.addEventListener('DOMContentLoaded', function() {
   let map;
@@ -113,25 +113,41 @@ document.addEventListener('DOMContentLoaded', function() {
   ];
 
   // Wait for all components to be loaded
-  const checkMapContainer = setInterval(() => {
-    const mapContainer = document.getElementById('map');
-    if (mapContainer && typeof L !== 'undefined') {
-      clearInterval(checkMapContainer);
-      initializeAuthorMap();
+  function waitForDependencies() {
+    if (typeof L === 'undefined') {
+      console.log('Waiting for Leaflet to load...');
+      setTimeout(waitForDependencies, 100);
+      return;
     }
-  }, 100);
+
+    const mapContainer = document.getElementById('map');
+    if (!mapContainer) {
+      console.log('Waiting for map container...');
+      setTimeout(waitForDependencies, 100);
+      return;
+    }
+
+    console.log('All dependencies loaded, initializing map...');
+    initializeAuthorMap();
+  }
+
+  waitForDependencies();
 
   function initializeAuthorMap() {
     try {
       // Initialize the map
-      map = L.map('map').setView(vietnamCenter, defaultZoom);
+      map = L.map('map', {
+        center: vietnamCenter,
+        zoom: defaultZoom,
+        zoomControl: true,
+        scrollWheelZoom: true,
+        doubleClickZoom: true
+      });
 
       // Add tile layer
       L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
         attribution: '© OpenStreetMap contributors',
-        maxZoom: 18,
-        tileSize: 512,
-        zoomOffset: -1,
+        maxZoom: 18
       }).addTo(map);
 
       // Initialize with all authors
@@ -147,6 +163,8 @@ document.addEventListener('DOMContentLoaded', function() {
 
       // Add animations
       addMapAnimations();
+
+      console.log('Map initialized successfully');
     } catch (error) {
       console.error('Error initializing map:', error);
     }
@@ -160,11 +178,20 @@ document.addEventListener('DOMContentLoaded', function() {
     const hIndexValue = document.getElementById('hIndexValue');
     const cityFilter = document.getElementById('cityFilter');
 
-    if (!filterToggle || !filterContent) return;
+    if (!filterToggle) {
+      console.warn('Filter toggle not found');
+      return;
+    }
+
+    if (!filterContent) {
+      console.warn('Filter content not found');
+      return;
+    }
 
     // Toggle filter panel
     filterToggle.addEventListener('click', (e) => {
       e.preventDefault();
+      e.stopPropagation();
       filterContent.classList.toggle('active');
     });
 
@@ -215,11 +242,15 @@ document.addEventListener('DOMContentLoaded', function() {
     const searchInput = document.getElementById('mapSearch');
     const searchBtn = document.getElementById('searchBtn');
 
-    if (!searchInput || !searchBtn) return;
+    if (!searchInput || !searchBtn) {
+      console.warn('Search elements not found');
+      return;
+    }
 
     searchBtn.addEventListener('click', performSearch);
     searchInput.addEventListener('keypress', function(e) {
       if (e.key === 'Enter') {
+        e.preventDefault();
         performSearch();
       }
     });
@@ -249,8 +280,8 @@ document.addEventListener('DOMContentLoaded', function() {
       map.setView(found.coordinates, 12);
       // Find and open the popup for this author
       const marker = markers.find(m => 
-        m.getLatLng().lat === found.coordinates[0] && 
-        m.getLatLng().lng === found.coordinates[1]
+        Math.abs(m.getLatLng().lat - found.coordinates[0]) < 0.001 && 
+        Math.abs(m.getLatLng().lng - found.coordinates[1]) < 0.001
       );
       if (marker) {
         marker.openPopup();
@@ -273,35 +304,50 @@ document.addEventListener('DOMContentLoaded', function() {
   }
 
   function clearMarkers() {
-    markers.forEach(marker => map.removeLayer(marker));
+    markers.forEach(marker => {
+      try {
+        map.removeLayer(marker);
+      } catch (e) {
+        console.warn('Error removing marker:', e);
+      }
+    });
     markers = [];
   }
 
   function showAuthors() {
     filteredAuthors.forEach(author => {
-      const marker = createAuthorMarker(author);
-      markers.push(marker);
+      try {
+        const marker = createAuthorMarker(author);
+        markers.push(marker);
+      } catch (e) {
+        console.error('Error creating marker for author:', author.name, e);
+      }
     });
   }
-
-  let currentPreview = null;
 
   function createAuthorMarker(author) {
     // Create custom marker icon with color based on h-index
     const hIndexColor = getHIndexColor(author.hIndex);
     const markerIcon = L.divIcon({
       className: 'custom-marker author',
-      html: `<i class="fas fa-user" style="color: ${hIndexColor}"></i>`,
+      html: `<i class="fas fa-user" style="color: white;"></i>`,
       iconSize: [30, 30],
-      iconAnchor: [15, 15]
+      iconAnchor: [15, 15],
+      popupAnchor: [0, -15]
     });
 
     const marker = L.marker(author.coordinates, { icon: markerIcon }).addTo(map);
 
-    // Create popup content
+    // Apply color based on h-index
+    setTimeout(() => {
+      const element = marker.getElement();
+      if (element) {
+        element.style.backgroundColor = hIndexColor;
+      }
+    }, 0);
+
+    // Create and bind popup
     const popupContent = createAuthorPopup(author);
-    
-    // Bind popup with custom options
     marker.bindPopup(popupContent, {
       minWidth: 300,
       maxWidth: 400,
@@ -310,37 +356,26 @@ document.addEventListener('DOMContentLoaded', function() {
       autoPanPadding: [50, 50]
     });
 
-    // Add click event
+    // Store author data for easy access
+    marker.authorData = author;
+
+    // Add event listeners
     marker.on('click', function() {
       this.openPopup();
     });
 
-    // Add hover events with proper preview handling
-    marker.on('mouseover', function(e) {
-      // Close any existing preview first
-      hidePreview();
-      
-      if (this.getElement()) {
-        // Store the marker element for later
-        this._originalTransform = this.getElement().style.transform;
-        this.getElement().style.transform = 'scale(1.2)';
-        
-        // Create and show preview with a small delay to prevent jumping
-        setTimeout(() => {
-          const preview = createAuthorPreview(author);
-          showPreview(preview, this.getElement(), e);
-        }, 100);
-      }
-    });
-
-    marker.on('mouseout', function() {
-      if (this.getElement() && this._originalTransform !== undefined) {
-        this.getElement().style.transform = this._originalTransform;
-      }
-      // Hide preview with a small delay to allow moving to preview
-      setTimeout(() => {
-        hidePreview();
-      }, 100);
+    // Use Leaflet's built-in tooltip for hover effects
+    marker.bindTooltip(`
+      <div style="text-align: center;">
+        <strong>${author.name}</strong><br>
+        <span style="color: #666;">H-index: ${author.hIndex}</span><br>
+        <span style="font-size: 12px;">${author.affiliation}</span>
+      </div>
+    `, {
+      permanent: false,
+      sticky: true,
+      offset: [0, -20],
+      direction: 'top'
     });
 
     return marker;
@@ -354,137 +389,62 @@ document.addEventListener('DOMContentLoaded', function() {
 
   function createAuthorPopup(author) {
     const template = document.getElementById('author-popup-template');
+    
     if (!template) {
-      // Fallback if template doesn't exist
+      // Fallback HTML if template doesn't exist
       return `
-        <div class="custom-popup">
-          <h3>${author.name}</h3>
-          <p>${author.affiliation}</p>
-          <p>H-index: ${author.hIndex}</p>
-          <p>Số bài báo: ${author.paperCount}</p>
-          <p>Lĩnh vực: ${author.fields}</p>
-          <a href="${author.profile}" target="_blank">Chi tiết</a>
+        <div style="min-width: 250px;">
+          <div style="text-align: center; padding: 10px;">
+            <div style="width: 60px; height: 60px; background: ${getHIndexColor(author.hIndex)}; 
+                        border-radius: 50%; margin: 0 auto 10px; display: flex; 
+                        align-items: center; justify-content: center; color: white;">
+              <i class="fas fa-user" style="font-size: 24px;"></i>
+            </div>
+            <h3 style="margin: 0 0 5px 0; color: #333;">${author.name}</h3>
+            <p style="margin: 0; color: #666; font-size: 14px;">${author.affiliation}</p>
+          </div>
+          <div style="padding: 0 10px 10px;">
+            <p style="margin: 5px 0;"><strong>H-index:</strong> ${author.hIndex}</p>
+            <p style="margin: 5px 0;"><strong>Số bài báo:</strong> ${author.paperCount}</p>
+            <p style="margin: 5px 0;"><strong>Lĩnh vực:</strong> ${author.fields}</p>
+            <p style="margin: 5px 0;"><strong>Tổ chức:</strong> ${author.institution}</p>
+            <a href="${author.profile}" target="_blank" style="color: #007cba; text-decoration: none;">
+              Xem chi tiết <i class="fas fa-arrow-right"></i>
+            </a>
+          </div>
         </div>
       `;
     }
 
-    const popup = template.cloneNode(true);
-    popup.style.display = 'block';
+    try {
+      const popup = template.cloneNode(true);
+      popup.style.display = 'block';
+      popup.removeAttribute('id');
 
-    // Fill in the content safely
-    const elements = {
-      '.author-name': author.name,
-      '.author-affiliation': author.affiliation,
-      '.author-h-index': author.hIndex,
-      '.author-papers': author.paperCount,
-      '.author-fields': author.fields,
-      '.author-institution': author.institution
-    };
+      // Fill in the content safely
+      const elements = {
+        '.author-name': author.name,
+        '.author-affiliation': author.affiliation,
+        '.author-h-index': author.hIndex.toString(),
+        '.author-papers': author.paperCount.toString(),
+        '.author-fields': author.fields,
+        '.author-institution': author.institution
+      };
 
-    Object.entries(elements).forEach(([selector, value]) => {
-      const element = popup.querySelector(selector);
-      if (element) element.textContent = value;
-    });
-    
-    const viewButton = popup.querySelector('.view-details-btn');
-    if (viewButton) {
-      viewButton.href = author.profile || '#';
-    }
+      Object.entries(elements).forEach(([selector, value]) => {
+        const element = popup.querySelector(selector);
+        if (element) element.textContent = value;
+      });
+      
+      const viewButton = popup.querySelector('.view-details-btn');
+      if (viewButton) {
+        viewButton.href = author.profile || '#';
+      }
 
-    return popup.innerHTML;
-  }
-
-  function createAuthorPreview(author) {
-    return `
-      <div class="author-preview">
-        <strong>${author.name}</strong><br>
-        <span>H-index: ${author.hIndex}</span><br>
-        <span>${author.affiliation}</span>
-      </div>
-    `;
-  }
-
-  function showPreview(content, element, event) {
-    // Remove any existing preview
-    hidePreview();
-    
-    const preview = document.createElement('div');
-    preview.className = 'map-preview';
-    preview.innerHTML = content;
-    
-    // Style the preview with fixed positioning to prevent overflow issues
-    preview.style.cssText = `
-      position: fixed;
-      background: white;
-      padding: 10px;
-      border-radius: 8px;
-      box-shadow: 0 4px 12px rgba(0,0,0,0.15);
-      z-index: 3000;
-      font-size: 14px;
-      max-width: 200px;
-      pointer-events: auto;
-      white-space: nowrap;
-      border: 1px solid #e0e0e0;
-    `;
-    
-    // Store reference to current preview
-    currentPreview = preview;
-    
-    // Append to body first to get dimensions
-    document.body.appendChild(preview);
-    
-    // Calculate position based on marker position
-    const rect = element.getBoundingClientRect();
-    const previewRect = preview.getBoundingClientRect();
-    
-    // Calculate position to avoid going off screen
-    let left = rect.left + rect.width + 10;
-    let top = rect.top + (rect.height / 2) - (previewRect.height / 2);
-    
-    // Adjust if would go off right edge
-    if (left + previewRect.width > window.innerWidth) {
-      left = rect.left - previewRect.width - 10;
-    }
-    
-    // Adjust if would go off top edge
-    if (top < 0) {
-      top = 10;
-    }
-    
-    // Adjust if would go off bottom edge
-    if (top + previewRect.height > window.innerHeight) {
-      top = window.innerHeight - previewRect.height - 10;
-    }
-    
-    preview.style.left = left + 'px';
-    preview.style.top = top + 'px';
-    
-    // Fade in animation
-    preview.style.opacity = '0';
-    preview.style.transition = 'opacity 0.2s ease';
-    requestAnimationFrame(() => {
-      preview.style.opacity = '1';
-    });
-    
-    // Allow hover over preview to keep it visible
-    preview.addEventListener('mouseenter', () => {
-      preview.style.opacity = '1';
-    });
-    
-    preview.addEventListener('mouseleave', () => {
-      hidePreview();
-    });
-  }
-
-  function hidePreview() {
-    if (currentPreview && currentPreview.parentNode) {
-      currentPreview.style.opacity = '0';
-      setTimeout(() => {
-        if (currentPreview && currentPreview.parentNode) {
-          currentPreview.parentNode.removeChild(currentPreview);
-          currentPreview = null;
-        }
-      }, 200);
+      return popup.innerHTML;
+    } catch (e) {
+      console.error('Error creating popup content:', e);
+      return `<div>Error loading popup content</div>`;
     }
   }
 
@@ -497,22 +457,30 @@ document.addEventListener('DOMContentLoaded', function() {
   }
 
   function highlightMarker(marker) {
+    if (!marker.getElement()) return;
+    
     const element = marker.getElement();
-    if (element) {
-      element.style.transform = 'scale(1.3)';
-      element.style.animation = 'pulse 2s infinite';
-      
-      setTimeout(() => {
+    element.style.transform = 'scale(1.3)';
+    element.style.animation = 'pulse 2s infinite';
+    
+    setTimeout(() => {
+      if (element) {
         element.style.transform = 'scale(1)';
         element.style.animation = '';
-      }, 3000);
-    }
+      }
+    }, 3000);
   }
 
   function showNotification(message, type = 'info') {
+    // Remove existing notification
+    const existingNotification = document.querySelector('.map-notification');
+    if (existingNotification) {
+      existingNotification.remove();
+    }
+
     // Create notification element
     const notification = document.createElement('div');
-    notification.className = `notification ${type}`;
+    notification.className = `map-notification notification-${type}`;
     notification.textContent = message;
     notification.style.cssText = `
       position: fixed;
@@ -524,18 +492,21 @@ document.addEventListener('DOMContentLoaded', function() {
       border-radius: 8px;
       z-index: 3000;
       animation: slideIn 0.3s ease-out;
+      box-shadow: 0 2px 8px rgba(0,0,0,0.2);
     `;
 
     document.body.appendChild(notification);
 
     // Remove after 3 seconds
     setTimeout(() => {
-      notification.style.animation = 'slideOut 0.3s ease-out';
-      setTimeout(() => {
-        if (notification.parentNode) {
-          notification.parentNode.removeChild(notification);
-        }
-      }, 300);
+      if (notification.parentNode) {
+        notification.style.animation = 'slideOut 0.3s ease-out';
+        setTimeout(() => {
+          if (notification.parentNode) {
+            notification.parentNode.removeChild(notification);
+          }
+        }, 300);
+      }
     }, 3000);
   }
 
@@ -553,9 +524,6 @@ document.addEventListener('DOMContentLoaded', function() {
 
     // Add zoom animation effects
     map.on('zoomstart', function() {
-      // Hide any preview during zoom
-      hidePreview();
-      
       markers.forEach(marker => {
         const element = marker.getElement();
         if (element) {
@@ -575,11 +543,6 @@ document.addEventListener('DOMContentLoaded', function() {
     });
   }
 
-  // Hide preview when map is moved
-  map.on('drag', function() {
-    hidePreview();
-  });
-
   // Add page animations
   function addPageAnimations() {
     const mainContent = document.querySelector('.main-content');
@@ -597,9 +560,9 @@ document.addEventListener('DOMContentLoaded', function() {
   }
 
   // Initialize animations
-  addPageAnimations();
+  setTimeout(addPageAnimations, 100);
 
-  // Add CSS for notifications and animations
+  // Add required CSS styles
   const style = document.createElement('style');
   style.textContent = `
     @keyframes slideIn {
@@ -613,18 +576,37 @@ document.addEventListener('DOMContentLoaded', function() {
     }
     
     @keyframes pulse {
-      0%, 100% { opacity: 1; }
-      50% { opacity: 0.5; }
+      0%, 100% { transform: scale(1); }
+      50% { transform: scale(1.05); }
     }
     
-    /* Prevent body scroll when preview is visible */
-    .map-preview {
-      user-select: none;
+    .custom-marker {
+      border-radius: 50%;
+      background-color: white;
+      border: 2px solid #fff;
+      box-shadow: 0 2px 8px rgba(0,0,0,0.3);
+      transition: all 0.3s ease;
     }
     
-    /* Ensure map container doesn't overflow */
-    .map-container {
-      overflow: hidden;
+    .custom-marker:hover {
+      transform: scale(1.1);
+    }
+    
+    .custom-marker.author {
+      color: white;
+    }
+    
+    .leaflet-tooltip {
+      background-color: white;
+      border: 1px solid #ccc;
+      border-radius: 8px;
+      box-shadow: 0 2px 8px rgba(0,0,0,0.2);
+      font-size: 13px;
+      color: #333;
+    }
+    
+    .leaflet-tooltip-top:before {
+      border-top-color: white;
     }
   `;
   document.head.appendChild(style);
