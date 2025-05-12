@@ -39,13 +39,14 @@
   gap: 5px;
 }
 
-.dropdown-toggle .chevron {
+.dropdown-toggle i {
   font-size: 12px;
   transition: transform 0.3s ease;
 }
 
-.dropdown-toggle.active .chevron {
-  transform: rotate(-180deg); /* Chevron points up when active */
+.dropdown-toggle.active i,
+.dropdown:hover .dropdown-toggle i {
+  transform: rotate(180deg);
 }
 
 /* Dropdown menu */
@@ -60,7 +61,6 @@
   padding: 10px 0;
   opacity: 0;
   visibility: hidden;
-  display: none;
   transform: translateY(10px);
   transition: all 0.3s ease;
   z-index: 100;
@@ -68,8 +68,15 @@
   overflow: hidden;
 }
 
+/* Show dropdown on hover */
+.dropdown:hover .dropdown-menu {
+  opacity: 1;
+  visibility: visible;
+  transform: translateY(0);
+}
+
 /* Dropdown items */
-.dropdown-item {
+.dropdown-menu a {
   display: flex;
   align-items: center;
   padding: 12px 20px;
@@ -79,7 +86,7 @@
   font-size: 15px;
 }
 
-.dropdown-item i {
+.dropdown-menu a i {
   color: var(--primary-color);
   margin-right: 10px;
   font-size: 16px;
@@ -88,13 +95,13 @@
   transition: all 0.2s ease;
 }
 
-.dropdown-item:hover {
+.dropdown-menu a:hover {
   background-color: var(--primary-light);
   color: var(--primary-color);
   transform: translateX(5px);
 }
 
-.dropdown-item:hover i {
+.dropdown-menu a:hover i {
   transform: scale(1.2);
 }
 
@@ -137,100 +144,6 @@
 
 .nav-link:hover::after {
   width: 70%;
-}
-
-/* Dropdown container and toggle */
-.dropdown-container {
-  position: relative;
-  display: inline-block;
-}
-
-.dropdown-toggle {
-  display: flex;
-  align-items: center;
-  gap: 5px;
-}
-
-.dropdown-toggle i {
-  font-size: 12px;
-  transition: transform 0.3s ease;
-}
-
-.dropdown-container:hover .dropdown-toggle i {
-  transform: rotate(180deg);
-}
-
-/* Dropdown menu */
-.dropdown-menu {
-  position: absolute;
-  top: 100%;
-  left: 50%;
-  transform: translateX(-50%) translateY(10px);
-  background-color: white;
-  min-width: 220px;
-  box-shadow: var(--shadow-md);
-  border-radius: var(--radius-md);
-  padding: 10px 0;
-  opacity: 0;
-  visibility: hidden;
-  transition: all 0.3s ease;
-  z-index: 100;
-  border: 1px solid rgba(90, 107, 255, 0.1);
-  overflow: hidden;
-}
-
-/* Important: This creates a larger invisible area for better hover handling */
-.dropdown-container::after {
-  content: '';
-  position: absolute;
-  top: 100%;
-  left: 0;
-  width: 100%;
-  height: 20px; /* Gap between dropdown link and menu */
-  background: transparent;
-}
-
-/* Show dropdown on hover and keep visible when hovering dropdown menu */
-.dropdown-container:hover .dropdown-menu,
-.dropdown-menu:hover {
-  opacity: 1;
-  visibility: visible;
-  transform: translateX(-50%) translateY(0);
-}
-
-/* Dropdown items */
-.dropdown-item {
-  display: flex;
-  align-items: center;
-  padding: 12px 20px;
-  color: var(--text-dark);
-  text-decoration: none;
-  transition: all 0.2s ease;
-  font-size: 15px;
-}
-
-.dropdown-item i {
-  color: var(--primary-color);
-  margin-right: 10px;
-  font-size: 16px;
-  width: 20px;
-  text-align: center;
-  transition: all 0.2s ease;
-}
-
-.dropdown-item:hover {
-  background-color: var(--primary-light);
-  color: var(--primary-color);
-  transform: translateX(5px);
-}
-
-.dropdown-item:hover i {
-  transform: scale(1.2);
-}
-
-/* Add subtle dividers between items */
-.dropdown-item:not(:last-child) {
-  border-bottom: 1px solid rgba(90, 107, 255, 0.05);
 }
 
 /* User section styling */

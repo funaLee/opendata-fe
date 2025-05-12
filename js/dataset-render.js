@@ -36,11 +36,26 @@ function renderDatasetCard(containerSelector, dataset) {
 
 /* Add animations on load */
 document.addEventListener('DOMContentLoaded', function() {
-  // Add animation classes
-  document.querySelector('.search-title').classList.add('animate-fadeInDown');
-  document.querySelector('.subtitle').classList.add('animate-fadeInUp');
-  document.querySelector('.action-buttons').classList.add('animate-fadeIn');
-  document.querySelector('.dataset-search').classList.add('animate-fadeInUp');
+  // Safely add animation classes by checking if elements exist first
+  const searchTitle = document.querySelector('.search-title');
+  if (searchTitle) {
+    searchTitle.classList.add('animate-fadeInDown');
+  }
+
+  const subtitle = document.querySelector('.subtitle');
+  if (subtitle) {
+    subtitle.classList.add('animate-fadeInUp');
+  }
+
+  const actionButtons = document.querySelector('.action-buttons');
+  if (actionButtons) {
+    actionButtons.classList.add('animate-fadeIn');
+  }
+
+  const datasetSearch = document.querySelector('.dataset-search');
+  if (datasetSearch) {
+    datasetSearch.classList.add('animate-fadeInUp');
+  }
   
   // Add staggered animations to dataset cards
   const cards = document.querySelectorAll('.dataset-card');
