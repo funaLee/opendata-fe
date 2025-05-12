@@ -1,0 +1,153 @@
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Map - OpenData</title>
+    <link href="../css/global.css" rel="stylesheet">
+    <link href="../css/pages/map-institution.css" rel="stylesheet">
+    <link rel="stylesheet" href="../css/components/map-animation.css">
+    <link rel="stylesheet" href="../css/components/map-filter-panel.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.4/css/all.min.css">
+    <!-- Leaflet CSS -->
+    <link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css" />
+</head>
+<body>
+    <div class="container">
+        <!-- HEADER -->
+        <div data-include="../components/header.html"></div>
+
+        <!-- Overlay -->
+        <div id="overlay" class="overlay"></div>
+        
+        <!-- Sidebar -->
+        <div data-include="../components/slidebar.html"></div>
+
+        <!-- Main Content -->
+        <div class="main-content">
+            <h1 class="search-title">Map</h1>
+            <p class="subtitle">Khám phá, phân tích và chia sẻ các bộ dữ liệu chất lượng.</p>
+            
+            <!-- Action Buttons -->
+            <div class="action-buttons">
+                <button class="action-button view-institutions active" data-tab="institutions">
+                    <i class="fas fa-university"></i>
+                    <span>Vị trí tổ chức</span>
+                </button>
+                <button class="action-button view-authors" data-tab="authors">
+                    <i class="fas fa-user-graduate"></i>
+                    <span>Vị trí tác giả</span>
+                </button>
+            </div>
+        </div>
+
+        <!-- Map Container -->
+        <div class="map-container">
+            <div id="map" class="map"></div>
+            
+            <!-- Search Box on Map -->
+            <div class="map-search-container">
+                <div class="map-search">
+                    <i class="fas fa-search search-icon"></i>
+                    <input type="text" placeholder="Tìm kiếm địa điểm..." id="mapSearch">
+                    <button class="search-button" id="searchBtn">
+                        <i class="fas fa-search"></i>
+                    </button>
+                </div>
+            </div>
+            
+            <!-- Legend -->
+            <div class="map-legend">
+                <h3>Chú thích</h3>
+                <div class="legend-item">
+                    <div class="legend-marker institution"></div>
+                    <span>Tổ chức nghiên cứu</span>
+                </div>
+                <div class="legend-item">
+                    <div class="legend-marker author"></div>
+                    <span>Tác giả</span>
+                </div>
+            </div>
+        </div>
+
+        <!-- Custom Popup Template -->
+        <div id="institution-popup-template" class="popup-template" style="display: none;">
+            <div class="custom-popup">
+                <div class="popup-header">
+                    <img class="institution-image" src="" alt="">
+                    <div class="institution-info">
+                        <h3 class="institution-name"></h3>
+                        <p class="institution-type"></p>
+                    </div>
+                </div>
+                <div class="popup-content">
+                    <div class="info-row">
+                        <span class="label">Tỉnh thành:</span>
+                        <span class="value institution-location"></span>
+                    </div>
+                    <div class="info-row">
+                        <span class="label">Số lượng tác giả:</span>
+                        <span class="value author-count"></span>
+                    </div>
+                    <div class="info-row">
+                        <span class="label">Số bài báo:</span>
+                        <span class="value paper-count"></span>
+                    </div>
+                </div>
+                <div class="popup-footer">
+                    <a href="#" class="view-details-btn">Xem chi tiết <i class="fas fa-arrow-right"></i></a>
+                </div>
+            </div>
+        </div>
+
+        <!-- Author Popup Template -->
+        <div id="author-popup-template" class="popup-template" style="display: none;">
+            <div class="custom-popup">
+                <div class="popup-header">
+                    <div class="author-avatar">
+                        <i class="fas fa-user"></i>
+                    </div>
+                    <div class="author-info">
+                        <h3 class="author-name"></h3>
+                        <p class="author-affiliation"></p>
+                    </div>
+                </div>
+                <div class="popup-content">
+                    <div class="info-row">
+                        <span class="label">H-index:</span>
+                        <span class="value author-h-index"></span>
+                    </div>
+                    <div class="info-row">
+                        <span class="label">Số bài báo:</span>
+                        <span class="value author-papers"></span>
+                    </div>
+                    <div class="info-row">
+                        <span class="label">Lĩnh vực:</span>
+                        <span class="value author-fields"></span>
+                    </div>
+                </div>
+                <div class="popup-footer">
+                    <a href="#" class="view-details-btn">Xem chi tiết <i class="fas fa-arrow-right"></i></a>
+                </div>
+            </div>
+        </div>
+
+        <!-- Help Button -->
+        <button class="help-button">
+            <a href="../pages/help.html">
+                <i class="fas fa-question"></i>
+            </a>
+        </button>
+        
+        <!-- Include Help Center Popup -->
+        <div data-include="../components/help-center-popup.html"></div>
+    </div>
+
+    <!-- Leaflet JS -->
+    <script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js"></script>
+    <script src="../js/include.js"></script>
+    <script src="../js/header-dropdown.js"></script>
+    <script src="../js/help-center.js"></script>
+    <script src="../js/map-institution.js"></script>
+</body>
+</html>

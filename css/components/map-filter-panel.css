@@ -1,0 +1,110 @@
+/* Filter Panel */
+.map-filter-panel {
+  position: absolute;
+  top: 80px;
+  left: 20px;
+  z-index: 2;
+}
+
+.filter-toggle {
+  background: var(--white);
+  border: none;
+  padding: 12px 20px;
+  border-radius: var(--radius-md);
+  box-shadow: var(--shadow-md);
+  cursor: pointer;
+  font-weight: 600;
+  color: var(--primary-color);
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  transition: all 0.3s ease;
+}
+
+.filter-toggle:hover {
+  background-color: var(--primary-light);
+  transform: translateY(-2px);
+}
+
+.filter-toggle i {
+  font-size: 16px;
+}
+
+.filter-content {
+  position: absolute;
+  top: 100%;
+  left: 0;
+  margin-top: 8px;
+  background: var(--white);
+  border-radius: var(--radius-md);
+  box-shadow: var(--shadow-lg);
+  padding: 20px;
+  min-width: 250px;
+  opacity: 0;
+  visibility: hidden;
+  transform: translateY(-10px);
+  transition: all 0.3s ease;
+}
+
+.filter-content.active {
+  opacity: 1;
+  visibility: visible;
+  transform: translateY(0);
+}
+
+.filter-group {
+  margin-bottom: 15px;
+}
+
+.filter-group:last-child {
+  margin-bottom: 0;
+}
+
+.filter-group label {
+  display: block;
+  margin-bottom: 8px;
+  font-weight: 600;
+  color: var(--text-dark);
+  font-size: 14px;
+}
+
+.filter-group select,
+.filter-group input[type="range"] {
+  width: 100%;
+  padding: 8px 12px;
+  border: 1px solid var(--primary-light);
+  border-radius: var(--radius-sm);
+  font-size: 14px;
+  color: var(--text-dark);
+  background-color: var(--white);
+}
+
+.filter-group select:focus,
+.filter-group input[type="range"]:focus {
+  outline: none;
+  border-color: var(--primary-color);
+  box-shadow: 0 0 0 2px rgba(90, 107, 255, 0.1);
+}
+
+#hIndexValue {
+  display: inline-block;
+  margin-left: 10px;
+  font-weight: 600;
+  color: var(--primary-color);
+}
+
+/* Count Display */
+.institution-count,
+.author-count {
+  position: absolute;
+  bottom: 20px;
+  right: 20px;
+  background-color: var(--white);
+  padding: 10px 15px;
+  border-radius: var(--radius-sm);
+  box-shadow: var(--shadow-sm);
+  z-index: 2;
+  font-size: 14px;
+  color: var(--text-dark);
+  font-weight: 500;
+}

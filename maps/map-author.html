@@ -1,0 +1,142 @@
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Author Map - OpenData</title>
+    <link href="../css/global.css" rel="stylesheet">
+    <link href="../css/pages/map.css" rel="stylesheet">
+    <link rel="stylesheet" href="../css/components/map-filter-panel.css">
+    <link rel="stylesheet" href="../css/components/map-author.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.4/css/all.min.css">
+    <!-- Leaflet CSS -->
+    <link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css" />
+</head>
+<body>
+    <div class="container">
+        <!-- HEADER -->
+        <div data-include="../components/header.html"></div>
+
+        <!-- Overlay -->
+        <div id="overlay" class="overlay"></div>
+        
+        <!-- Sidebar -->
+        <div data-include="../components/slidebar.html"></div>
+
+        <!-- Main Content -->
+        <div class="main-content">
+            <h1 class="search-title">Search Author</h1>
+            <p class="subtitle">Tìm kiếm và khám phá các tác giả nghiên cứu trên bản đồ.</p>
+        </div>
+
+        <!-- Map Container -->
+        <div class="map-container">
+            <div id="map" class="map"></div>
+            
+            <!-- Search Box on Map -->
+            <div class="map-search-container">
+                <div class="map-search">
+                    <i class="fas fa-search search-icon"></i>
+                    <input type="text" placeholder="Tìm kiếm tác giả..." id="mapSearch">
+                    <button class="search-button" id="searchBtn">
+                        <i class="fas fa-search"></i>
+                    </button>
+                </div>
+            </div>
+            
+            <!-- Filter Panel -->
+            <div class="map-filter-panel">
+                <button class="filter-toggle" id="filterToggle">
+                    <i class="fas fa-filter"></i>
+                    <span>Filters</span>
+                </button>
+                <div class="filter-content" id="filterContent">
+                    <div class="filter-group">
+                        <label>Lĩnh vực nghiên cứu:</label>
+                        <select id="researchField">
+                            <option value="">Tất cả</option>
+                            <option value="machine-learning">Machine Learning</option>
+                            <option value="computer-vision">Computer Vision</option>
+                            <option value="nlp">Natural Language Processing</option>
+                            <option value="software-engineering">Software Engineering</option>
+                        </select>
+                    </div>
+                    <div class="filter-group">
+                        <label>H-index tối thiểu:</label>
+                        <input type="range" id="hIndexRange" min="0" max="50" value="0">
+                        <span id="hIndexValue">0</span>
+                    </div>
+                    <div class="filter-group">
+                        <label>Tỉnh/Thành phố:</label>
+                        <select id="cityFilter">
+                            <option value="">Tất cả</option>
+                            <option value="hanoi">Hà Nội</option>
+                            <option value="hcm">TP. Hồ Chí Minh</option>
+                            <option value="cantho">Cần Thơ</option>
+                            <option value="danang">Đà Nẵng</option>
+                        </select>
+                    </div>
+                </div>
+            </div>
+            
+            <!-- Author Count -->
+            <div class="author-count">
+                <span id="countDisplay">Showing 0 authors</span>
+            </div>
+        </div>
+
+        <!-- Author Popup Template -->
+        <div id="author-popup-template" class="popup-template" style="display: none;">
+            <div class="custom-popup">
+                <div class="popup-header">
+                    <div class="author-avatar">
+                        <i class="fas fa-user"></i>
+                    </div>
+                    <div class="author-info">
+                        <h3 class="author-name"></h3>
+                        <p class="author-affiliation"></p>
+                    </div>
+                </div>
+                <div class="popup-content">
+                    <div class="info-row">
+                        <span class="label">H-index:</span>
+                        <span class="value author-h-index"></span>
+                    </div>
+                    <div class="info-row">
+                        <span class="label">Số bài báo:</span>
+                        <span class="value author-papers"></span>
+                    </div>
+                    <div class="info-row">
+                        <span class="label">Lĩnh vực:</span>
+                        <span class="value author-fields"></span>
+                    </div>
+                    <div class="info-row">
+                        <span class="label">Tổ chức:</span>
+                        <span class="value author-institution"></span>
+                    </div>
+                </div>
+                <div class="popup-footer">
+                    <a href="#" class="view-details-btn">Xem chi tiết <i class="fas fa-arrow-right"></i></a>
+                </div>
+            </div>
+        </div>
+
+        <!-- Help Button -->
+        <button class="help-button">
+            <a href="../pages/help.html">
+                <i class="fas fa-question"></i>
+            </a>
+        </button>
+        
+        <!-- Include Help Center Popup -->
+        <div data-include="../components/help-center-popup.html"></div>
+    </div>
+
+    <!-- Leaflet JS -->
+    <script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js"></script>
+    <script src="../js/include.js"></script>
+    <script src="../js/header-dropdown.js"></script>
+    <script src="../js/help-center.js"></script>
+    <script src="../js/map-author.js"></script>
+</body>
+</html>
