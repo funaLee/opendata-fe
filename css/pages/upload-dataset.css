@@ -54,6 +54,7 @@
   flex: 1;
   display: flex;
   flex-direction: column;
+  position: relative;
 }
 
 .form-group.full-width {
@@ -181,78 +182,161 @@
   transform: translateY(-2px);
 }
 
-/* Validation Styles */
+/* Enhanced Validation Styles */
 .form-group input.invalid,
 .form-group textarea.invalid,
 .form-group select.invalid,
-.custom-select.invalid select {
+.custom-select.invalid select,
+.multiselect-trigger.invalid {
   border-color: #ff5c5c;
-  box-shadow: 0 0 0 1px rgba(255, 92, 92, 0.2);
+  box-shadow: 0 0 0 3px rgba(255, 92, 92, 0.1);
+  background-color: rgba(255, 92, 92, 0.02);
 }
 
 .form-group input.valid,
 .form-group textarea.valid,
 .form-group select.valid,
-.custom-select.valid select {
-  border-color: #8bd0b4;
-  box-shadow: 0 0 0 1px rgba(139, 208, 180, 0.2);
+.custom-select.valid select,
+.multiselect-trigger.valid {
+  border-color: #4caf50;
+  box-shadow: 0 0 0 3px rgba(76, 175, 80, 0.1);
+  background-color: rgba(76, 175, 80, 0.02);
 }
 
 .error-message {
   color: #ff5c5c;
   font-size: 14px;
-  margin-top: 5px;
-  animation: fadeIn 0.3s ease;
+  margin-top: 8px;
+  text-align: left;
+  animation: slideIn 0.3s ease;
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+
+.error-message::before {
+  content: '⚠';
+  font-size: 16px;
+  opacity: 0.8;
+}
+
+/* Character counter */
+.character-counter {
+  font-size: 13px;
+  color: #666;
+  text-align: right;
+  margin-top: 8px;
+  transition: color 0.3s ease;
+  font-weight: 500;
+}
+
+/* Loading state */
+.form-group.loading input,
+.form-group.loading textarea,
+.form-group.loading select {
+  opacity: 0.7;
+  pointer-events: none;
+}
+
+/* Enhanced submit button states */
+.submit-button:disabled {
+  opacity: 0.6;
+  cursor: not-allowed;
+  transform: none;
+  background: #e0e0e0;
+  color: #999;
+}
+
+.submit-button:disabled:hover {
+  transform: none;
+  box-shadow: none;
+}
+
+/* Form disabled state */
+form[style*="pointer-events: none"] {
+  filter: grayscale(0.3);
+}
+
+/* Enhanced animations */
+@keyframes slideIn {
+  from {
+    opacity: 0;
+    transform: translateY(-10px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+/* Input focus states */
+.form-group input:focus,
+.form-group textarea:focus,
+.form-group select:focus {
+  transform: translateY(-2px);
+  box-shadow: 0 4px 12px rgba(90, 107, 255, 0.15);
+}
+
+/* Success state for entire form */
+.form-success {
+  background-color: rgba(76, 175, 80, 0.05);
+  border: 1px solid rgba(76, 175, 80, 0.2);
+  border-radius: var(--radius-lg);
+  padding: 20px;
+  margin-bottom: 20px;
 }
 
 /* Submission Message */
 .submission-message {
-  padding: 15px 20px;
-  border-radius: var(--radius-md);
-  margin-bottom: 20px;
+  padding: 20px 25px;
+  border-radius: 15px;
+  margin-bottom: 30px;
   position: relative;
   animation: slideDown 0.4s ease;
+  text-align: center;
+  font-weight: 500;
 }
 
 .submission-message.success {
   background-color: rgba(139, 208, 180, 0.15);
   color: #2a846a;
-  border-left: 4px solid #8bd0b4;
+  border-left: 5px solid #8bd0b4;
 }
 
 .submission-message.error {
   background-color: rgba(255, 92, 92, 0.15);
   color: #e64040;
-  border-left: 4px solid #ff5c5c;
+  border-left: 5px solid #ff5c5c;
 }
 
 .close-message {
   position: absolute;
-  top: 50%;
-  right: 15px;
-  transform: translateY(-50%);
+  top: 15px;
+  right: 20px;
   background: none;
   border: none;
   color: inherit;
-  font-size: 20px;
+  font-size: 24px;
   cursor: pointer;
   opacity: 0.7;
   transition: opacity 0.3s ease;
+  width: 30px;
+  height: 30px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  border-radius: 50%;
 }
 
 .close-message:hover {
   opacity: 1;
-}
-
-@keyframes fadeIn {
-  from { opacity: 0; }
-  to { opacity: 1; }
+  background-color: rgba(0, 0, 0, 0.05);
 }
 
 @keyframes slideDown {
   from { 
     opacity: 0;
-    transform: translateY(-10px);
+    transform: translateY(-15px);
   }
   to { 
     opacity: 1;
@@ -260,7 +344,7 @@
   }
 }
 
-/* Responsive Adjustments */
+/* Responsive design */
 @media (max-width: 950px) {
   .form-row.three-columns {
     grid-template-columns: 1fr 1fr;

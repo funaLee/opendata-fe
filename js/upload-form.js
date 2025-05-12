@@ -1,5 +1,5 @@
 /**
- * Upload Dataset Form Functionality
+ * Upload Dataset Form Functionality - Enhanced to match upload-tag
  */
 document.addEventListener('DOMContentLoaded', function() {
   // Wait for all components to load
@@ -17,21 +17,42 @@ document.addEventListener('DOMContentLoaded', function() {
     const licenseSelect = document.getElementById('licenseSelect');
     const modalitySelect = document.getElementById('modalitySelect');
     const sizeInput = document.getElementById('datasetSize');
+    const submitButton = document.querySelector('.submit-button');
+    
+    // Get all form inputs for validation
+    const nameInput = document.getElementById('datasetName');
+    const linkInput = document.getElementById('datasetLink');
+    const descriptionInput = document.getElementById('datasetDescription');
+    const sampleCountInput = document.getElementById('sampleCount');
 
-    // Add selected item display for multiple select
-    if (tagsSelect) {
-      tagsSelect.addEventListener('change', function() {
-        const selectedOptions = Array.from(this.selectedOptions)
-          .map(option => option.value)
-          .filter(value => value !== '');
-        
-        console.log('Selected tags:', selectedOptions);
-      });
-    }
+    // Add character counter for description
+    addCharacterCounter(descriptionInput, 500);
+
+    // Real-time validation
+    nameInput.addEventListener('input', function() {
+      validateField(this);
+      updateButtonStates();
+    });
+
+    linkInput.addEventListener('input', function() {
+      validateField(this);
+      updateButtonStates();
+    });
+
+    descriptionInput.addEventListener('input', function() {
+      validateField(this);
+      updateButtonStates();
+    });
+
+    sampleCountInput.addEventListener('input', function() {
+      validateField(this);
+      updateButtonStates();
+    });
 
     // Ensure size input accepts only numbers and decimal point
     if (sizeInput) {
       sizeInput.addEventListener('input', function() {
+        // Allow only numbers and one decimal point
         this.value = this.value.replace(/[^0-9.]/g, '');
         
         // Ensure only one decimal point
@@ -39,114 +60,178 @@ document.addEventListener('DOMContentLoaded', function() {
         if (parts.length > 2) {
           this.value = parts[0] + '.' + parts.slice(1).join('');
         }
+        
+        validateField(this);
+        updateButtonStates();
       });
     }
 
-    // Form submission
+    // Add keyboard shortcuts
+    document.addEventListener('keydown', function(e) {
+      // Ctrl/Cmd + Enter to submit
+      if ((e.ctrlKey || e.metaKey) && e.key === 'Enter') {
+        e.preventDefault();
+        if (!submitButton.disabled) {
+          form.dispatchEvent(new Event('submit'));
+        }
+      }
+    });
+
+    // Monitor select changes
+    if (licenseSelect) {
+      licenseSelect.addEventListener('change', function() {
+        validateField(this);
+        updateButtonStates();
+      });
+    }
+
+    if (modalitySelect) {
+      modalitySelect.addEventListener('change', function() {
+        validateField(this);
+        updateButtonStates();
+      });
+    }
+
+    if (tagsSelect) {
+      tagsSelect.addEventListener('change', function() {
+        validateField(this);
+        updateButtonStates();
+      });
+    }
+
+    // Form submission with enhanced feedback
     if (form) {
       form.addEventListener('submit', function(e) {
         e.preventDefault();
         
-        // Validate form
         if (!validateForm()) {
           return;
         }
         
         // Collect form data
         const formData = {
-          name: document.getElementById('datasetName').value,
-          link: document.getElementById('datasetLink').value,
-          description: document.getElementById('datasetDescription').value,
-          size: document.getElementById('datasetSize').value + ' GB',
-          sampleCount: document.getElementById('sampleCount').value,
+          name: nameInput.value.trim(),
+          link: linkInput.value.trim(),
+          description: descriptionInput.value.trim(),
+          size: sizeInput.value + ' GB',
+          sampleCount: parseInt(sampleCountInput.value),
           license: licenseSelect.value,
           tags: Array.from(tagsSelect.selectedOptions).map(option => option.value),
-          modality: modalitySelect.value
+          modality: modalitySelect.value,
+          timestamp: new Date().toISOString()
         };
         
         console.log('Form submission data:', formData);
         
-        // Show success message
-        showSubmissionMessage(true, 'Dataset information has been submitted successfully!');
+        // Disable form elements during submission
+        setFormDisabled(true);
         
-        // In a real application, you would send this data to your server
-        // fetch('/api/datasets', {
-        //   method: 'POST',
-        //   headers: {
-        //     'Content-Type': 'application/json',
-        //   },
-        //   body: JSON.stringify(formData),
-        // })
-        // .then(response => response.json())
-        // .then(data => {
-        //   showSubmissionMessage(true, 'Dataset information has been submitted successfully!');
-        // })
-        // .catch((error) => {
-        //   showSubmissionMessage(false, 'There was an error submitting the dataset. Please try again.');
-        // });
+        // Enhanced loading state
+        const originalText = submitButton.innerHTML;
+        submitButton.innerHTML = '<i class="fas fa-spinner fa-spin"></i> <span>Đang xử lý...</span>';
+        
+        // Simulate form submission with realistic timing
+        setTimeout(() => {
+          // Show success message
+          showSubmissionMessage(true, 'Dataset information has been submitted successfully!');
+          
+          // Reset form
+          form.reset();
+          clearAllValidation();
+          
+          // Re-enable form
+          setFormDisabled(false);
+          submitButton.innerHTML = originalText;
+          updateButtonStates();
+        }, 1500);
       });
     }
 
-    // Form validation
+    // Enhanced validation with more specific rules
     function validateForm() {
       let isValid = true;
       
-      // Check if name is entered
-      const nameInput = document.getElementById('datasetName');
-      if (!nameInput.value.trim()) {
-        markInvalid(nameInput, 'Dataset name is required');
+      // Validate dataset name
+      const name = nameInput.value.trim();
+      if (!name) {
+        markInvalid(nameInput, 'Tên bộ dữ liệu là bắt buộc');
+        isValid = false;
+      } else if (name.length < 3) {
+        markInvalid(nameInput, 'Tên bộ dữ liệu phải có ít nhất 3 ký tự');
+        isValid = false;
+      } else if (name.length > 100) {
+        markInvalid(nameInput, 'Tên bộ dữ liệu không được quá 100 ký tự');
         isValid = false;
       } else {
         markValid(nameInput);
       }
       
-      // Check if link is valid URL
-      const linkInput = document.getElementById('datasetLink');
-      if (!linkInput.value.trim() || !isValidUrl(linkInput.value)) {
-        markInvalid(linkInput, 'Please enter a valid URL');
+      // Validate link
+      const link = linkInput.value.trim();
+      if (!link) {
+        markInvalid(linkInput, 'Liên kết là bắt buộc');
+        isValid = false;
+      } else if (!isValidUrl(link)) {
+        markInvalid(linkInput, 'Vui lòng nhập một URL hợp lệ');
         isValid = false;
       } else {
         markValid(linkInput);
       }
       
-      // Check if description is entered
-      const descInput = document.getElementById('datasetDescription');
-      if (!descInput.value.trim()) {
-        markInvalid(descInput, 'Description is required');
+      // Validate description
+      const description = descriptionInput.value.trim();
+      if (!description) {
+        markInvalid(descriptionInput, 'Mô tả là bắt buộc');
+        isValid = false;
+      } else if (description.length < 20) {
+        markInvalid(descriptionInput, 'Mô tả phải có ít nhất 20 ký tự');
+        isValid = false;
+      } else if (description.length > 500) {
+        markInvalid(descriptionInput, 'Mô tả không được quá 500 ký tự');
         isValid = false;
       } else {
-        markValid(descInput);
+        markValid(descriptionInput);
       }
       
-      // Check if size is entered and is a number
-      if (!sizeInput.value || isNaN(parseFloat(sizeInput.value))) {
-        markInvalid(sizeInput, 'Please enter a valid size number');
+      // Validate size
+      const size = parseFloat(sizeInput.value);
+      if (!sizeInput.value || isNaN(size)) {
+        markInvalid(sizeInput, 'Vui lòng nhập kích thước');
+        isValid = false;
+      } else if (size <= 0) {
+        markInvalid(sizeInput, 'Kích thước phải lớn hơn 0');
+        isValid = false;
+      } else if (size > 1000000) {
+        markInvalid(sizeInput, 'Kích thước quá lớn (tối đa 1,000,000 GB)');
         isValid = false;
       } else {
         markValid(sizeInput);
       }
       
-      // Check if sample count is entered and is a number
-      const sampleInput = document.getElementById('sampleCount');
-      if (!sampleInput.value || isNaN(parseInt(sampleInput.value)) || parseInt(sampleInput.value) < 1) {
-        markInvalid(sampleInput, 'Please enter a valid sample count (at least 1)');
+      // Validate sample count
+      const sampleCount = parseInt(sampleCountInput.value);
+      if (!sampleCountInput.value || isNaN(sampleCount) || sampleCount < 1) {
+        markInvalid(sampleCountInput, 'Số lượng mẫu phải là số nguyên dương');
+        isValid = false;
+      } else if (sampleCount > 1000000000) {
+        markInvalid(sampleCountInput, 'Số lượng mẫu quá lớn');
         isValid = false;
       } else {
-        markValid(sampleInput);
+        markValid(sampleCountInput);
       }
       
-      // Check if license is selected
+      // Validate license
       if (!licenseSelect.value) {
-        markInvalid(licenseSelect, 'Please select a license');
+        markInvalid(licenseSelect, 'Vui lòng chọn giấy phép');
         isValid = false;
       } else {
         markValid(licenseSelect);
       }
       
-      // Check if at least one tag is selected
+      // Validate tags
       if (tagsSelect.selectedOptions.length === 0 || 
           (tagsSelect.selectedOptions.length === 1 && tagsSelect.selectedOptions[0].disabled)) {
-        markInvalid(tagsSelect, 'Please select at least one tag');
+        markInvalid(tagsSelect, 'Vui lòng chọn ít nhất một tag');
         // Also mark the custom multiselect as invalid
         const multiSelectWrapper = document.querySelector('.multiselect-wrapper');
         if (multiSelectWrapper) {
@@ -170,9 +255,9 @@ document.addEventListener('DOMContentLoaded', function() {
         }
       }
       
-      // Check if modality is selected
+      // Validate modality
       if (!modalitySelect.value) {
-        markInvalid(modalitySelect, 'Please select a data modality');
+        markInvalid(modalitySelect, 'Vui lòng chọn loại dữ liệu');
         isValid = false;
       } else {
         markValid(modalitySelect);
@@ -180,10 +265,80 @@ document.addEventListener('DOMContentLoaded', function() {
       
       return isValid;
     }
+
+    function validateField(field) {
+      if (field === nameInput) {
+        const value = field.value.trim();
+        if (!value) {
+          clearValidation(field);
+        } else if (value.length < 3) {
+          markInvalid(field, 'Tên bộ dữ liệu phải có ít nhất 3 ký tự');
+        } else if (value.length > 100) {
+          markInvalid(field, 'Tên bộ dữ liệu không được quá 100 ký tự');
+        } else {
+          markValid(field);
+        }
+      } else if (field === linkInput) {
+        const value = field.value.trim();
+        if (!value) {
+          clearValidation(field);
+        } else if (!isValidUrl(value)) {
+          markInvalid(field, 'Vui lòng nhập một URL hợp lệ');
+        } else {
+          markValid(field);
+        }
+      } else if (field === descriptionInput) {
+        const value = field.value.trim();
+        if (!value) {
+          clearValidation(field);
+        } else if (value.length < 20) {
+          markInvalid(field, 'Mô tả phải có ít nhất 20 ký tự');
+        } else if (value.length > 500) {
+          markInvalid(field, 'Mô tả không được quá 500 ký tự');
+        } else {
+          markValid(field);
+        }
+      } else if (field === sizeInput) {
+        const value = parseFloat(field.value);
+        if (!field.value || isNaN(value)) {
+          clearValidation(field);
+        } else if (value <= 0) {
+          markInvalid(field, 'Kích thước phải lớn hơn 0');
+        } else if (value > 1000000) {
+          markInvalid(field, 'Kích thước quá lớn (tối đa 1,000,000 GB)');
+        } else {
+          markValid(field);
+        }
+      } else if (field === sampleCountInput) {
+        const value = parseInt(field.value);
+        if (!field.value || isNaN(value)) {
+          clearValidation(field);
+        } else if (value < 1) {
+          markInvalid(field, 'Số lượng mẫu phải là số nguyên dương');
+        } else if (value > 1000000000) {
+          markInvalid(field, 'Số lượng mẫu quá lớn');
+        } else {
+          markValid(field);
+        }
+      } else if ([licenseSelect, modalitySelect, tagsSelect].includes(field)) {
+        if (field.value || (field === tagsSelect && field.selectedOptions.length > 0)) {
+          markValid(field);
+        } else {
+          clearValidation(field);
+        }
+      }
+    }
     
     function markInvalid(element, message) {
       element.classList.add('invalid');
       element.classList.remove('valid');
+      
+      // Add has-error class to form group
+      const formGroup = element.closest('.form-group');
+      if (formGroup) {
+        formGroup.classList.add('has-error');
+        formGroup.classList.remove('has-success');
+      }
       
       // Show error message
       let errorElement = element.parentElement.querySelector('.error-message');
@@ -199,11 +354,66 @@ document.addEventListener('DOMContentLoaded', function() {
       element.classList.remove('invalid');
       element.classList.add('valid');
       
+      // Add has-success class to form group
+      const formGroup = element.closest('.form-group');
+      if (formGroup) {
+        formGroup.classList.remove('has-error');
+        formGroup.classList.add('has-success');
+      }
+      
       // Remove error message
       const errorElement = element.parentElement.querySelector('.error-message');
       if (errorElement) {
         errorElement.remove();
       }
+    }
+    
+    function clearValidation(element) {
+      element.classList.remove('invalid', 'valid');
+      
+      // Remove classes from form group
+      const formGroup = element.closest('.form-group');
+      if (formGroup) {
+        formGroup.classList.remove('has-error', 'has-success');
+      }
+      
+      // Remove error message
+      const errorElement = element.parentElement.querySelector('.error-message');
+      if (errorElement) {
+        errorElement.remove();
+      }
+    }
+
+    function clearAllValidation() {
+      [nameInput, linkInput, descriptionInput, sizeInput, sampleCountInput, licenseSelect, modalitySelect, tagsSelect].forEach(field => {
+        if (field) clearValidation(field);
+      });
+    }
+
+    function updateButtonStates() {
+      const hasContent = nameInput.value.trim() || linkInput.value.trim() || descriptionInput.value.trim();
+      const hasValidInput = !document.querySelector('.form-group .invalid');
+      
+      // Update submit button state based on validation
+      submitButton.disabled = !hasValidInput;
+      
+      // Add visual feedback
+      if (hasContent && !hasValidInput) {
+        submitButton.style.opacity = '0.7';
+      } else {
+        submitButton.style.opacity = '1';
+      }
+    }
+
+    function setFormDisabled(disabled) {
+      [nameInput, linkInput, descriptionInput, sizeInput, sampleCountInput, licenseSelect, modalitySelect, tagsSelect].forEach(field => {
+        if (field) field.disabled = disabled;
+      });
+      submitButton.disabled = disabled;
+      
+      // Visual feedback
+      form.style.opacity = disabled ? '0.7' : '1';
+      form.style.pointerEvents = disabled ? 'none' : 'auto';
     }
     
     function isValidUrl(url) {
@@ -249,7 +459,28 @@ document.addEventListener('DOMContentLoaded', function() {
       // Reset form if success
       if (isSuccess) {
         form.reset();
+        clearAllValidation();
+        updateButtonStates();
       }
     }
+
+    // Character counter function
+    function addCharacterCounter(element, maxLength) {
+      const counter = document.createElement('div');
+      counter.className = 'character-counter';
+      element.parentElement.appendChild(counter);
+      
+      function updateCounter() {
+        const length = element.value.length;
+        counter.textContent = `${length}/${maxLength} ký tự`;
+        counter.style.color = length > maxLength * 0.9 ? '#ff5c5c' : '#666';
+      }
+      
+      element.addEventListener('input', updateCounter);
+      updateCounter();
+    }
+
+    // Initial validation state
+    updateButtonStates();
   }
 });
