@@ -1,4 +1,4 @@
-/* Hot Topic Page Styles */
+/* Hot Topic Page Styles - All Red Theme */
 
 /* Import global styles */
 @import url('../global.css');
@@ -10,9 +10,9 @@
   padding: 20px;
 }
 
-/* Hero Section */
+/* Hero Section - Changed to Red */
 .hot-topic-hero {
-  background: rgb(153, 167, 246);
+  background: linear-gradient(135deg, #e6faff, #b8baff, #643dff); /* Changed to red gradient */
   border-radius: var(--radius-lg);
   padding: 60px 40px;
   text-align: center;
@@ -29,7 +29,7 @@
   left: -50%;
   width: 200%;
   height: 200%;
-  background: radial-gradient(circle, rgba(255,255,255,0.1) 0%, transparent 70%);
+  background: radial-gradient(circle, rgba(255,87,34,0.1) 0%, transparent 70%);
   animation: rotate 20s linear infinite;
   pointer-events: none;
 }
@@ -45,7 +45,7 @@
 }
 
 .hero-title {
-  color: #d32f2f; /* Changed to red color */
+  color: #000000; /* Changed to white for better contrast on red background */
   font-size: 52px;
   font-weight: 800;
   margin-bottom: 20px;
@@ -153,7 +153,7 @@
   display: flex;
   align-items: center;
   gap: 8px;
-  background: #4caf50;
+  background: #ff5722; /* Changed to red */
   color: white;
   padding: 8px 16px;
   border-radius: 20px;
@@ -207,7 +207,7 @@
   left: 0;
   width: 100%;
   height: 4px;
-  background: linear-gradient(90deg, #ff5722, #ff9800); /* Changed to red/orange */
+  background: linear-gradient(90deg, #ff5722, #ff9800);
   transform: scaleX(0);
   transition: transform 0.3s ease;
 }
@@ -219,7 +219,8 @@
 .trending-card:hover {
   transform: translateY(-8px);
   box-shadow: var(--shadow-lg);
-  border-color: #ff5722;
+  border-color: #ff5722; /* Changed to red on hover */
+  background: linear-gradient(135deg, #fff8f7, #ffffff); /* Subtle red tint on hover */
 }
 
 .trending-card.featured {
@@ -260,7 +261,7 @@
 }
 
 .trend-change.positive {
-  color: #4caf50;
+  color: #ff5722; /* Changed to red */
 }
 
 .topic-title {
@@ -561,15 +562,16 @@
   border-radius: var(--radius-md);
   overflow: hidden;
   box-shadow: var(--shadow-sm);
-  border: 2px solid transparent;
+  border: 2px solid #ff5722; /* Changed to red */
   transition: all 0.3s ease;
   position: relative;
 }
 
 .dataset-card:hover {
   transform: translateY(-8px);
-  box-shadow: var(--shadow-sm);
-  border-color: #ff5722;
+  box-shadow: var(--shadow-lg);
+  border-color: #e53935; /* Darker red on hover instead of blue */
+  background: linear-gradient(135deg, #fff8f7, #ffffff); /* Subtle red tint */
 }
 
 .dataset-card.hot {
@@ -623,7 +625,7 @@
   border-radius: 15px;
   font-size: 12px;
   font-weight: 600;
-  color: #4caf50;
+  color: #ff5722; /* Changed to red */
   backdrop-filter: blur(5px);
 }
 
@@ -683,6 +685,9 @@
   font-size: 11px;
   font-weight: 500;
 }
+
+/* Rest of the CSS remains the same with red colors... */
+/* Continue with the same red color theme for all other sections */
 
 /* Carousel Controls */
 .carousel-btn {

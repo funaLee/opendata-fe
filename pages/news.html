@@ -1,0 +1,419 @@
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>News - OpenData</title>
+    <link href="../css/global.css" rel="stylesheet">
+    <link href="../css/pages/news.css" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.4/css/all.min.css">
+</head>
+<body>
+    <div class="container">
+        <!-- HEADER -->
+        <div data-include="../components/header.html"></div>
+
+        <!-- Overlay -->
+        <div id="overlay" class="overlay"></div>
+        
+        <!-- Sidebar -->
+        <div data-include="../components/slidebar.html"></div>
+
+        <!-- Main Content -->
+        <div class="news-container">
+            <!-- Hero Section -->
+            <div class="news-hero">
+                <div class="hero-content">
+                    <h1 class="hero-title">OpenData News</h1>
+                    <p class="hero-subtitle">
+                        Stay updated with the latest developments in AI research, breakthrough datasets, and innovative studies
+                    </p>
+                    <div class="hero-stats">
+                        <div class="stat-item">
+                            <div class="stat-number">125</div>
+                            <div class="stat-label">Latest Articles</div>
+                        </div>
+                        <div class="stat-item">
+                            <div class="stat-number">45</div>
+                            <div class="stat-label">Breaking News</div>
+                        </div>
+                        <div class="stat-item">
+                            <div class="stat-number">8</div>
+                            <div class="stat-label">Categories</div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Breaking News Ticker -->
+            <div class="breaking-news-ticker">
+                <div class="ticker-header">
+                    <span class="breaking-label">
+                        <i class="fas fa-broadcast-tower"></i>
+                        BREAKING NEWS
+                    </span>
+                </div>
+                <div class="ticker-content">
+                    <div class="ticker-scroll">
+                        <span class="ticker-item">OpenAI releases GPT-4 Turbo with enhanced capabilities</span>
+                        <span class="ticker-separator">•</span>
+                        <span class="ticker-item">Revolutionary new dataset for Vietnamese NLP published</span>
+                        <span class="ticker-separator">•</span>
+                        <span class="ticker-item">Meta announces LLaMA 3 with multimodal support</span>
+                        <span class="ticker-separator">•</span>
+                        <span class="ticker-item">Google's Gemini Ultra achieves new benchmarks</span>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Featured Articles -->
+            <div class="featured-section">
+                <h2 class="section-title">
+                    <span class="title-icon">
+                        <i class="fas fa-star"></i>
+                    </span>
+                    Featured Stories
+                </h2>
+
+                <div class="featured-grid">
+                    <article class="featured-article large">
+                        <div class="article-image">
+                            <img src="/assets/images/multimodal.jpg" alt="Featured Article">
+                            <div class="article-category">AI Research</div>
+                            <div class="reading-time">
+                                <i class="fas fa-clock"></i>
+                                5 min read
+                            </div>
+                        </div>
+                        <div class="article-content">
+                            <h3 class="article-title">Breakthrough in Multimodal AI: New Model Achieves Human-Level Performance</h3>
+                            <p class="article-excerpt">
+                                Researchers at leading AI labs have developed a groundbreaking multimodal AI system that demonstrates human-level performance across various tasks, marking a significant milestone in artificial intelligence.
+                            </p>
+                            <div class="article-meta">
+                                <span class="article-date">
+                                    <i class="fas fa-calendar"></i>
+                                    2 hours ago
+                                </span>
+                                <span class="article-author">
+                                    <i class="fas fa-user"></i>
+                                    Dr. Nguyen Minh
+                                </span>
+                                <span class="article-views">
+                                    <i class="fas fa-eye"></i>
+                                    1.2K views
+                                </span>
+                            </div>
+                        </div>
+                    </article>
+
+                    <div class="featured-sidebar">
+                        <article class="featured-article small">
+                            <div class="article-image">
+                                <img src="/assets/images/vietnam-dataset.png" alt="Article">
+                                <div class="article-category">Datasets</div>
+                            </div>
+                            <div class="article-content">
+                                <h3 class="article-title">New Vietnamese Speech Dataset Released</h3>
+                                <p class="article-excerpt">
+                                    A comprehensive speech recognition dataset for Vietnamese has been published...
+                                </p>
+                                <div class="article-meta">
+                                    <span class="article-date">
+                                        <i class="fas fa-calendar"></i>
+                                        4 hours ago
+                                    </span>
+                                </div>
+                            </div>
+                        </article>
+
+                        <article class="featured-article small">
+                            <div class="article-image">
+                                <img src="/assets/images/eff-transformer.jpg" alt="Article">
+                                <div class="article-category">Models</div>
+                            </div>
+                            <div class="article-content">
+                                <h3 class="article-title">Efficient Transformer Architecture Released</h3>
+                                <p class="article-excerpt">
+                                    New efficient transformer model reduces computational cost by 50%...
+                                </p>
+                                <div class="article-meta">
+                                    <span class="article-date">
+                                        <i class="fas fa-calendar"></i>
+                                        6 hours ago
+                                    </span>
+                                </div>
+                            </div>
+                        </article>
+
+                        <article class="featured-article small">
+                            <div class="article-image">
+                                <img src="/assets/images/attention.png" alt="Article">
+                                <div class="article-category">Papers</div>
+                            </div>
+                            <div class="article-content">
+                                <h3 class="article-title">Revolutionary Attention Mechanism Published</h3>
+                                <p class="article-excerpt">
+                                    New attention mechanism improves model performance significantly...
+                                </p>
+                                <div class="article-meta">
+                                    <span class="article-date">
+                                        <i class="fas fa-calendar"></i>
+                                        8 hours ago
+                                    </span>
+                                </div>
+                            </div>
+                        </article>
+                    </div>
+                </div>
+            </div>
+
+            <!-- News Categories -->
+            <div class="categories-section">
+                <h2 class="section-title">
+                    <span class="title-icon">
+                        <i class="fas fa-layer-group"></i>
+                    </span>
+                    Browse by Category
+                </h2>
+
+                <div class="categories-grid">
+                    <div class="category-card">
+                        <div class="category-icon">
+                            <i class="fas fa-robot"></i>
+                        </div>
+                        <div class="category-content">
+                            <h3 class="category-title">AI Research</h3>
+                            <p class="category-count">45 articles</p>
+                            <p class="category-description">Latest breakthroughs in artificial intelligence</p>
+                        </div>
+                    </div>
+
+                    <div class="category-card">
+                        <div class="category-icon">
+                            <i class="fas fa-database"></i>
+                        </div>
+                        <div class="category-content">
+                            <h3 class="category-title">Datasets</h3>
+                            <p class="category-count">32 articles</p>
+                            <p class="category-description">New dataset releases and updates</p>
+                        </div>
+                    </div>
+
+                    <div class="category-card">
+                        <div class="category-icon">
+                            <i class="fas fa-file-alt"></i>
+                        </div>
+                        <div class="category-content">
+                            <h3 class="category-title">Research Papers</h3>
+                            <p class="category-count">28 articles</p>
+                            <p class="category-description">Significant research publications</p>
+                        </div>
+                    </div>
+
+                    <div class="category-card">
+                        <div class="category-icon">
+                            <i class="fas fa-chart-line"></i>
+                        </div>
+                        <div class="category-content">
+                            <h3 class="category-title">Benchmarks</h3>
+                            <p class="category-count">15 articles</p>
+                            <p class="category-description">New benchmarks and evaluations</p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Latest News -->
+            <div class="latest-news-section">
+                <h2 class="section-title">
+                    <span class="title-icon">
+                        <i class="fas fa-newspaper"></i>
+                    </span>
+                    Latest News
+                </h2>
+
+                <div class="news-grid">
+                    <article class="news-card">
+                        <div class="news-image">
+                            <img src="/assets/images/gpt4o.jpg" alt="News">
+                            <div class="news-category">AI Research</div>
+                        </div>
+                        <div class="news-content">
+                            <h3 class="news-title">GPT-4.5 Achieves New Record in Code Generation</h3>
+                            <p class="news-excerpt">
+                                OpenAI's latest model demonstrates unprecedented accuracy in programming tasks, outperforming previous models by 25%.
+                            </p>
+                            <div class="news-meta">
+                                <span class="news-date">
+                                    <i class="fas fa-calendar"></i>
+                                    1 day ago
+                                </span>
+                                <span class="news-author">
+                                    <i class="fas fa-user"></i>
+                                    Tech Team
+                                </span>
+                            </div>
+                        </div>
+                    </article>
+
+                    <article class="news-card">
+                        <div class="news-image">
+                            <img src="/assets/images/multi-language.png" alt="News">
+                            <div class="news-category">Datasets</div>
+                        </div>
+                        <div class="news-content">
+                            <h3 class="news-title">Massive Multilingual Dataset for Underrepresented Languages</h3>
+                            <p class="news-excerpt">
+                                New dataset includes 100+ languages, with special focus on Asian and African languages previously underrepresented.
+                            </p>
+                            <div class="news-meta">
+                                <span class="news-date">
+                                    <i class="fas fa-calendar"></i>
+                                    2 days ago
+                                </span>
+                                <span class="news-author">
+                                    <i class="fas fa-user"></i>
+                                    Research Team
+                                </span>
+                            </div>
+                        </div>
+                    </article>
+
+                    <article class="news-card">
+                        <div class="news-image">
+                            <img src="/assets/images/eff-transformer2.jpg" alt="News">
+                            <div class="news-category">Models</div>
+                        </div>
+                        <div class="news-content">
+                            <h3 class="news-title">Efficient Transformer Reduces Training Time by 60%</h3>
+                            <p class="news-excerpt">
+                                Researchers introduce new architecture that significantly reduces computational requirements for large language models.
+                            </p>
+                            <div class="news-meta">
+                                <span class="news-date">
+                                    <i class="fas fa-calendar"></i>
+                                    3 days ago
+                                </span>
+                                <span class="news-author">
+                                    <i class="fas fa-user"></i>
+                                    AI Lab
+                                </span>
+                            </div>
+                        </div>
+                    </article>
+
+                    <article class="news-card">
+                        <div class="news-image">
+                            <img src="/assets/images/fewshot.png" alt="News">
+                            <div class="news-category">Papers</div>
+                        </div>
+                        <div class="news-content">
+                            <h3 class="news-title">Breakthrough in Few-Shot Learning Published</h3>
+                            <p class="news-excerpt">
+                                New paper demonstrates how models can learn complex tasks with minimal examples, revolutionizing training efficiency.
+                            </p>
+                            <div class="news-meta">
+                                <span class="news-date">
+                                    <i class="fas fa-calendar"></i>
+                                    4 days ago
+                                </span>
+                                <span class="news-author">
+                                    <i class="fas fa-user"></i>
+                                    ML Researchers
+                                </span>
+                            </div>
+                        </div>
+                    </article>
+
+                    <article class="news-card">
+                        <div class="news-image">
+                            <img src="/assets/images/new-benchmark.png" alt="News">
+                            <div class="news-category">Benchmarks</div>
+                        </div>
+                        <div class="news-content">
+                            <h3 class="news-title">New Multimodal Benchmark Released</h3>
+                            <p class="news-excerpt">
+                                Comprehensive benchmark evaluates models across vision, language, and audio tasks simultaneously.
+                            </p>
+                            <div class="news-meta">
+                                <span class="news-date">
+                                    <i class="fas fa-calendar"></i>
+                                    5 days ago
+                                </span>
+                                <span class="news-author">
+                                    <i class="fas fa-user"></i>
+                                    Benchmark Team
+                                </span>
+                            </div>
+                        </div>
+                    </article>
+
+                    <article class="news-card">
+                        <div class="news-image">
+                            <img src="/assets/images/ai-safe.jpeg" alt="News">
+                            <div class="news-category">AI Research</div>
+                        </div>
+                        <div class="news-content">
+                            <h3 class="news-title">AI Safety Measures Implemented Across Platforms</h3>
+                            <p class="news-excerpt">
+                                Major AI companies adopt new safety protocols to ensure responsible deployment of large language models.
+                            </p>
+                            <div class="news-meta">
+                                <span class="news-date">
+                                    <i class="fas fa-calendar"></i>
+                                    1 week ago
+                                </span>
+                                <span class="news-author">
+                                    <i class="fas fa-user"></i>
+                                    Safety Team
+                                </span>
+                            </div>
+                        </div>
+                    </article>
+                </div>
+
+                <div class="load-more-section">
+                    <button class="load-more-button">
+                        <i class="fas fa-plus"></i>
+                        Load More Articles
+                    </button>
+                </div>
+            </div>
+
+            <!-- Newsletter Signup -->
+            <div class="newsletter-section">
+                <div class="newsletter-content">
+                    <h2 class="newsletter-title">Stay Updated</h2>
+                    <p class="newsletter-description">
+                        Get the latest news and updates directly in your inbox
+                    </p>
+                    <div class="newsletter-form">
+                        <input type="email" placeholder="Enter your email address" class="newsletter-input">
+                        <button class="newsletter-button">
+                            <i class="fas fa-paper-plane"></i>
+                            Subscribe
+                        </button>
+                    </div>
+                    <p class="newsletter-privacy">
+                        We respect your privacy. Unsubscribe at any time.
+                    </p>
+                </div>
+            </div>
+        </div>
+
+        <!-- Help Button -->
+        <button class="help-button">
+            <i class="fas fa-question"></i>
+        </button>
+        
+        <!-- Include Help Center Popup -->
+        <div data-include="../components/help-center-popup.html"></div>
+    </div>
+
+    <script src="../js/include.js"></script>
+    <script src="../js/header-dropdown.js"></script>
+    <script src="../js/help-center.js"></script>
+    <script src="../js/news.js"></script>
+</body>
+</html>
