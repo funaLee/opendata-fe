@@ -3,13 +3,9 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Upload Benchmark - OpenData</title>
+    <title>Benchmarks - OpenData</title>
     <link href="../css/global.css" rel="stylesheet">
-    <link href="../css/pages/upload.css" rel="stylesheet">
-    <link href="../css/components/custom-select.css" rel="stylesheet">
-    <link href="../css/components/enhanced-select.css" rel="stylesheet">
-    <link href="../css/components/metric-selector.css" rel="stylesheet">
-    <link rel="stylesheet" href="../css/pages/upload-benchmark.css">
+    <link href="../css/pages/benchmark.css" rel="stylesheet">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.4/css/all.min.css">
 </head>
 <body>
@@ -23,427 +19,500 @@
         <!-- Sidebar -->
         <div data-include="../components/slidebar.html"></div>
 
-        <!-- Upload Benchmark Form -->
-        <div class="upload-form-container">
-            <h1 class="upload-title">Upload benchmark</h1>
-            <p class="upload-description">
-                Benchmark mà bạn tải lên phải được sử dụng để đánh giá hiệu suất của các mô hình trong một bài báo khoa học uy tín. Chúng tôi sẽ kiểm tra thông tin mà bạn cung cấp, vậy nên hãy đảm bảo thông tin chính xác.
-            </p>
+        <!-- Main Content -->
+        <div class="main-content">
+            <h1 class="search-title">Benchmarks</h1>
+            <p class="subtitle">Khám phá và so sánh hiệu suất của các mô hình trên các benchmark khác nhau trong lĩnh vực AI và Machine Learning.</p>
             
-            <form id="uploadBenchmarkForm" class="upload-form">
-                <!-- Progress Indicator -->
-                <div class="form-progress">
-                    <div class="progress-bar">
-                        <div class="progress-fill" id="progressFill"></div>
+            <!-- Action Buttons -->
+            <div class="action-buttons">
+                <a href="../upload/upload-benchmark.html" class="action-button upload">
+                    <i class="fas fa-chart-line"></i>
+                    Upload Benchmark
+                </a>
+                <a href="#" class="action-button your-benchmarks">
+                    <i class="fas fa-list"></i>
+                    Your Benchmarks
+                </a>
+            </div>
+
+            <!-- Search Bar -->
+            <div class="search-big benchmark-search">
+                <i class="fas fa-search search-icon"></i>
+                <input type="text" placeholder="Search Benchmarks, Tasks, or Metrics" id="benchmarkSearch">
+                <button class="filter-button" id="filterToggle">
+                    <i class="fas fa-filter"></i>
+                    Filters
+                </button>
+            </div>
+        </div>
+
+        <!-- Filter Panel -->
+        <div class="filter-panel" id="filterPanel">
+            <div class="filter-content">
+                <h3>Filter by Task</h3>
+                <div class="filter-options">
+                    <label class="filter-option">
+                        <input type="checkbox" name="task" value="all" checked>
+                        <span class="checkmark"></span>
+                        All Tasks
+                    </label>
+                    <label class="filter-option">
+                        <input type="checkbox" name="task" value="image-classification">
+                        <span class="checkmark"></span>
+                        Image Classification
+                    </label>
+                    <label class="filter-option">
+                        <input type="checkbox" name="task" value="object-detection">
+                        <span class="checkmark"></span>
+                        Object Detection
+                    </label>
+                    <label class="filter-option">
+                        <input type="checkbox" name="task" value="nlp">
+                        <span class="checkmark"></span>
+                        Natural Language Processing
+                    </label>
+                    <label class="filter-option">
+                        <input type="checkbox" name="task" value="speech-recognition">
+                        <span class="checkmark"></span>
+                        Speech Recognition
+                    </label>
+                    <label class="filter-option">
+                        <input type="checkbox" name="task" value="machine-translation">
+                        <span class="checkmark"></span>
+                        Machine Translation
+                    </label>
+                </div>
+            </div>
+        </div>
+
+        <!-- Benchmark Stats -->
+        <div class="benchmark-stats">
+            <div class="stats-container">
+                <div class="stat-item">
+                    <div class="stat-icon">
+                        <i class="fas fa-chart-line"></i>
                     </div>
-                    <div class="progress-text">
-                        <span id="progressText">Bước 1 / 5</span>
-                        <span id="progressPercentage">20%</span>
+                    <div class="stat-info">
+                        <span class="stat-number" id="totalBenchmarks">47</span>
+                        <span class="stat-label">Total Benchmarks</span>
                     </div>
                 </div>
-
-                <!-- Step 1: Basic Information -->
-                <div class="form-step" id="step1">
-                    <h2 class="step-title">1. Thông tin cơ bản</h2>
-                    
-                    <div class="form-row">
-                        <div class="form-group full-width">
-                            <label for="benchmarkName">Tên benchmark <span class="required">*</span></label>
-                            <input type="text" id="benchmarkName" placeholder="Nhập tên benchmark" required>
-                            <div class="field-hint">Ví dụ: ImageNet Classification Benchmark</div>
-                        </div>
+                <div class="stat-item">
+                    <div class="stat-icon">
+                        <i class="fas fa-tasks"></i>
                     </div>
-                    
-                    <div class="form-row">
-                        <div class="form-group full-width">
-                            <label for="benchmarkDescription">Mô tả benchmark <span class="required">*</span></label>
-                            <textarea id="benchmarkDescription" placeholder="Nhập mô tả chi tiết về benchmark" required></textarea>
-                            <div class="character-counter"></div>
-                        </div>
+                    <div class="stat-info">
+                        <span class="stat-number">12</span>
+                        <span class="stat-label">Different Tasks</span>
                     </div>
                 </div>
+                <div class="stat-item">
+                    <div class="stat-icon">
+                        <i class="fas fa-database"></i>
+                    </div>
+                    <div class="stat-info">
+                        <span class="stat-number">28</span>
+                        <span class="stat-label">Datasets Used</span>
+                    </div>
+                </div>
+                <div class="stat-item">
+                    <div class="stat-icon">
+                        <i class="fas fa-ruler"></i>
+                    </div>
+                    <div class="stat-info">
+                        <span class="stat-number">35</span>
+                        <span class="stat-label">Evaluation Metrics</span>
+                    </div>
+                </div>
+            </div>
+        </div>
 
-                <!-- Step 2: Dataset & Task Selection -->
-                <div class="form-step" id="step2" style="display: none;">
-                    <h2 class="step-title">2. Dataset và Task</h2>
-                    
-                    <div class="form-row two-columns">
-                        <div class="form-group">
-                            <label for="datasetSelect">Dataset sử dụng <span class="required">*</span></label>
-                            <div class="custom-select">
-                                <select id="datasetSelect" required>
-                                    <option value="" disabled selected>Chọn dataset cho benchmark</option>
-                                    <option value="ds_imagenet">ImageNet</option>
-                                    <option value="ds_cifar10">CIFAR-10</option>
-                                    <option value="ds_cifar100">CIFAR-100</option>
-                                    <option value="ds_coco">MS COCO</option>
-                                    <option value="ds_glue">GLUE</option>
-                                    <option value="ds_squad">SQuAD</option>
-                                    <option value="ds_librispeech">LibriSpeech</option>
-                                    <option value="ds_wmt">WMT</option>
-                                    <option value="ds_openai_gym">OpenAI Gym</option>
-                                    <option value="ds_atari">Atari Games</option>
-                                </select>
-                                <div class="select-arrow">
-                                    <i class="fas fa-chevron-down"></i>
-                                </div>
-                            </div>
+        <!-- Benchmark List -->
+        <div class="benchmarks-container">
+            <h2 class="section-title">Available Benchmarks</h2>
+            
+            <div class="benchmarks-grid" id="benchmarksGrid">
+                <!-- ImageNet Classification Benchmark -->
+                <div class="benchmark-card" data-task="image-classification">
+                    <div class="benchmark-header">
+                        <div class="benchmark-icon">
+                            <i class="fas fa-image"></i>
                         </div>
-                        
-                        <div class="form-group">
-                            <label for="taskSelect">Task <span class="required">*</span></label>
-                            <div class="custom-select">
-                                <select id="taskSelect" required>
-                                    <option value="" disabled selected>Chọn task cho benchmark</option>
-                                    <option value="task_image_classification">Image Classification</option>
-                                    <option value="task_object_detection">Object Detection</option>
-                                    <option value="task_semantic_segmentation">Semantic Segmentation</option>
-                                    <option value="task_instance_segmentation">Instance Segmentation</option>
-                                    <option value="task_text_classification">Text Classification</option>
-                                    <option value="task_named_entity_recognition">Named Entity Recognition</option>
-                                    <option value="task_question_answering">Question Answering</option>
-                                    <option value="task_machine_translation">Machine Translation</option>
-                                    <option value="task_speech_recognition">Speech Recognition</option>
-                                    <option value="task_reinforcement_learning">Reinforcement Learning</option>
-                                </select>
-                                <div class="select-arrow">
-                                    <i class="fas fa-chevron-down"></i>
-                                </div>
+                        <div class="benchmark-info">
+                            <h3 class="benchmark-title">ImageNet Classification</h3>
+                            <p class="benchmark-task">Image Classification</p>
+                            <div class="benchmark-badges">
+                                <span class="badge popular">Popular</span>
+                                <span class="badge task-tag">Computer Vision</span>
                             </div>
                         </div>
                     </div>
-                </div>
-
-                <!-- Step 3: Enhanced Metrics Selection -->
-                <div class="form-step" id="step3" style="display: none;">
-                    <h2 class="step-title">3. Chọn Metrics</h2>
-                    
-                    <div class="form-row">
-                        <div class="form-group full-width">
-                            <label for="metricsSelector">Metrics đánh giá <span class="required">*</span></label>
-                            
-                            <!-- Search box for metrics -->
-                            <div class="metric-search">
-                                <input type="text" id="metricSearchInput" placeholder="Tìm kiếm metric...">
-                                <i class="fas fa-search"></i>
-                            </div>
-                            
-                            <!-- Category tabs for metrics -->
-                            <div class="metric-categories">
-                                <button type="button" class="metric-category-tab active" data-category="all">
-                                    Tất cả
-                                </button>
-                                <button type="button" class="metric-category-tab" data-category="vision">
-                                    <i class="fas fa-eye"></i> Computer Vision
-                                </button>
-                                <button type="button" class="metric-category-tab" data-category="nlp">
-                                    <i class="fas fa-language"></i> NLP
-                                </button>
-                                <button type="button" class="metric-category-tab" data-category="speech">
-                                    <i class="fas fa-microphone"></i> Speech
-                                </button>
-                                <button type="button" class="metric-category-tab" data-category="general">
-                                    <i class="fas fa-chart-line"></i> General
-                                </button>
-                            </div>
-                            
-                            <!-- Metrics grid -->
-                            <div class="metrics-grid" id="metricsGrid">
-                                <!-- Computer Vision Metrics -->
-                                <div class="metric-item" data-category="vision" data-metric="accuracy">
-                                    <input type="checkbox" id="metric_accuracy" name="metrics" value="metric_accuracy">
-                                    <label for="metric_accuracy">
-                                        <div class="metric-icon">
-                                            <i class="fas fa-bullseye"></i>
-                                        </div>
-                                        <div class="metric-info">
-                                            <span class="metric-name">Accuracy</span>
-                                            <span class="metric-description">Tỷ lệ dự đoán chính xác trên tổng số mẫu</span>
-                                        </div>
-                                    </label>
+                    <div class="benchmark-content">
+                        <p class="benchmark-description">
+                            Benchmark tiêu chuẩn cho task phân loại hình ảnh sử dụng dataset ImageNet với 1,000 lớp khác nhau. Đây là một trong những benchmark quan trọng nhất trong lĩnh vực Computer Vision.
+                        </p>
+                        <div class="benchmark-details">
+                            <div class="detail-row">
+                                <div class="detail-item">
+                                    <span class="label">Dataset:</span>
+                                    <span class="value">ImageNet-1K</span>
                                 </div>
-
-                                <div class="metric-item" data-category="vision" data-metric="precision">
-                                    <input type="checkbox" id="metric_precision" name="metrics" value="metric_precision">
-                                    <label for="metric_precision">
-                                        <div class="metric-icon">
-                                            <i class="fas fa-check-circle"></i>
-                                        </div>
-                                        <div class="metric-info">
-                                            <span class="metric-name">Precision</span>
-                                            <span class="metric-description">Tỷ lệ positive dự đoán chính xác</span>
-                                        </div>
-                                    </label>
-                                </div>
-
-                                <div class="metric-item" data-category="vision" data-metric="recall">
-                                    <input type="checkbox" id="metric_recall" name="metrics" value="metric_recall">
-                                    <label for="metric_recall">
-                                        <div class="metric-icon">
-                                            <i class="fas fa-search-plus"></i>
-                                        </div>
-                                        <div class="metric-info">
-                                            <span class="metric-name">Recall</span>
-                                            <span class="metric-description">Khả năng phát hiện positive thực tế</span>
-                                        </div>
-                                    </label>
-                                </div>
-
-                                <div class="metric-item" data-category="vision" data-metric="f1">
-                                    <input type="checkbox" id="metric_f1_score" name="metrics" value="metric_f1_score">
-                                    <label for="metric_f1_score">
-                                        <div class="metric-icon">
-                                            <i class="fas fa-balance-scale"></i>
-                                        </div>
-                                        <div class="metric-info">
-                                            <span class="metric-name">F1 Score</span>
-                                            <span class="metric-description">Trung bình điều hòa của Precision và Recall</span>
-                                        </div>
-                                    </label>
-                                </div>
-
-                                <div class="metric-item" data-category="vision" data-metric="iou">
-                                    <input type="checkbox" id="metric_iou" name="metrics" value="metric_iou">
-                                    <label for="metric_iou">
-                                        <div class="metric-icon">
-                                            <i class="fas fa-vector-square"></i>
-                                        </div>
-                                        <div class="metric-info">
-                                            <span class="metric-name">IoU</span>
-                                            <span class="metric-description">Intersection over Union - cho segmentation/detection</span>
-                                        </div>
-                                    </label>
-                                </div>
-
-                                <div class="metric-item" data-category="vision" data-metric="map">
-                                    <input type="checkbox" id="metric_map" name="metrics" value="metric_map">
-                                    <label for="metric_map">
-                                        <div class="metric-icon">
-                                            <i class="fas fa-chart-area"></i>
-                                        </div>
-                                        <div class="metric-info">
-                                            <span class="metric-name">mAP</span>
-                                            <span class="metric-description">mean Average Precision - cho object detection</span>
-                                        </div>
-                                    </label>
-                                </div>
-
-                                <!-- NLP Metrics -->
-                                <div class="metric-item" data-category="nlp" data-metric="bleu">
-                                    <input type="checkbox" id="metric_bleu" name="metrics" value="metric_bleu">
-                                    <label for="metric_bleu">
-                                        <div class="metric-icon">
-                                            <i class="fas fa-language"></i>
-                                        </div>
-                                        <div class="metric-info">
-                                            <span class="metric-name">BLEU Score</span>
-                                            <span class="metric-description">Bilingual Evaluation Understudy - cho machine translation</span>
-                                        </div>
-                                    </label>
-                                </div>
-
-                                <div class="metric-item" data-category="nlp" data-metric="rouge">
-                                    <input type="checkbox" id="metric_rouge" name="metrics" value="metric_rouge">
-                                    <label for="metric_rouge">
-                                        <div class="metric-icon">
-                                            <i class="fas fa-file-text"></i>
-                                        </div>
-                                        <div class="metric-info">
-                                            <span class="metric-name">ROUGE Score</span>
-                                            <span class="metric-description">Recall-Oriented Understudy - cho text summarization</span>
-                                        </div>
-                                    </label>
-                                </div>
-
-                                <div class="metric-item" data-category="nlp" data-metric="perplexity">
-                                    <input type="checkbox" id="metric_perplexity" name="metrics" value="metric_perplexity">
-                                    <label for="metric_perplexity">
-                                        <div class="metric-icon">
-                                            <i class="fas fa-brain"></i>
-                                        </div>
-                                        <div class="metric-info">
-                                            <span class="metric-name">Perplexity</span>
-                                            <span class="metric-description">Độ bất định của model - cho language modeling</span>
-                                        </div>
-                                    </label>
-                                </div>
-
-                                <!-- Speech Metrics -->
-                                <div class="metric-item" data-category="speech" data-metric="wer">
-                                    <input type="checkbox" id="metric_wer" name="metrics" value="metric_wer">
-                                    <label for="metric_wer">
-                                        <div class="metric-icon">
-                                            <i class="fas fa-microphone-slash"></i>
-                                        </div>
-                                        <div class="metric-info">
-                                            <span class="metric-name">WER</span>
-                                            <span class="metric-description">Word Error Rate - cho speech recognition</span>
-                                        </div>
-                                    </label>
-                                </div>
-
-                                <div class="metric-item" data-category="speech" data-metric="cer">
-                                    <input type="checkbox" id="metric_cer" name="metrics" value="metric_cer">
-                                    <label for="metric_cer">
-                                        <div class="metric-icon">
-                                            <i class="fas fa-spell-check"></i>
-                                        </div>
-                                        <div class="metric-info">
-                                            <span class="metric-name">CER</span>
-                                            <span class="metric-description">Character Error Rate - cho speech recognition</span>
-                                        </div>
-                                    </label>
-                                </div>
-
-                                <!-- General Metrics -->
-                                <div class="metric-item" data-category="general" data-metric="top1_error">
-                                    <input type="checkbox" id="metric_top1_error" name="metrics" value="metric_top1_error">
-                                    <label for="metric_top1_error">
-                                        <div class="metric-icon">
-                                            <i class="fas fa-arrow-up"></i>
-                                        </div>
-                                        <div class="metric-info">
-                                            <span class="metric-name">Top-1 Error</span>
-                                            <span class="metric-description">Tỷ lệ lỗi của dự đoán hàng đầu</span>
-                                        </div>
-                                    </label>
-                                </div>
-
-                                <div class="metric-item" data-category="general" data-metric="top5_error">
-                                    <input type="checkbox" id="metric_top5_error" name="metrics" value="metric_top5_error">
-                                    <label for="metric_top5_error">
-                                        <div class="metric-icon">
-                                            <i class="fas fa-layer-group"></i>
-                                        </div>
-                                        <div class="metric-info">
-                                            <span class="metric-name">Top-5 Error</span>
-                                            <span class="metric-description">Tỷ lệ lỗi trong top 5 dự đoán</span>
-                                        </div>
-                                    </label>
-                                </div>
-
-                                <div class="metric-item" data-category="general" data-metric="reward">
-                                    <input type="checkbox" id="metric_reward" name="metrics" value="metric_reward">
-                                    <label for="metric_reward">
-                                        <div class="metric-icon">
-                                            <i class="fas fa-trophy"></i>
-                                        </div>
-                                        <div class="metric-info">
-                                            <span class="metric-name">Reward</span>
-                                            <span class="metric-description">Phần thưởng tích lũy - cho reinforcement learning</span>
-                                        </div>
-                                    </label>
-                                </div>
-
-                                <div class="metric-item" data-category="general" data-metric="success_rate">
-                                    <input type="checkbox" id="metric_success_rate" name="metrics" value="metric_success_rate">
-                                    <label for="metric_success_rate">
-                                        <div class="metric-icon">
-                                            <i class="fas fa-percentage"></i>
-                                        </div>
-                                        <div class="metric-info">
-                                            <span class="metric-name">Success Rate</span>
-                                            <span class="metric-description">Tỷ lệ thành công trong task</span>
-                                        </div>
-                                    </label>
+                                <div class="detail-item">
+                                    <span class="label">Size:</span>
+                                    <span class="value">1.28M images</span>
                                 </div>
                             </div>
-                            
-                            <!-- Selected metrics display -->
-                            <div class="selected-metrics">
-                                <div class="selected-metrics-header">
-                                    <span>Metrics đã chọn <span id="selectedCount">(0)</span></span>
-                                    <button type="button" id="clearSelectedMetrics" class="clear-button">
-                                        <i class="fas fa-times"></i> Xóa tất cả
-                                    </button>
-                                </div>
-                                <div class="selected-metrics-list" id="selectedMetricsList">
-                                    <p class="empty-selection">Chưa có metric nào được chọn</p>
+                            <div class="detail-item metrics-item">
+                                <span class="label">Metrics:</span>
+                                <div class="metrics-list">
+                                    <span class="metric-tag">Top-1 Accuracy</span>
+                                    <span class="metric-tag">Top-5 Accuracy</span>
+                                    <span class="metric-tag">Top-1 Error</span>
+                                    <span class="metric-tag">FLOPs</span>
                                 </div>
                             </div>
                         </div>
                     </div>
-                </div>
-
-                <!-- Step 4: Additional Information -->
-                <div class="form-step" id="step4" style="display: none;">
-                    <h2 class="step-title">4. Thông tin bổ sung</h2>
-                    
-                    <div class="form-row">
-                        <div class="form-group full-width">
-                            <label for="benchmarkPaper">Bài báo liên quan</label>
-                            <input type="url" id="benchmarkPaper" placeholder="https://arxiv.org/abs/...">
-                            <div class="field-hint">URL của bài báo giới thiệu benchmark này (tùy chọn)</div>
+                    <div class="benchmark-footer">
+                        <div class="benchmark-actions">
+                            <button class="view-results-btn" data-benchmark="imagenet">
+                                <i class="fas fa-eye"></i>
+                                View Results
+                            </button>
+                            <button class="submit-result-btn" data-benchmark="imagenet">
+                                <i class="fas fa-plus"></i>
+                                Submit Result
+                            </button>
                         </div>
-                    </div>
-                    
-                    <div class="form-row two-columns">
-                        <div class="form-group">
-                            <label for="benchmarkCode">Source code</label>
-                            <input type="url" id="benchmarkCode" placeholder="https://github.com/...">
-                            <div class="field-hint">Link tới repository chứa code đánh giá</div>
-                        </div>
-                        
-                        <div class="form-group">
-                            <label for="benchmarkLeaderboard">Leaderboard</label>
-                            <input type="url" id="benchmarkLeaderboard" placeholder="https://example.com/leaderboard">
-                            <div class="field-hint">Link tới trang hiển thị kết quả benchmark</div>
+                        <div class="benchmark-meta">
+                            <span class="model-count">
+                                <i class="fas fa-robot"></i> 234 models evaluated
+                            </span>
+                            <span class="benchmark-date">Updated: Nov 2024</span>
                         </div>
                     </div>
                 </div>
 
-                <!-- Step 5: Review -->
-                <div class="form-step" id="step5" style="display: none;">
-                    <h2 class="step-title">5. Xem lại thông tin</h2>
-                    
-                    <div class="review-section">
-                        <div class="review-item">
-                            <label>Tên benchmark:</label>
-                            <span id="reviewName">-</span>
+                <!-- COCO Object Detection Benchmark -->
+                <div class="benchmark-card" data-task="object-detection">
+                    <div class="benchmark-header">
+                        <div class="benchmark-icon">
+                            <i class="fas fa-search"></i>
                         </div>
-                        
-                        <div class="review-item">
-                            <label>Mô tả:</label>
-                            <span id="reviewDescription">-</span>
+                        <div class="benchmark-info">
+                            <h3 class="benchmark-title">COCO Object Detection</h3>
+                            <p class="benchmark-task">Object Detection</p>
+                            <div class="benchmark-badges">
+                                <span class="badge standard">Standard</span>
+                                <span class="badge task-tag">Computer Vision</span>
+                            </div>
                         </div>
-                        
-                        <div class="review-item">
-                            <label>Dataset:</label>
-                            <span id="reviewDataset">-</span>
+                    </div>
+                    <div class="benchmark-content">
+                        <p class="benchmark-description">
+                            Benchmark toàn diện cho object detection và instance segmentation sử dụng dataset MS COCO. Đánh giá khả năng phát hiện và định vị các đối tượng trong hình ảnh.
+                        </p>
+                        <div class="benchmark-details">
+                            <div class="detail-row">
+                                <div class="detail-item">
+                                    <span class="label">Dataset:</span>
+                                    <span class="value">MS COCO 2017</span>
+                                </div>
+                                <div class="detail-item">
+                                    <span class="label">Size:</span>
+                                    <span class="value">330K images</span>
+                                </div>
+                            </div>
+                            <div class="detail-item metrics-item">
+                                <span class="label">Metrics:</span>
+                                <div class="metrics-list">
+                                    <span class="metric-tag">mAP@0.5:0.95</span>
+                                    <span class="metric-tag">mAP@0.5</span>
+                                    <span class="metric-tag">AR@100</span>
+                                    <span class="metric-tag">AR@1000</span>
+                                </div>
+                            </div>
                         </div>
-                        
-                        <div class="review-item">
-                            <label>Task:</label>
-                            <span id="reviewTask">-</span>
+                    </div>
+                    <div class="benchmark-footer">
+                        <div class="benchmark-actions">
+                            <button class="view-results-btn" data-benchmark="coco">
+                                <i class="fas fa-eye"></i>
+                                View Results
+                            </button>
+                            <button class="submit-result-btn" data-benchmark="coco">
+                                <i class="fas fa-plus"></i>
+                                Submit Result
+                            </button>
                         </div>
-                        
-                        <div class="review-item">
-                            <label>Metrics:</label>
-                            <div id="reviewMetrics" class="review-metrics">-</div>
+                        <div class="benchmark-meta">
+                            <span class="model-count">
+                                <i class="fas fa-robot"></i> 187 models evaluated
+                            </span>
+                            <span class="benchmark-date">Updated: Oct 2024</span>
                         </div>
                     </div>
                 </div>
-                
-                <!-- Form Navigation -->
-                <div class="form-navigation">
-                    <button type="button" id="prevBtn" class="nav-btn" style="display: none;">
-                        <i class="fas fa-chevron-left"></i> Quay lại
-                    </button>
-                    
-                    <button type="button" id="nextBtn" class="nav-btn primary">
-                        Tiếp theo <i class="fas fa-chevron-right"></i>
-                    </button>
-                    
-                    <button type="submit" id="submitBtn" class="nav-btn primary" style="display: none;">
-                        <i class="fas fa-chart-line"></i> Tạo benchmark
-                    </button>
+
+                <!-- GLUE Benchmark -->
+                <div class="benchmark-card" data-task="nlp">
+                    <div class="benchmark-header">
+                        <div class="benchmark-icon">
+                            <i class="fas fa-language"></i>
+                        </div>
+                        <div class="benchmark-info">
+                            <h3 class="benchmark-title">GLUE Benchmark</h3>
+                            <p class="benchmark-task">Natural Language Understanding</p>
+                            <div class="benchmark-badges">
+                                <span class="badge comprehensive">Comprehensive</span>
+                                <span class="badge task-tag">NLP</span>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="benchmark-content">
+                        <p class="benchmark-description">
+                            Tập hợp 9 task NLU tiếng Anh bao gồm sentiment analysis, textual entailment, similarity và paraphrase tasks. Benchmark toàn diện nhất cho NLU.
+                        </p>
+                        <div class="benchmark-details">
+                            <div class="detail-row">
+                                <div class="detail-item">
+                                    <span class="label">Dataset:</span>
+                                    <span class="value">GLUE Tasks</span>
+                                </div>
+                                <div class="detail-item">
+                                    <span class="label">Tasks:</span>
+                                    <span class="value">9 tasks</span>
+                                </div>
+                            </div>
+                            <div class="detail-item metrics-item">
+                                <span class="label">Metrics:</span>
+                                <div class="metrics-list">
+                                    <span class="metric-tag">GLUE Score</span>
+                                    <span class="metric-tag">Accuracy</span>
+                                    <span class="metric-tag">F1 Score</span>
+                                    <span class="metric-tag">Matthews Corr.</span>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="benchmark-footer">
+                        <div class="benchmark-actions">
+                            <button class="view-results-btn" data-benchmark="glue">
+                                <i class="fas fa-eye"></i>
+                                View Results
+                            </button>
+                            <button class="submit-result-btn" data-benchmark="glue">
+                                <i class="fas fa-plus"></i>
+                                Submit Result
+                            </button>
+                        </div>
+                        <div class="benchmark-meta">
+                            <span class="model-count">
+                                <i class="fas fa-robot"></i> 156 models evaluated
+                            </span>
+                            <span class="benchmark-date">Updated: Nov 2024</span>
+                        </div>
+                    </div>
                 </div>
-            </form>
+
+                <!-- SQuAD 2.0 Benchmark -->
+                <div class="benchmark-card" data-task="nlp">
+                    <div class="benchmark-header">
+                        <div class="benchmark-icon">
+                            <i class="fas fa-question-circle"></i>
+                        </div>
+                        <div class="benchmark-info">
+                            <h3 class="benchmark-title">SQuAD 2.0</h3>
+                            <p class="benchmark-task">Question Answering</p>
+                            <div class="benchmark-badges">
+                                <span class="badge challenging">Challenging</span>
+                                <span class="badge task-tag">NLP</span>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="benchmark-content">
+                        <p class="benchmark-description">
+                            Reading comprehension dataset với 100,000+ câu hỏi. SQuAD 2.0 bao gồm các câu hỏi không có câu trả lời, làm tăng độ khó của task.
+                        </p>
+                        <div class="benchmark-details">
+                            <div class="detail-row">
+                                <div class="detail-item">
+                                    <span class="label">Dataset:</span>
+                                    <span class="value">SQuAD 2.0</span>
+                                </div>
+                                <div class="detail-item">
+                                    <span class="label">Size:</span>
+                                    <span class="value">150K questions</span>
+                                </div>
+                            </div>
+                            <div class="detail-item metrics-item">
+                                <span class="label">Metrics:</span>
+                                <div class="metrics-list">
+                                    <span class="metric-tag">F1 Score</span>
+                                    <span class="metric-tag">Exact Match</span>
+                                    <span class="metric-tag">HasAns F1</span>
+                                    <span class="metric-tag">NoAns F1</span>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="benchmark-footer">
+                        <div class="benchmark-actions">
+                            <button class="view-results-btn" data-benchmark="squad">
+                                <i class="fas fa-eye"></i>
+                                View Results
+                            </button>
+                            <button class="submit-result-btn" data-benchmark="squad">
+                                <i class="fas fa-plus"></i>
+                                Submit Result
+                            </button>
+                        </div>
+                        <div class="benchmark-meta">
+                            <span class="model-count">
+                                <i class="fas fa-robot"></i> 98 models evaluated
+                            </span>
+                            <span class="benchmark-date">Updated: Sep 2024</span>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- LibriSpeech ASR -->
+                <div class="benchmark-card" data-task="speech-recognition">
+                    <div class="benchmark-header">
+                        <div class="benchmark-icon">
+                            <i class="fas fa-microphone"></i>
+                        </div>
+                        <div class="benchmark-info">
+                            <h3 class="benchmark-title">LibriSpeech ASR</h3>
+                            <p class="benchmark-task">Speech Recognition</p>
+                            <div class="benchmark-badges">
+                                <span class="badge standard">Standard</span>
+                                <span class="badge task-tag">Speech</span>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="benchmark-content">
+                        <p class="benchmark-description">
+                            Corpus ASR với 1000 giờ audio từ audiobooks đọc bởi nhiều người nói khác nhau. Benchmark chuẩn cho speech recognition tiếng Anh.
+                        </p>
+                        <div class="benchmark-details">
+                            <div class="detail-row">
+                                <div class="detail-item">
+                                    <span class="label">Dataset:</span>
+                                    <span class="value">LibriSpeech</span>
+                                </div>
+                                <div class="detail-item">
+                                    <span class="label">Size:</span>
+                                    <span class="value">1000 hours</span>
+                                </div>
+                            </div>
+                            <div class="detail-item metrics-item">
+                                <span class="label">Metrics:</span>
+                                <div class="metrics-list">
+                                    <span class="metric-tag">WER</span>
+                                    <span class="metric-tag">CER</span>
+                                    <span class="metric-tag">Clean WER</span>
+                                    <span class="metric-tag">Other WER</span>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="benchmark-footer">
+                        <div class="benchmark-actions">
+                            <button class="view-results-btn" data-benchmark="librispeech">
+                                <i class="fas fa-eye"></i>
+                                View Results
+                            </button>
+                            <button class="submit-result-btn" data-benchmark="librispeech">
+                                <i class="fas fa-plus"></i>
+                                Submit Result
+                            </button>
+                        </div>
+                        <div class="benchmark-meta">
+                            <span class="model-count">
+                                <i class="fas fa-robot"></i> 67 models evaluated
+                            </span>
+                            <span class="benchmark-date">Updated: Oct 2024</span>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- WMT Translation -->
+                <div class="benchmark-card" data-task="machine-translation">
+                    <div class="benchmark-header">
+                        <div class="benchmark-icon">
+                            <i class="fas fa-globe"></i>
+                        </div>
+                        <div class="benchmark-info">
+                            <h3 class="benchmark-title">WMT 2023</h3>
+                            <p class="benchmark-task">Machine Translation</p>
+                            <div class="benchmark-badges">
+                                <span class="badge recent">Recent</span>
+                                <span class="badge task-tag">Translation</span>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="benchmark-content">
+                        <p class="benchmark-description">
+                            Shared task on machine translation với nhiều cặp ngôn ngữ. WMT 2023 bao gồm general domain translation và domain adaptation tasks.
+                        </p>
+                        <div class="benchmark-details">
+                            <div class="detail-row">
+                                <div class="detail-item">
+                                    <span class="label">Dataset:</span>
+                                    <span class="value">WMT 2023</span>
+                                </div>
+                                <div class="detail-item">
+                                    <span class="label">Languages:</span>
+                                    <span class="value">18 languages</span>
+                                </div>
+                            </div>
+                            <div class="detail-item metrics-item">
+                                <span class="label">Metrics:</span>
+                                <div class="metrics-list">
+                                    <span class="metric-tag">BLEU</span>
+                                    <span class="metric-tag">chrF</span>
+                                    <span class="metric-tag">TER</span>
+                                    <span class="metric-tag">COMET</span>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="benchmark-footer">
+                        <div class="benchmark-actions">
+                            <button class="view-results-btn" data-benchmark="wmt">
+                                <i class="fas fa-eye"></i>
+                                View Results
+                            </button>
+                            <button class="submit-result-btn" data-benchmark="wmt">
+                                <i class="fas fa-plus"></i>
+                                Submit Result
+                            </button>
+                        </div>
+                        <div class="benchmark-meta">
+                            <span class="model-count">
+                                <i class="fas fa-robot"></i> 45 models evaluated
+                            </span>
+                            <span class="benchmark-date">Updated: Nov 2023</span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            
+            <div class="load-more-section">
+                <button class="load-more-button" id="loadMoreBtn">
+                    <i class="fas fa-plus"></i>
+                    Load More Benchmarks
+                </button>
+            </div>
         </div>
 
         <!-- Help Button -->
         <button class="help-button">
-            <i class="fas fa-question"></i>
+            <a href="../pages/help.html">
+                <i class="fas fa-question"></i>
+            </a>
         </button>
         
         <!-- Include Help Center Popup -->
@@ -453,7 +522,6 @@
     <script src="../js/include.js"></script>
     <script src="../js/header-dropdown.js"></script>
     <script src="../js/help-center.js"></script>
-    <script src="../js/enhanced-select.js"></script>
-    <script src="../js/upload-benchmark-enhanced.js"></script>
+    <script src="../js/benchmark-list.js"></script>
 </body>
 </html>
