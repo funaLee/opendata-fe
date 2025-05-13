@@ -1,0 +1,317 @@
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Welcome - Choose Your Profile - OpenData</title>
+    <link href="../css/global.css" rel="stylesheet">
+    <link href="../css/pages/auth-profile.css" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.4/css/all.min.css">
+</head>
+<body>
+    <div class="profile-setup-container">
+        <!-- Progress indicator -->
+        <div class="progress-bar">
+            <div class="progress-step active">
+                <div class="step-number">1</div>
+                <span>Vai trò</span>
+            </div>
+            <div class="progress-step">
+                <div class="step-number">2</div>
+                <span>Lĩnh vực</span>
+            </div>
+            <div class="progress-step">
+                <div class="step-number">3</div>
+                <span>Sở thích</span>
+            </div>
+        </div>
+
+        <!-- Welcome header -->
+        <div class="welcome-header">
+            <h1>Chào mừng đến với OpenData!</h1>
+            <p>Hãy cho chúng tôi biết thêm về bạn để có trải nghiệm được cá nhân hóa tốt nhất</p>
+        </div>
+
+        <!-- Step 1: Role Selection -->
+        <div class="setup-step" id="step1">
+            <h2>Vai trò của bạn trong nghiên cứu là gì?</h2>
+            <p class="step-description">Chọn vai trò mô tả đúng nhất vị trí hiện tại của bạn</p>
+            
+            <div class="role-grid">
+                <div class="role-card" data-role="researcher">
+                    <div class="role-icon">
+                        <i class="fas fa-user-graduate"></i>
+                    </div>
+                    <h3>Researcher</h3>
+                    <p>Nghiên cứu viên làm việc tại viện nghiên cứu, đại học hoặc tổ chức khoa học</p>
+                    <div class="role-features">
+                        <span>✓ Access to premium datasets</span>
+                        <span>✓ Collaborate with peers</span>
+                        <span>✓ Publish research</span>
+                    </div>
+                </div>
+
+                <div class="role-card" data-role="student">
+                    <div class="role-icon">
+                        <i class="fas fa-graduation-cap"></i>
+                    </div>
+                    <h3>Student</h3>
+                    <p>Sinh viên đại học, thạc sĩ, tiến sĩ đang học tập và nghiên cứu</p>
+                    <div class="role-features">
+                        <span>✓ Learning resources</span>
+                        <span>✓ Academic support</span>
+                        <span>✓ Project collaboration</span>
+                    </div>
+                </div>
+
+                <div class="role-card" data-role="developer">
+                    <div class="role-icon">
+                        <i class="fas fa-code"></i>
+                    </div>
+                    <h3>Developer</h3>
+                    <p>Lập trình viên phát triển ứng dụng AI/ML, data science</p>
+                    <div class="role-features">
+                        <span>✓ API access</span>
+                        <span>✓ Code repositories</span>
+                        <span>✓ Tech community</span>
+                    </div>
+                </div>
+
+                <div class="role-card" data-role="contributor">
+                    <div class="role-icon">
+                        <i class="fas fa-upload"></i>
+                    </div>
+                    <h3>Data Contributor</h3>
+                    <p>Người đóng góp dataset, benchmark, hoặc tools cho cộng đồng</p>
+                    <div class="role-features">
+                        <span>✓ Upload tools</span>
+                        <span>✓ Version control</span>
+                        <span>✓ Community recognition</span>
+                    </div>
+                </div>
+
+                <div class="role-card" data-role="industry">
+                    <div class="role-icon">
+                        <i class="fas fa-briefcase"></i>
+                    </div>
+                    <h3>Industry Professional</h3>
+                    <p>Chuyên gia làm việc trong doanh nghiệp, áp dụng AI/ML vào sản phẩm</p>
+                    <div class="role-features">
+                        <span>✓ Business cases</span>
+                        <span>✓ Industry insights</span>
+                        <span>✓ Networking</span>
+                    </div>
+                </div>
+
+                <div class="role-card" data-role="educator">
+                    <div class="role-icon">
+                        <i class="fas fa-chalkboard-teacher"></i>
+                    </div>
+                    <h3>Educator</h3>
+                    <p>Giảng viên, giáo viên, người tạo nội dung giáo dục về AI/ML</p>
+                    <div class="role-features">
+                        <span>✓ Teaching materials</span>
+                        <span>✓ Course templates</span>
+                        <span>✓ Student tools</span>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Step 2: Research Focus Areas -->
+        <div class="setup-step" id="step2" style="display: none;">
+            <h2>Lĩnh vực nghiên cứu chính của bạn?</h2>
+            <p class="step-description">Chọn các lĩnh vực bạn quan tâm nhất (có thể chọn nhiều)</p>
+            
+            <div class="focus-grid">
+                <div class="focus-card" data-focus="computer-vision">
+                    <div class="focus-icon">
+                        <i class="fas fa-eye"></i>
+                    </div>
+                    <h3>Computer Vision</h3>
+                    <p>Image processing, object detection, facial recognition</p>
+                </div>
+
+                <div class="focus-card" data-focus="nlp">
+                    <div class="focus-icon">
+                        <i class="fas fa-language"></i>
+                    </div>
+                    <h3>Natural Language Processing</h3>
+                    <p>Text analysis, machine translation, chatbots</p>
+                </div>
+
+                <div class="focus-card" data-focus="machine-learning">
+                    <div class="focus-icon">
+                        <i class="fas fa-brain"></i>
+                    </div>
+                    <h3>Machine Learning</h3>
+                    <p>Deep learning, neural networks, algorithms</p>
+                </div>
+
+                <div class="focus-card" data-focus="data-science">
+                    <div class="focus-icon">
+                        <i class="fas fa-chart-bar"></i>
+                    </div>
+                    <h3>Data Science</h3>
+                    <p>Data analysis, statistics, business intelligence</p>
+                </div>
+
+                <div class="focus-card" data-focus="robotics">
+                    <div class="focus-icon">
+                        <i class="fas fa-robot"></i>
+                    </div>
+                    <h3>Robotics</h3>
+                    <p>Autonomous systems, control theory, sensors</p>
+                </div>
+
+                <div class="focus-card" data-focus="recommender-systems">
+                    <div class="focus-icon">
+                        <i class="fas fa-stream"></i>
+                    </div>
+                    <h3>Recommender Systems</h3>
+                    <p>Collaborative filtering, content recommendation</p>
+                </div>
+
+                <div class="focus-card" data-focus="time-series">
+                    <div class="focus-icon">
+                        <i class="fas fa-chart-line"></i>
+                    </div>
+                    <h3>Time Series Analysis</h3>
+                    <p>Forecasting, trend analysis, temporal data</p>
+                </div>
+
+                <div class="focus-card" data-focus="reinforcement-learning">
+                    <div class="focus-icon">
+                        <i class="fas fa-gamepad"></i>
+                    </div>
+                    <h3>Reinforcement Learning</h3>
+                    <p>Game AI, autonomous agents, decision making</p>
+                </div>
+
+                <div class="focus-card" data-focus="bioinformatics">
+                    <div class="focus-icon">
+                        <i class="fas fa-dna"></i>
+                    </div>
+                    <h3>Bioinformatics</h3>
+                    <p>Genomics, protein analysis, medical AI</p>
+                </div>
+            </div>
+        </div>
+
+        <!-- Step 3: Interests and Goals -->
+        <div class="setup-step" id="step3" style="display: none;">
+            <h2>Mục tiêu và sở thích của bạn?</h2>
+            <p class="step-description">Giúp chúng tôi hiểu bạn muốn đạt được gì từ OpenData</p>
+            
+            <div class="interest-categories">
+                <div class="interest-category">
+                    <h3>Mục tiêu chính</h3>
+                    <div class="interest-options">
+                        <label class="interest-option">
+                            <input type="checkbox" name="goals" value="learn">
+                            <span class="checkmark"></span>
+                            <i class="fas fa-book-reader"></i>
+                            <span>Học tập và phát triển kỹ năng</span>
+                        </label>
+                        <label class="interest-option">
+                            <input type="checkbox" name="goals" value="research">
+                            <span class="checkmark"></span>
+                            <i class="fas fa-search"></i>
+                            <span>Thực hiện nghiên cứu</span>
+                        </label>
+                        <label class="interest-option">
+                            <input type="checkbox" name="goals" value="contribute">
+                            <span class="checkmark"></span>
+                            <i class="fas fa-hands-helping"></i>
+                            <span>Đóng góp cho cộng đồng</span>
+                        </label>
+                        <label class="interest-option">
+                            <input type="checkbox" name="goals" value="collaborate">
+                            <span class="checkmark"></span>
+                            <i class="fas fa-users"></i>
+                            <span>Hợp tác với others</span>
+                        </label>
+                    </div>
+                </div>
+
+                <div class="interest-category">
+                    <h3>Quan tâm đặc biệt</h3>
+                    <div class="interest-options">
+                        <label class="interest-option">
+                            <input type="checkbox" name="interests" value="trending">
+                            <span class="checkmark"></span>
+                            <i class="fas fa-fire"></i>
+                            <span>Theo dõi xu hướng mới</span>
+                        </label>
+                        <label class="interest-option">
+                            <input type="checkbox" name="interests" value="sota">
+                            <span class="checkmark"></span>
+                            <i class="fas fa-crown"></i>
+                            <span>State-of-the-art models</span>
+                        </label>
+                        <label class="interest-option">
+                            <input type="checkbox" name="interests" value="datasets">
+                            <span class="checkmark"></span>
+                            <i class="fas fa-database"></i>
+                            <span>Khám phá datasets mới</span>
+                        </label>
+                        <label class="interest-option">
+                            <input type="checkbox" name="interests" value="ethics">
+                            <span class="checkmark"></span>
+                            <i class="fas fa-balance-scale"></i>
+                            <span>AI Ethics & Fairness</span>
+                        </label>
+                    </div>
+                </div>
+
+                <div class="interest-category">
+                    <h3>Newsletter & Updates</h3>
+                    <div class="interest-options">
+                        <label class="interest-option">
+                            <input type="checkbox" name="notifications" value="weekly">
+                            <span class="checkmark"></span>
+                            <i class="fas fa-envelope"></i>
+                            <span>Weekly research digest</span>
+                        </label>
+                        <label class="interest-option">
+                            <input type="checkbox" name="notifications" value="breaking">
+                            <span class="checkmark"></span>
+                            <i class="fas fa-bell"></i>
+                            <span>Breaking AI news</span>
+                        </label>
+                        <label class="interest-option">
+                            <input type="checkbox" name="notifications" value="community">
+                            <span class="checkmark"></span>
+                            <i class="fas fa-comments"></i>
+                            <span>Community discussions</span>
+                        </label>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Navigation buttons -->
+        <div class="navigation-buttons">
+            <button type="button" class="nav-button secondary" id="prevButton" style="display: none;">
+                <i class="fas fa-arrow-left"></i>
+                Quay lại
+            </button>
+            <button type="button" class="nav-button primary" id="nextButton">
+                Tiếp theo
+                <i class="fas fa-arrow-right"></i>
+            </button>
+            <button type="button" class="nav-button primary" id="finishButton" style="display: none;">
+                Hoàn tất thiết lập
+                <i class="fas fa-check"></i>
+            </button>
+        </div>
+
+        <!-- Skip option -->
+        <div class="skip-option">
+            <a href="/dashboard" class="skip-link">Bỏ qua thiết lập, vào dashboard ngay</a>
+        </div>
+    </div>
+
+    <script src="../js/auth-profile.js"></script>
+</body>
+</html>

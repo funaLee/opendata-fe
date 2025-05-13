@@ -5,7 +5,7 @@
 
 // Configuration
 const CONFIG = {
-  GEMINI_API_KEY: '', // Replace with actual API key
+  GEMINI_API_KEY: 'AIzaSyDvjjkTcNhSIz7Fg0ZFuczufbfplOwMjoc', // Replace with actual API key
   GEMINI_API_URL: 'https://generativelanguage.googleapis.com/v1beta/models/gemini-1.5-flash-latest:generateContent',
   MAX_HISTORY: 10,
   TYPING_DELAY: 100,
