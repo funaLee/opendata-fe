@@ -1,0 +1,565 @@
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Community - OpenData</title>
+    <link href="../css/global.css" rel="stylesheet">
+    <link href="../css/pages/community.css" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.4/css/all.min.css">
+</head>
+<body>
+    <div class="container">
+        <!-- HEADER -->
+        <div data-include="../components/header.html"></div>
+
+        <!-- Overlay -->
+        <div id="overlay" class="overlay"></div>
+        
+        <!-- Sidebar -->
+        <div data-include="../components/slidebar.html"></div>
+
+        <!-- Main Content -->
+        <div class="community-container">
+            <!-- Hero Section -->
+            <div class="community-hero">
+                <div class="hero-content">
+                    <h1 class="hero-title">OpenData Community</h1>
+                    <p class="hero-subtitle">
+                        Kết nối với các nhà nghiên cứu trên toàn thế giới. Chia sẻ kiến thức, thảo luận và hợp tác trong các dự án nghiên cứu.
+                    </p>
+                    <div class="hero-stats">
+                        <div class="stat-item">
+                            <div class="stat-number">5,247</div>
+                            <div class="stat-label">Researchers</div>
+                        </div>
+                        <div class="stat-item">
+                            <div class="stat-number">1,832</div>
+                            <div class="stat-label">Active Discussions</div>
+                        </div>
+                        <div class="stat-item">
+                            <div class="stat-number">89</div>
+                            <div class="stat-label">Research Groups</div>
+                        </div>
+                        <!-- <div class="stat-item">
+                            <div class="stat-number">156</div>
+                            <div class="stat-label">Countries</div>
+                        </div> -->
+                    </div>
+                </div>
+            </div>
+
+            <!-- Quick Actions -->
+            <div class="quick-actions-section">
+                <div class="quick-actions-grid">
+                    <button class="quick-action-btn" id="createPostBtn">
+                        <i class="fas fa-plus-circle"></i>
+                        <span>Tạo bài viết mới</span>
+                    </button>
+                    <button class="quick-action-btn" id="askQuestionBtn">
+                        <i class="fas fa-question-circle"></i>
+                        <span>Đặt câu hỏi</span>
+                    </button>
+                    <button class="quick-action-btn" id="findCollaboratorsBtn">
+                        <i class="fas fa-users"></i>
+                        <span>Tìm cộng sự</span>
+                    </button>
+                    <button class="quick-action-btn" id="shareResourceBtn">
+                        <i class="fas fa-share-alt"></i>
+                        <span>Chia sẻ tài nguyên</span>
+                    </button>
+                </div>
+            </div>
+
+            <!-- Category Tabs -->
+            <div class="category-tabs">
+                <button class="category-tab active" data-category="all">
+                    <i class="fas fa-globe"></i>
+                    Tất cả
+                </button>
+                <button class="category-tab" data-category="discussions">
+                    <i class="fas fa-comments"></i>
+                    Thảo luận
+                </button>
+                <button class="category-tab" data-category="questions">
+                    <i class="fas fa-question-circle"></i>
+                    Câu hỏi
+                </button>
+                <button class="category-tab" data-category="collaborations">
+                    <i class="fas fa-handshake"></i>
+                    Hợp tác
+                </button>
+                <button class="category-tab" data-category="announcements">
+                    <i class="fas fa-bullhorn"></i>
+                    Thông báo
+                </button>
+                <button class="category-tab" data-category="resources">
+                    <i class="fas fa-book"></i>
+                    Tài nguyên
+                </button>
+            </div>
+
+            <!-- Main Content Area -->
+            <div class="main-content-area">
+                <!-- Left Sidebar - Categories & Filters -->
+                <div class="left-sidebar">
+                    <div class="sidebar-card">
+                        <h3>Research Areas</h3>
+                        <div class="filter-list">
+                            <div class="filter-item active">
+                                <span class="filter-label">Machine Learning</span>
+                                <span class="post-count">3.2k</span>
+                            </div>
+                            <div class="filter-item">
+                                <span class="filter-label">Computer Vision</span>
+                                <span class="post-count">2.8k</span>
+                            </div>
+                            <div class="filter-item">
+                                <span class="filter-label">Natural Language Processing</span>
+                                <span class="post-count">2.1k</span>
+                            </div>
+                            <div class="filter-item">
+                                <span class="filter-label">Robotics</span>
+                                <span class="post-count">1.5k</span>
+                            </div>
+                            <div class="filter-item">
+                                <span class="filter-label">Deep Learning</span>
+                                <span class="post-count">1.9k</span>
+                            </div>
+                            <div class="filter-item">
+                                <span class="filter-label">Other</span>
+                                <span class="post-count">847</span>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="sidebar-card">
+                        <h3>Active Groups</h3>
+                        <div class="group-list">
+                            <div class="group-item">
+                                <div class="group-avatar">
+                                    <img src="/api/placeholder/40/40" alt="Group">
+                                </div>
+                                <div class="group-info">
+                                    <div class="group-name">AI Vietnam</div>
+                                    <div class="group-members">1.2k members</div>
+                                </div>
+                            </div>
+                            <div class="group-item">
+                                <div class="group-avatar">
+                                    <img src="/api/placeholder/40/40" alt="Group">
+                                </div>
+                                <div class="group-info">
+                                    <div class="group-name">Computer Vision Research</div>
+                                    <div class="group-members">856 members</div>
+                                </div>
+                            </div>
+                            <div class="group-item">
+                                <div class="group-avatar">
+                                    <img src="/api/placeholder/40/40" alt="Group">
+                                </div>
+                                <div class="group-info">
+                                    <div class="group-name">NLP Developers</div>
+                                    <div class="group-members">643 members</div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Forum Posts -->
+                <div class="forum-posts">
+                    <!-- Featured/Pinned Post -->
+                    <div class="post-card featured">
+                        <div class="post-header">
+                            <div class="post-badges">
+                                <span class="badge featured">Pinned</span>
+                                <span class="badge announcement">Thông báo</span>
+                            </div>
+                            <div class="post-actions">
+                                <button class="action-btn">
+                                    <i class="fas fa-ellipsis-h"></i>
+                                </button>
+                            </div>
+                        </div>
+                        <div class="post-content">
+                            <h3 class="post-title">
+                                <a href="#">Welcome to OpenData Community - Guidelines and Best Practices</a>
+                            </h3>
+                            <div class="post-author">
+                                <img src="/api/placeholder/32/32" alt="Admin" class="author-avatar">
+                                <div class="author-info">
+                                    <span class="author-name">OpenData Team</span>
+                                    <span class="post-time">3 days ago</span>
+                                </div>
+                            </div>
+                            <div class="post-excerpt">
+                                Chào mừng các nhà nghiên cứu đến với cộng đồng OpenData! Đây là hướng dẫn chi tiết về cách sử dụng forum hiệu quả...
+                            </div>
+                            <div class="post-tags">
+                                <span class="tag-item">Welcome</span>
+                                <span class="tag-item">Guidelines</span>
+                                <span class="tag-item">Community</span>
+                            </div>
+                        </div>
+                        <div class="post-footer">
+                            <div class="post-stats">
+                                <span class="stat-item">
+                                    <i class="fas fa-eye"></i>
+                                    2.3k views
+                                </span>
+                                <span class="stat-item">
+                                    <i class="fas fa-comment"></i>
+                                    45 replies
+                                </span>
+                                <span class="stat-item">
+                                    <i class="fas fa-heart"></i>
+                                    128 likes
+                                </span>
+                            </div>
+                            <div class="last-activity">
+                                Last reply by <strong>Dr. Tran Minh</strong> 2 hours ago
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Regular Posts -->
+                    <div class="post-card">
+                        <div class="post-header">
+                            <div class="post-badges">
+                                <span class="badge discussion">Thảo luận</span>
+                                <span class="badge hot">Hot</span>
+                            </div>
+                            <div class="post-actions">
+                                <button class="action-btn">
+                                    <i class="fas fa-ellipsis-h"></i>
+                                </button>
+                            </div>
+                        </div>
+                        <div class="post-content">
+                            <h3 class="post-title">
+                                <a href="#">Best Practices for Training Large Language Models on Vietnamese Data</a>
+                            </h3>
+                            <div class="post-author">
+                                <img src="/api/placeholder/32/32" alt="User" class="author-avatar">
+                                <div class="author-info">
+                                    <span class="author-name">Dr. Nguyen Van A</span>
+                                    <span class="post-time">5 hours ago</span>
+                                </div>
+                            </div>
+                            <div class="post-excerpt">
+                                Tôi đang nghiên cứu về việc fine-tune các mô hình ngôn ngữ lớn cho tiếng Việt. Có ai có kinh nghiệm với việc xử lý dữ liệu tiếng Việt không?
+                            </div>
+                            <div class="post-tags">
+                                <span class="tag-item">LLM</span>
+                                <span class="tag-item">Vietnamese</span>
+                                <span class="tag-item">Fine-tuning</span>
+                                <span class="tag-item">NLP</span>
+                            </div>
+                        </div>
+                        <div class="post-footer">
+                            <div class="post-stats">
+                                <span class="stat-item">
+                                    <i class="fas fa-eye"></i>
+                                    856 views
+                                </span>
+                                <span class="stat-item">
+                                    <i class="fas fa-comment"></i>
+                                    23 replies
+                                </span>
+                                <span class="stat-item">
+                                    <i class="fas fa-heart"></i>
+                                    67 likes
+                                </span>
+                            </div>
+                            <div class="last-activity">
+                                Last reply by <strong>Prof. Le Thi B</strong> 1 hour ago
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="post-card">
+                        <div class="post-header">
+                            <div class="post-badges">
+                                <span class="badge question">Câu hỏi</span>
+                            </div>
+                            <div class="post-actions">
+                                <button class="action-btn">
+                                    <i class="fas fa-ellipsis-h"></i>
+                                </button>
+                            </div>
+                        </div>
+                        <div class="post-content">
+                            <h3 class="post-title">
+                                <a href="#">Seeking Collaborators for Computer Vision Project on Medical Imaging</a>
+                            </h3>
+                            <div class="post-author">
+                                <img src="/api/placeholder/32/32" alt="User" class="author-avatar">
+                                <div class="author-info">
+                                    <span class="author-name">Dr. Pham Thi C</span>
+                                    <span class="post-time">1 day ago</span>
+                                </div>
+                            </div>
+                            <div class="post-excerpt">
+                                Tôi đang tìm kiếm các nhà nghiên cứu có kinh nghiệm trong lĩnh vực Computer Vision để hợp tác trong dự án phân tích hình ảnh y tế...
+                            </div>
+                            <div class="post-tags">
+                                <span class="tag-item">Computer Vision</span>
+                                <span class="tag-item">Medical Imaging</span>
+                                <span class="tag-item">Collaboration</span>
+                                <span class="tag-item">Research</span>
+                            </div>
+                        </div>
+                        <div class="post-footer">
+                            <div class="post-stats">
+                                <span class="stat-item">
+                                    <i class="fas fa-eye"></i>
+                                    432 views
+                                </span>
+                                <span class="stat-item">
+                                    <i class="fas fa-comment"></i>
+                                    12 replies
+                                </span>
+                                <span class="stat-item">
+                                    <i class="fas fa-heart"></i>
+                                    34 likes
+                                </span>
+                            </div>
+                            <div class="last-activity">
+                                Last reply by <strong>Dr. Hoang Van D</strong> 3 hours ago
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="post-card">
+                        <div class="post-header">
+                            <div class="post-badges">
+                                <span class="badge resource">Tài nguyên</span>
+                                <span class="badge new">New</span>
+                            </div>
+                            <div class="post-actions">
+                                <button class="action-btn">
+                                    <i class="fas fa-ellipsis-h"></i>
+                                </button>
+                            </div>
+                        </div>
+                        <div class="post-content">
+                            <h3 class="post-title">
+                                <a href="#">Free Courses: Advanced Deep Learning Techniques</a>
+                            </h3>
+                            <div class="post-author">
+                                <img src="/api/placeholder/32/32" alt="User" class="author-avatar">
+                                <div class="author-info">
+                                    <span class="author-name">AI Learning Hub</span>
+                                    <span class="post-time">2 hours ago</span>
+                                </div>
+                            </div>
+                            <div class="post-excerpt">
+                                Chia sẻ một số khóa học miễn phí về Deep Learning mà tôi vừa tìm thấy. Rất hữu ích cho những ai muốn nâng cao kiến thức...
+                            </div>
+                            <div class="post-tags">
+                                <span class="tag-item">Deep Learning</span>
+                                <span class="tag-item">Courses</span>
+                                <span class="tag-item">Free Resources</span>
+                                <span class="tag-item">Education</span>
+                            </div>
+                        </div>
+                        <div class="post-footer">
+                            <div class="post-stats">
+                                <span class="stat-item">
+                                    <i class="fas fa-eye"></i>
+                                    189 views
+                                </span>
+                                <span class="stat-item">
+                                    <i class="fas fa-comment"></i>
+                                    8 replies
+                                </span>
+                                <span class="stat-item">
+                                    <i class="fas fa-heart"></i>
+                                    45 likes
+                                </span>
+                            </div>
+                            <div class="last-activity">
+                                Last reply by <strong>Student X</strong> 30 minutes ago
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Load More Button -->
+                    <div class="load-more-section">
+                        <button class="load-more-btn">
+                            <i class="fas fa-plus"></i>
+                            Xem thêm bài viết
+                        </button>
+                    </div>
+                </div>
+
+                <!-- Right Sidebar - Activity & Recommendations -->
+                <div class="right-sidebar">
+                    <div class="sidebar-card">
+                        <h3>Hoạt động gần đây</h3>
+                        <div class="activity-list">
+                            <div class="activity-item">
+                                <div class="activity-avatar">
+                                    <img src="/api/placeholder/24/24" alt="User">
+                                </div>
+                                <div class="activity-content">
+                                    <span class="activity-text">
+                                        <strong>Dr. Tran A</strong> replied to <em>"Best datasets for sentiment analysis"</em>
+                                    </span>
+                                    <span class="activity-time">5 minutes ago</span>
+                                </div>
+                            </div>
+                            <div class="activity-item">
+                                <div class="activity-avatar">
+                                    <img src="/api/placeholder/24/24" alt="User">
+                                </div>
+                                <div class="activity-content">
+                                    <span class="activity-text">
+                                        <strong>Prof. Nguyen B</strong> created a new post
+                                    </span>
+                                    <span class="activity-time">15 minutes ago</span>
+                                </div>
+                            </div>
+                            <div class="activity-item">
+                                <div class="activity-avatar">
+                                    <img src="/api/placeholder/24/24" alt="User">
+                                </div>
+                                <div class="activity-content">
+                                    <span class="activity-text">
+                                        <strong>Dr. Le C</strong> started following <strong>AI Research Group</strong>
+                                    </span>
+                                    <span class="activity-time">1 hour ago</span>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="sidebar-card">
+                        <h3>Trending Topics</h3>
+                        <div class="trending-topics">
+                            <div class="trending-item">
+                                <span class="topic-name">#GPT4</span>
+                                <span class="topic-count">1.2k posts</span>
+                            </div>
+                            <div class="trending-item">
+                                <span class="topic-name">#ComputerVision</span>
+                                <span class="topic-count">856 posts</span>
+                            </div>
+                            <div class="trending-item">
+                                <span class="topic-name">#VietnameseNLP</span>
+                                <span class="topic-count">643 posts</span>
+                            </div>
+                            <div class="trending-item">
+                                <span class="topic-name">#MachineLearning</span>
+                                <span class="topic-count">2.1k posts</span>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="sidebar-card">
+                        <h3>Recommended Researchers</h3>
+                        <div class="recommended-users">
+                            <div class="user-recommendation">
+                                <div class="user-avatar">
+                                    <img src="/api/placeholder/40/40" alt="User">
+                                </div>
+                                <div class="user-info">
+                                    <div class="user-name">Dr. Pham Van E</div>
+                                    <div class="user-expertise">Computer Vision Expert</div>
+                                    <div class="user-stats">152 posts, 1.2k followers</div>
+                                </div>
+                                <button class="follow-btn">Follow</button>
+                            </div>
+                            <div class="user-recommendation">
+                                <div class="user-avatar">
+                                    <img src="/api/placeholder/40/40" alt="User">
+                                </div>
+                                <div class="user-info">
+                                    <div class="user-name">Prof. Le Thi F</div>
+                                    <div class="user-expertise">NLP Researcher</div>
+                                    <div class="user-stats">98 posts, 856 followers</div>
+                                </div>
+                                <button class="follow-btn">Follow</button>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Create Post Modal -->
+        <div id="createPostModal" class="modal-overlay">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h2>Tạo bài viết mới</h2>
+                    <button class="modal-close">&times;</button>
+                </div>
+                <div class="modal-body">
+                    <form id="createPostForm">
+                        <div class="form-group">
+                            <label for="postType">Loại bài viết</label>
+                            <select id="postType" name="postType" required>
+                                <option value="">Chọn loại bài viết</option>
+                                <option value="discussion">Thảo luận</option>
+                                <option value="question">Câu hỏi</option>
+                                <option value="collaboration">Tìm cộng sự</option>
+                                <option value="resource">Chia sẻ tài nguyên</option>
+                                <option value="announcement">Thông báo</option>
+                            </select>
+                        </div>
+                        <div class="form-group">
+                            <label for="postTitle">Tiêu đề <span class="required">*</span></label>
+                            <input type="text" id="postTitle" name="postTitle" placeholder="Nhập tiêu đề bài viết..." required>
+                        </div>
+                        <div class="form-group">
+                            <label for="postCategory">Lĩnh vực nghiên cứu</label>
+                            <select id="postCategory" name="postCategory">
+                                <option value="">Chọn lĩnh vực</option>
+                                <option value="machine-learning">Machine Learning</option>
+                                <option value="computer-vision">Computer Vision</option>
+                                <option value="nlp">Natural Language Processing</option>
+                                <option value="robotics">Robotics</option>
+                                <option value="deep-learning">Deep Learning</option>
+                                <option value="other">Khác</option>
+                            </select>
+                        </div>
+                        <div class="form-group">
+                            <label for="postContent">Nội dung <span class="required">*</span></label>
+                            <textarea id="postContent" name="postContent" placeholder="Chia sẻ thoughts, questions, hoặc insights của bạn..." required rows="8"></textarea>
+                        </div>
+                        <div class="form-group">
+                            <label for="postTags">Tags (cách nhau bằng dấu phẩy)</label>
+                            <input type="text" id="postTags" name="postTags" placeholder="machine learning, computer vision, research...">
+                        </div>
+                        <div class="form-group">
+                            <label for="postAttachment">Đính kèm file (tùy chọn)</label>
+                            <input type="file" id="postAttachment" name="postAttachment" accept=".pdf,.doc,.docx,.png,.jpg,.jpeg">
+                        </div>
+                        <div class="form-actions">
+                            <button type="button" class="btn-secondary" onclick="closeCreatePostModal()">Hủy</button>
+                            <button type="submit" class="btn-primary">
+                                <i class="fas fa-paper-plane"></i>
+                                Đăng bài
+                            </button>
+                        </div>
+                    </form>
+                </div>
+            </div>
+        </div>
+
+        <!-- Help Button -->
+        <button class="help-button">
+            <i class="fas fa-question"></i>
+        </button>
+        
+        <!-- Include Help Center Popup -->
+        <div data-include="../components/help-center-popup.html"></div>
+    </div>
+
+    <script src="../js/include.js"></script>
+    <script src="../js/header-dropdown.js"></script>
+    <script src="../js/help-center.js"></script>
+    <script src="../js/community.js"></script>
+</body>
+</html>

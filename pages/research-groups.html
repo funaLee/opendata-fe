@@ -1,0 +1,420 @@
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Research Groups - OpenData</title>
+    <link href="../css/global.css" rel="stylesheet">
+    <link href="../css/pages/research-groups.css" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.4/css/all.min.css">
+</head>
+<body>
+    <div class="container">
+        <!-- HEADER -->
+        <div data-include="../components/header.html"></div>
+
+        <!-- Overlay -->
+        <div id="overlay" class="overlay"></div>
+        
+        <!-- Sidebar -->
+        <div data-include="../components/slidebar.html"></div>
+
+        <!-- Main Content -->
+        <div class="research-groups-container">
+            <!-- Hero Section -->
+            <div class="research-groups-hero">
+                <div class="hero-content">
+                    <h1 class="hero-title">Research Groups & Organizations</h1>
+                    <p class="hero-subtitle">
+                        Connect with research groups, labs, and organizations around the world. Join collaborative projects and advance science together.
+                    </p>
+                    <div class="hero-actions">
+                        <button class="action-btn primary" id="createGroupBtn">
+                            <i class="fas fa-plus"></i>
+                            Create New Group
+                        </button>
+                        <button class="action-btn secondary" id="joinGroupBtn">
+                            <i class="fas fa-users"></i>
+                            Join Existing Group
+                        </button>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Search and Filters -->
+            <div class="search-filter-section">
+                <div class="search-bar">
+                    <i class="fas fa-search search-icon"></i>
+                    <input type="text" placeholder="Search groups, organizations, or research areas...">
+                    <button class="filter-btn">
+                        <i class="fas fa-filter"></i>
+                        Filters
+                    </button>
+                </div>
+                
+                <div class="category-filters">
+                    <button class="category-filter active" data-category="all">All</button>
+                    <button class="category-filter" data-category="universities">Universities</button>
+                    <button class="category-filter" data-category="research-labs">Research Labs</button>
+                    <button class="category-filter" data-category="companies">Companies</button>
+                    <button class="category-filter" data-category="non-profit">Non-Profit</button>
+                    <button class="category-filter" data-category="government">Government</button>
+                </div>
+            </div>
+
+            <!-- Featured Groups -->
+            <div class="featured-groups-section">
+                <h2 class="section-title">
+                    <i class="fas fa-star"></i>
+                    Featured Research Groups
+                </h2>
+                
+                <div class="featured-groups-grid">
+                    <div class="group-card featured">
+                        <div class="group-badge">Top Contributor</div>
+                        <div class="group-image">
+                            <img src="/api/placeholder/300/200" alt="AI Vietnam Lab">
+                        </div>
+                        <div class="group-info">
+                            <h3 class="group-name">AI Vietnam Lab</h3>
+                            <div class="group-type">Research Laboratory</div>
+                            <div class="group-location">
+                                <i class="fas fa-map-marker-alt"></i>
+                                Ho Chi Minh City, Vietnam
+                            </div>
+                            <p class="group-description">
+                                Leading research laboratory in Vietnam focusing on artificial intelligence, machine learning, 
+                                and natural language processing for Vietnamese and Southeast Asian languages.
+                            </p>
+                            <div class="group-stats">
+                                <div class="stat">
+                                    <span class="stat-label">Members</span>
+                                    <span class="stat-value">1,245</span>
+                                </div>
+                                <div class="stat">
+                                    <span class="stat-label">Projects</span>
+                                    <span class="stat-value">87</span>
+                                </div>
+                                <div class="stat">
+                                    <span class="stat-label">Papers</span>
+                                    <span class="stat-value">234</span>
+                                </div>
+                            </div>
+                            <div class="group-tags">
+                                <span class="tag">AI</span>
+                                <span class="tag">NLP</span>
+                                <span class="tag">Computer Vision</span>
+                                <span class="tag">Vietnamese</span>
+                            </div>
+                            <div class="group-actions">
+                                <button class="join-btn">
+                                    <i class="fas fa-user-plus"></i>
+                                    Join Group
+                                </button>
+                                <button class="follow-btn">
+                                    <i class="fas fa-star"></i>
+                                    Follow
+                                </button>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="group-card featured">
+                        <div class="group-badge">Most Active</div>
+                        <div class="group-image">
+                            <img src="/api/placeholder/300/200" alt="VinAI Research">
+                        </div>
+                        <div class="group-info">
+                            <h3 class="group-name">VinAI Research</h3>
+                            <div class="group-type">Corporate Research</div>
+                            <div class="group-location">
+                                <i class="fas fa-map-marker-alt"></i>
+                                Hanoi, Vietnam
+                            </div>
+                            <p class="group-description">
+                                VinAI Research is the first AI research institute in Vietnam, dedicated to advancing 
+                                AI technologies and their applications.
+                            </p>
+                            <div class="group-stats">
+                                <div class="stat">
+                                    <span class="stat-label">Members</span>
+                                    <span class="stat-value">856</span>
+                                </div>
+                                <div class="stat">
+                                    <span class="stat-label">Projects</span>
+                                    <span class="stat-value">65</span>
+                                </div>
+                                <div class="stat">
+                                    <span class="stat-label">Papers</span>
+                                    <span class="stat-value">189</span>
+                                </div>
+                            </div>
+                            <div class="group-tags">
+                                <span class="tag">Deep Learning</span>
+                                <span class="tag">Computer Vision</span>
+                                <span class="tag">Robotics</span>
+                                <span class="tag">AutoML</span>
+                            </div>
+                            <div class="group-actions">
+                                <button class="join-btn">
+                                    <i class="fas fa-user-plus"></i>
+                                    Join Group
+                                </button>
+                                <button class="follow-btn">
+                                    <i class="fas fa-star"></i>
+                                    Follow
+                                </button>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- All Groups Grid -->
+            <div class="all-groups-section">
+                <h2 class="section-title">
+                    <i class="fas fa-users"></i>
+                    All Research Groups
+                </h2>
+                
+                <div class="groups-grid">
+                    <div class="group-card" data-category="universities">
+                        <div class="group-image">
+                            <img src="/api/placeholder/200/150" alt="HCMUT AI Lab">
+                        </div>
+                        <div class="group-info">
+                            <h3 class="group-name">HCMUT AI Laboratory</h3>
+                            <div class="group-type">University Lab</div>
+                            <div class="group-location">
+                                <i class="fas fa-map-marker-alt"></i>
+                                Ho Chi Minh City, Vietnam
+                            </div>
+                            <div class="group-members">
+                                <i class="fas fa-users"></i>
+                                423 members
+                            </div>
+                            <div class="group-tags">
+                                <span class="tag">Machine Learning</span>
+                                <span class="tag">IoT</span>
+                            </div>
+                            <div class="group-actions">
+                                <button class="join-btn-small">Join</button>
+                                <button class="view-btn">View</button>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="group-card" data-category="research-labs">
+                        <div class="group-image">
+                            <img src="/api/placeholder/200/150" alt="FPT AI Center">
+                        </div>
+                        <div class="group-info">
+                            <h3 class="group-name">FPT AI Center</h3>
+                            <div class="group-type">Industry Lab</div>
+                            <div class="group-location">
+                                <i class="fas fa-map-marker-alt"></i>
+                                Ho Chi Minh City, Vietnam
+                            </div>
+                            <div class="group-members">
+                                <i class="fas fa-users"></i>
+                                567 members
+                            </div>
+                            <div class="group-tags">
+                                <span class="tag">AI Applications</span>
+                                <span class="tag">Industry 4.0</span>
+                            </div>
+                            <div class="group-actions">
+                                <button class="join-btn-small">Join</button>
+                                <button class="view-btn">View</button>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="group-card" data-category="universities">
+                        <div class="group-image">
+                            <img src="/api/placeholder/200/150" alt="VNU Computer Vision Lab">
+                        </div>
+                        <div class="group-info">
+                            <h3 class="group-name">VNU Computer Vision Lab</h3>
+                            <div class="group-type">University Lab</div>
+                            <div class="group-location">
+                                <i class="fas fa-map-marker-alt"></i>
+                                Hanoi, Vietnam
+                            </div>
+                            <div class="group-members">
+                                <i class="fas fa-users"></i>
+                                298 members
+                            </div>
+                            <div class="group-tags">
+                                <span class="tag">Computer Vision</span>
+                                <span class="tag">Image Processing</span>
+                            </div>
+                            <div class="group-actions">
+                                <button class="join-btn-small">Join</button>
+                                <button class="view-btn">View</button>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="group-card" data-category="companies">
+                        <div class="group-image">
+                            <img src="/api/placeholder/200/150" alt="Zalo AI">
+                        </div>
+                        <div class="group-info">
+                            <h3 class="group-name">Zalo AI Team</h3>
+                            <div class="group-type">Tech Company</div>
+                            <div class="group-location">
+                                <i class="fas fa-map-marker-alt"></i>
+                                Ho Chi Minh City, Vietnam
+                            </div>
+                            <div class="group-members">
+                                <i class="fas fa-users"></i>
+                                734 members
+                            </div>
+                            <div class="group-tags">
+                                <span class="tag">NLP</span>
+                                <span class="tag">Chatbots</span>
+                            </div>
+                            <div class="group-actions">
+                                <button class="join-btn-small">Join</button>
+                                <button class="view-btn">View</button>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="group-card" data-category="non-profit">
+                        <div class="group-image">
+                            <img src="/api/placeholder/200/150" alt="Vietnam AI Community">
+                        </div>
+                        <div class="group-info">
+                            <h3 class="group-name">Vietnam AI Community</h3>
+                            <div class="group-type">Non-Profit</div>
+                            <div class="group-location">
+                                <i class="fas fa-map-marker-alt"></i>
+                                Vietnam
+                            </div>
+                            <div class="group-members">
+                                <i class="fas fa-users"></i>
+                                2,134 members
+                            </div>
+                            <div class="group-tags">
+                                <span class="tag">Community</span>
+                                <span class="tag">Education</span>
+                            </div>
+                            <div class="group-actions">
+                                <button class="join-btn-small">Join</button>
+                                <button class="view-btn">View</button>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="group-card" data-category="government">
+                        <div class="group-image">
+                            <img src="/api/placeholder/200/150" alt="NAFOSTED AI Initiative">
+                        </div>
+                        <div class="group-info">
+                            <h3 class="group-name">NAFOSTED AI Initiative</h3>
+                            <div class="group-type">Government</div>
+                            <div class="group-location">
+                                <i class="fas fa-map-marker-alt"></i>
+                                Hanoi, Vietnam
+                            </div>
+                            <div class="group-members">
+                                <i class="fas fa-users"></i>
+                                156 members
+                            </div>
+                            <div class="group-tags">
+                                <span class="tag">Research Funding</span>
+                                <span class="tag">Policy</span>
+                            </div>
+                            <div class="group-actions">
+                                <button class="join-btn-small">Join</button>
+                                <button class="view-btn">View</button>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="load-more-section">
+                    <button class="load-more-btn">
+                        <i class="fas fa-plus"></i>
+                        Load More Groups
+                    </button>
+                </div>
+            </div>
+
+            <!-- Create Group Modal -->
+            <div id="createGroupModal" class="modal-overlay">
+                <div class="modal-content">
+                    <div class="modal-header">
+                        <h2>Create New Research Group</h2>
+                        <button class="modal-close">&times;</button>
+                    </div>
+                    <div class="modal-body">
+                        <form id="createGroupForm">
+                            <div class="form-group">
+                                <label for="groupName">Group Name <span class="required">*</span></label>
+                                <input type="text" id="groupName" name="groupName" placeholder="Enter group name..." required>
+                            </div>
+                            <div class="form-group">
+                                <label for="groupType">Organization Type <span class="required">*</span></label>
+                                <select id="groupType" name="groupType" required>
+                                    <option value="">Select type</option>
+                                    <option value="university">University</option>
+                                    <option value="research-lab">Research Laboratory</option>
+                                    <option value="company">Company</option>
+                                    <option value="non-profit">Non-Profit Organization</option>
+                                    <option value="government">Government Agency</option>
+                                </select>
+                            </div>
+                            <div class="form-group">
+                                <label for="groupLocation">Location</label>
+                                <input type="text" id="groupLocation" name="groupLocation" placeholder="City, Country">
+                            </div>
+                            <div class="form-group">
+                                <label for="groupDescription">Description <span class="required">*</span></label>
+                                <textarea id="groupDescription" name="groupDescription" placeholder="Describe your research group, its mission, and research areas..." required rows="6"></textarea>
+                            </div>
+                            <div class="form-group">
+                                <label for="groupWebsite">Website</label>
+                                <input type="url" id="groupWebsite" name="groupWebsite" placeholder="https://example.com">
+                            </div>
+                            <div class="form-group">
+                                <label for="groupResearchAreas">Research Areas</label>
+                                <div class="tags-input">
+                                    <input type="text" id="groupResearchAreas" placeholder="Add research areas... (press Enter to add)">
+                                    <div class="tag-list" id="researchAreasList"></div>
+                                </div>
+                            </div>
+                            <div class="form-group">
+                                <label for="groupLogo">Group Logo/Image</label>
+                                <input type="file" id="groupLogo" name="groupLogo" accept=".jpg,.jpeg,.png">
+                            </div>
+                            <div class="form-actions">
+                                <button type="button" class="btn-secondary" onclick="closeCreateGroupModal()">Cancel</button>
+                                <button type="submit" class="btn-primary">
+                                    <i class="fas fa-plus"></i>
+                                    Create Group
+                                </button>
+                            </div>
+                        </form>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Help Button -->
+        <button class="help-button">
+            <i class="fas fa-question"></i>
+        </button>
+        
+        <!-- Include Help Center Popup -->
+        <div data-include="../components/help-center-popup.html"></div>
+    </div>
+
+    <script src="../js/include.js"></script>
+    <script src="../js/header-dropdown.js"></script>
+    <script src="../js/help-center.js"></script>
+    <script src="../js/research-groups.js"></script>
+</body>
+</html>

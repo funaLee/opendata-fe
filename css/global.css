@@ -1,3 +1,5 @@
+/* Update to global.css - Add Community Page Import */
+
 @import url('https://fonts.googleapis.com/css2?family=Afacad:wght@400;500;600;700&display=swap');
 
 /* Base */
@@ -24,13 +26,14 @@
 @import './components/tag-input-popup.css';
 @import './components/author-multiselect.css';
 
-/*page*/
+/* Pages */
 @import './pages/about.css';
 @import './pages/dataset.css';
 @import './pages/upload-dataset.css';
 @import './pages/map.css';
 @import './pages/paper.css';
 @import './pages/benchmark.css';
+@import './pages/community.css'; /* Add community page */
 /* @import './pages/hot-topic.css'; */
 /* @import './pages/upload-tag.css'; */
 
