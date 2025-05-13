@@ -22,6 +22,7 @@
 @import './components/enhanced-select.css';
 @import './components/custom-popup.css';
 @import './components/tag-input-popup.css';
+@import './components/author-multiselect.css';
 
 /*page*/
 @import './pages/about.css';

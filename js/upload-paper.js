@@ -15,11 +15,29 @@ document.addEventListener('DOMContentLoaded', function() {
   const backButton = document.getElementById('backButton');
   const submitButton = document.querySelector('.submit-button');
 
+  // Author multiselect elements
+  const authorMultiselect = document.querySelector('#paperAuthors').closest('.multiselect-wrapper');
+  const authorTrigger = authorMultiselect.querySelector('.multiselect-trigger');
+  const authorDropdown = authorMultiselect.querySelector('.multiselect-dropdown');
+  const selectedAuthorsContainer = document.getElementById('selectedAuthors');
+  const multiSelectLabel = authorTrigger.querySelector('.multiselect-label');
+
+  // New author modal elements
+  const newAuthorModal = document.getElementById('newAuthorModal');
+  const newAuthorNameInput = document.getElementById('newAuthorName');
+  const newAuthorTitleInput = document.getElementById('newAuthorTitle');
+  const newAuthorInstitutionInput = document.getElementById('newAuthorInstitution');
+  const addNewAuthorButton = document.getElementById('addNewAuthor');
+  const cancelNewAuthorButton = document.getElementById('cancelNewAuthor');
+
+  // Initialize author multiselect
+  initializeAuthorMultiselect();
+
   // Enhanced back button functionality
   backButton.addEventListener('click', function() {
     // Check if form has been modified
     const hasChanges = paperTitleInput.value.trim() || 
-                      paperAuthorsInput.value.trim() || 
+                      getSelectedAuthors().length > 0 || 
                       paperAbstractInput.value.trim() ||
                       paperUrlInput.value.trim() ||
                       paperDoiInput.value.trim() ||
@@ -52,7 +70,7 @@ document.addEventListener('DOMContentLoaded', function() {
     // Save current form state
     const formState = {
       paperTitle: paperTitleInput.value,
-      paperAuthors: Array.from(paperAuthorsInput.selectedOptions).map(option => option.value),
+      paperAuthors: getSelectedAuthors(),
       paperAbstract: paperAbstractInput.value,
       paperUrl: paperUrlInput.value,
       paperDoi: paperDoiInput.value,
@@ -77,8 +95,8 @@ document.addEventListener('DOMContentLoaded', function() {
           
           // Restore selected authors
           if (formState.paperAuthors && Array.isArray(formState.paperAuthors)) {
-            Array.from(paperAuthorsInput.options).forEach(option => {
-              option.selected = formState.paperAuthors.includes(option.value);
+            formState.paperAuthors.forEach(author => {
+              selectAuthor(author.value, author.text);
             });
           }
           
@@ -101,11 +119,6 @@ document.addEventListener('DOMContentLoaded', function() {
 
   // Real-time validation with improved UX
   paperTitleInput.addEventListener('input', function() {
-    validateField(this);
-    updateButtonStates();
-  });
-
-  paperAuthorsInput.addEventListener('change', function() {
     validateField(this);
     updateButtonStates();
   });
@@ -172,12 +185,7 @@ document.addEventListener('DOMContentLoaded', function() {
     // Collect form data
     const formData = {
       title: paperTitleInput.value.trim(),
-      authors: Array.from(paperAuthorsInput.selectedOptions)
-        .filter(option => !option.disabled)
-        .map(option => ({
-          id: option.value,
-          name: option.textContent
-        })),
+      authors: getSelectedAuthors(),
       abstract: paperAbstractInput.value.trim(),
       url: paperUrlInput.value.trim(),
       doi: paperDoiInput.value.trim(),
@@ -209,6 +217,7 @@ document.addEventListener('DOMContentLoaded', function() {
       // Reset form
       form.reset();
       clearAllValidation();
+      clearSelectedAuthors();
       
       // Re-enable form
       setFormDisabled(false);
@@ -222,7 +231,7 @@ document.addEventListener('DOMContentLoaded', function() {
         sessionStorage.setItem('newlyCreatedPaper', JSON.stringify({
           id: 'p_' + Date.now(), // Generate temporary ID
           title: formData.title,
-          authors: formData.authors.map(author => author.name).join(', '),
+          authors: formData.authors.map(author => author.text).join(', '),
           year: formData.year,
           timestamp: Date.now()
         }));
@@ -234,6 +243,238 @@ document.addEventListener('DOMContentLoaded', function() {
         }, 1500);
       }
     }, 1500);
+  });
+
+  // Initialize author multiselect functionality
+  function initializeAuthorMultiselect() {
+    // Toggle dropdown
+    authorTrigger.addEventListener('click', function() {
+      authorDropdown.classList.toggle('active');
+      authorTrigger.focus();
+    });
+
+    // Handle dropdown item selection
+    authorDropdown.addEventListener('click', function(e) {
+      const item = e.target.closest('.multiselect-dropdown-item');
+      if (!item) return;
+
+      const value = item.dataset.value;
+      
+      if (value === 'add_new') {
+        // Open new author modal
+        openNewAuthorModal();
+        return;
+      }
+
+      const checkbox = item.querySelector('input[type="checkbox"]');
+      const label = item.querySelector('label');
+      
+      if (checkbox.checked) {
+        // Unselect author
+        checkbox.checked = false;
+        item.classList.remove('selected');
+        unselectAuthor(value);
+      } else {
+        // Select author
+        checkbox.checked = true;
+        item.classList.add('selected');
+        selectAuthor(value, label.textContent);
+      }
+      
+      updateAuthorMultiselectDisplay();
+      updateButtonStates();
+      
+      // Don't close dropdown to allow multiple selections
+      e.stopPropagation();
+    });
+
+    // Close dropdown when clicking outside
+    document.addEventListener('click', function(e) {
+      if (!authorMultiselect.contains(e.target)) {
+        authorDropdown.classList.remove('active');
+      }
+    });
+
+    // Handle keyboard navigation
+    authorTrigger.addEventListener('keydown', function(e) {
+      if (e.key === 'Enter' || e.key === ' ') {
+        e.preventDefault();
+        authorDropdown.classList.toggle('active');
+      } else if (e.key === 'ArrowDown') {
+        e.preventDefault();
+        authorDropdown.classList.add('active');
+        const firstItem = authorDropdown.querySelector('.multiselect-dropdown-item');
+        if (firstItem) firstItem.focus();
+      }
+    });
+  }
+
+  // Author selection management
+  function selectAuthor(value, text) {
+    // Check if already selected
+    if (getSelectedAuthors().some(author => author.value === value)) {
+      return;
+    }
+    
+    // Create selected author tag
+    const tag = document.createElement('div');
+    tag.className = 'selected-tag';
+    tag.dataset.value = value;
+    tag.innerHTML = `
+      <span>${text}</span>
+      <span class="tag-remove" data-value="${value}">&times;</span>
+    `;
+    
+    selectedAuthorsContainer.appendChild(tag);
+    updateAuthorMultiselectDisplay();
+    
+    // Update hidden input value
+    paperAuthorsInput.value = getSelectedAuthors().map(author => author.value).join(',');
+    
+    // Validate field
+    validateField(paperAuthorsInput);
+  }
+
+  function unselectAuthor(value) {
+    const tag = selectedAuthorsContainer.querySelector(`[data-value="${value}"]`);
+    if (tag) {
+      tag.remove();
+    }
+    
+    // Update dropdown checkbox
+    const checkbox = authorDropdown.querySelector(`[data-value="${value}"] input[type="checkbox"]`);
+    if (checkbox) {
+      checkbox.checked = false;
+      checkbox.closest('.multiselect-dropdown-item').classList.remove('selected');
+    }
+    
+    updateAuthorMultiselectDisplay();
+    
+    // Update hidden input value
+    paperAuthorsInput.value = getSelectedAuthors().map(author => author.value).join(',');
+    
+    // Validate field
+    validateField(paperAuthorsInput);
+  }
+
+  function getSelectedAuthors() {
+    const tags = selectedAuthorsContainer.querySelectorAll('.selected-tag');
+    return Array.from(tags).map(tag => ({
+      value: tag.dataset.value,
+      text: tag.querySelector('span').textContent
+    }));
+  }
+
+  function clearSelectedAuthors() {
+    selectedAuthorsContainer.innerHTML = '';
+    
+    // Uncheck all checkboxes
+    const checkboxes = authorDropdown.querySelectorAll('input[type="checkbox"]');
+    checkboxes.forEach(checkbox => {
+      checkbox.checked = false;
+      checkbox.closest('.multiselect-dropdown-item').classList.remove('selected');
+    });
+    
+    updateAuthorMultiselectDisplay();
+    paperAuthorsInput.value = '';
+  }
+
+  function updateAuthorMultiselectDisplay() {
+    const selectedCount = getSelectedAuthors().length;
+    
+    if (selectedCount === 0) {
+      multiSelectLabel.textContent = 'Chọn tác giả cho bài báo';
+      multiSelectLabel.className = 'multiselect-label';
+    } else if (selectedCount === 1) {
+      const author = getSelectedAuthors()[0];
+      multiSelectLabel.textContent = author.text;
+      multiSelectLabel.className = 'multiselect-label';
+    } else {
+      multiSelectLabel.textContent = `${selectedCount} tác giả đã chọn`;
+      multiSelectLabel.className = 'multiselect-label';
+    }
+  }
+
+  // Remove author tag event handler
+  selectedAuthorsContainer.addEventListener('click', function(e) {
+    if (e.target.classList.contains('tag-remove')) {
+      const value = e.target.dataset.value;
+      unselectAuthor(value);
+      updateButtonStates();
+    }
+  });
+
+  // New Author Modal Functions
+  function openNewAuthorModal() {
+    newAuthorModal.style.display = 'flex';
+    newAuthorNameInput.focus();
+    clearNewAuthorForm();
+  }
+
+  function closeNewAuthorModal() {
+    newAuthorModal.style.display = 'none';
+    clearNewAuthorForm();
+  }
+
+  function clearNewAuthorForm() {
+    newAuthorNameInput.value = '';
+    newAuthorTitleInput.value = '';
+    newAuthorInstitutionInput.value = '';
+    newAuthorNameInput.classList.remove('invalid', 'valid');
+  }
+
+  // Modal event handlers
+  cancelNewAuthorButton.addEventListener('click', closeNewAuthorModal);
+  
+  newAuthorModal.addEventListener('click', function(e) {
+    if (e.target === newAuthorModal) {
+      closeNewAuthorModal();
+    }
+  });
+
+  // Add new author functionality
+  addNewAuthorButton.addEventListener('click', function() {
+    const name = newAuthorNameInput.value.trim();
+    const title = newAuthorTitleInput.value.trim();
+    const institution = newAuthorInstitutionInput.value.trim();
+    
+    if (!name) {
+      markInvalid(newAuthorNameInput, 'Tên tác giả là bắt buộc');
+      return;
+    }
+    
+    // Create author display text
+    let displayText = name;
+    if (title) {
+      displayText = `${title} ${name}`;
+    }
+    
+    // Generate unique ID
+    const authorId = 'au_' + Date.now() + '_' + Math.random().toString(36).substr(2, 5);
+    
+    // Add to dropdown
+    const newItem = document.createElement('div');
+    newItem.className = 'multiselect-dropdown-item';
+    newItem.dataset.value = authorId;
+    newItem.innerHTML = `
+      <input type="checkbox" id="author_${authorId}">
+      <label for="author_${authorId}">${displayText}</label>
+    `;
+    
+    // Insert before "Add new author" item
+    const addNewItem = authorDropdown.querySelector('[data-value="add_new"]');
+    authorDropdown.insertBefore(newItem, addNewItem);
+    
+    // Auto-select the new author
+    newItem.querySelector('input[type="checkbox"]').checked = true;
+    newItem.classList.add('selected');
+    selectAuthor(authorId, displayText);
+    
+    // Close modal
+    closeNewAuthorModal();
+    
+    // Show success message
+    showSubmissionMessage(true, `Đã thêm tác giả: ${displayText}`);
   });
 
   // Enhanced validation with more specific rules
@@ -255,8 +496,8 @@ document.addEventListener('DOMContentLoaded', function() {
       markValid(paperTitleInput);
     }
     
-    // Validate authors (multi-select)
-    const selectedAuthors = Array.from(paperAuthorsInput.selectedOptions).filter(option => !option.disabled);
+    // Validate authors
+    const selectedAuthors = getSelectedAuthors();
     if (selectedAuthors.length === 0) {
       markInvalid(paperAuthorsInput, 'Vui lòng chọn ít nhất một tác giả');
       isValid = false;
@@ -361,11 +602,11 @@ document.addEventListener('DOMContentLoaded', function() {
         markValid(field);
       }
     } else if (field === paperAuthorsInput) {
-      const selectedAuthors = Array.from(field.selectedOptions).filter(option => !option.disabled);
+      const selectedAuthors = getSelectedAuthors();
       if (selectedAuthors.length === 0) {
-        clearValidation(field);
+        markInvalid(authorTrigger, 'Vui lòng chọn ít nhất một tác giả');
       } else {
-        markValid(field);
+        markValid(authorTrigger);
       }
     } else if (field === paperAbstractInput) {
       const value = field.value.trim();
@@ -431,19 +672,26 @@ document.addEventListener('DOMContentLoaded', function() {
     element.classList.add('invalid');
     element.classList.remove('valid');
     
-    // Add has-error class to form group
-    const formGroup = element.closest('.form-group');
-    if (formGroup) {
-      formGroup.classList.add('has-error');
-      formGroup.classList.remove('has-success');
+    // Add has-error class to multiselect wrapper if it's the author field
+    if (element === authorTrigger) {
+      authorMultiselect.classList.add('has-error');
+      authorMultiselect.classList.remove('has-success');
+    } else {
+      // Add has-error class to form group
+      const formGroup = element.closest('.form-group');
+      if (formGroup) {
+        formGroup.classList.add('has-error');
+        formGroup.classList.remove('has-success');
+      }
     }
     
     // Show error message
-    let errorElement = element.parentElement.querySelector('.error-message');
+    const parentElement = element === authorTrigger ? authorMultiselect : element.parentElement;
+    let errorElement = parentElement.querySelector('.error-message');
     if (!errorElement) {
       errorElement = document.createElement('div');
       errorElement.className = 'error-message';
-      element.parentElement.appendChild(errorElement);
+      parentElement.appendChild(errorElement);
     }
     errorElement.textContent = message;
   }
@@ -452,15 +700,22 @@ document.addEventListener('DOMContentLoaded', function() {
     element.classList.remove('invalid');
     element.classList.add('valid');
     
-    // Add has-success class to form group
-    const formGroup = element.closest('.form-group');
-    if (formGroup) {
-      formGroup.classList.remove('has-error');
-      formGroup.classList.add('has-success');
+    // Add has-success class to multiselect wrapper if it's the author field
+    if (element === authorTrigger) {
+      authorMultiselect.classList.remove('has-error');
+      authorMultiselect.classList.add('has-success');
+    } else {
+      // Add has-success class to form group
+      const formGroup = element.closest('.form-group');
+      if (formGroup) {
+        formGroup.classList.remove('has-error');
+        formGroup.classList.add('has-success');
+      }
     }
     
     // Remove error message
-    const errorElement = element.parentElement.querySelector('.error-message');
+    const parentElement = element === authorTrigger ? authorMultiselect : element.parentElement;
+    const errorElement = parentElement.querySelector('.error-message');
     if (errorElement) {
       errorElement.remove();
     }
@@ -469,21 +724,27 @@ document.addEventListener('DOMContentLoaded', function() {
   function clearValidation(element) {
     element.classList.remove('invalid', 'valid');
     
-    // Remove classes from form group
-    const formGroup = element.closest('.form-group');
-    if (formGroup) {
-      formGroup.classList.remove('has-error', 'has-success');
+    // Remove classes from multiselect wrapper if it's the author field
+    if (element === authorTrigger) {
+      authorMultiselect.classList.remove('has-error', 'has-success');
+    } else {
+      // Remove classes from form group
+      const formGroup = element.closest('.form-group');
+      if (formGroup) {
+        formGroup.classList.remove('has-error', 'has-success');
+      }
     }
     
     // Remove error message
-    const errorElement = element.parentElement.querySelector('.error-message');
+    const parentElement = element === authorTrigger ? authorMultiselect : element.parentElement;
+    const errorElement = parentElement.querySelector('.error-message');
     if (errorElement) {
       errorElement.remove();
     }
   }
 
   function clearAllValidation() {
-    [paperTitleInput, paperAuthorsInput, paperAbstractInput, paperUrlInput, 
+    [paperTitleInput, authorTrigger, paperAbstractInput, paperUrlInput, 
      paperDoiInput, publicationSelect, areaSelect, publicationYearInput, 
      paperKeywordsInput].forEach(field => {
       if (field) clearValidation(field);
@@ -492,9 +753,9 @@ document.addEventListener('DOMContentLoaded', function() {
 
   function updateButtonStates() {
     const hasContent = paperTitleInput.value.trim() || 
-                      paperAuthorsInput.selectedOptions.length > 0 || 
+                      getSelectedAuthors().length > 0 || 
                       paperAbstractInput.value.trim();
-    const hasValidInput = !document.querySelector('.form-group .invalid');
+    const hasValidInput = !document.querySelector('.form-group .invalid, .multiselect-wrapper .invalid');
     
     // Update submit button state based on validation
     submitButton.disabled = !hasValidInput;
@@ -508,11 +769,14 @@ document.addEventListener('DOMContentLoaded', function() {
   }
 
   function setFormDisabled(disabled) {
-    [paperTitleInput, paperAuthorsInput, paperAbstractInput, paperUrlInput, 
+    [paperTitleInput, paperAbstractInput, paperUrlInput, 
      paperDoiInput, publicationSelect, areaSelect, publicationYearInput, 
      paperKeywordsInput].forEach(field => {
       if (field) field.disabled = disabled;
     });
+    
+    // Disable author multiselect
+    authorMultiselect.style.pointerEvents = disabled ? 'none' : 'auto';
     
     backButton.disabled = disabled;
     submitButton.disabled = disabled;
@@ -591,6 +855,17 @@ document.addEventListener('DOMContentLoaded', function() {
 
   // Initial validation state
   updateButtonStates();
+
+  // Monitor author selection changes
+  observer = new MutationObserver(function(mutations) {
+    mutations.forEach(function(mutation) {
+      if (mutation.type === 'childList') {
+        updateButtonStates();
+      }
+    });
+  });
+  
+  observer.observe(selectedAuthorsContainer, { childList: true });
 });
 
 // Global function to handle navigation from dataset upload form

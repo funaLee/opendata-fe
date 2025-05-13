@@ -7,6 +7,7 @@
     <link href="../css/global.css" rel="stylesheet">
     <link href="../css/pages/upload-paper.css" rel="stylesheet">
     <link href="../css/components/custom-select.css" rel="stylesheet">
+    <link rel="stylesheet" href="../css/components/author-multiselect.css">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.4/css/all.min.css">
 </head>
 <body>
@@ -38,22 +39,71 @@
                 <div class="form-row">
                     <div class="form-group full-width">
                         <label for="paperAuthors">Tác giả <span class="required">*</span></label>
-                        <div class="author-select-container">
-                            <select id="paperAuthors" multiple required>
-                                <option value="" disabled>Chọn tác giả cho bài báo</option>
-                                <option value="au_nguyen_van_a">Dr. Nguyễn Văn A</option>
-                                <option value="au_tran_thi_b">Dr. Trần Thị B</option>
-                                <option value="au_pham_van_c">Prof. Phạm Văn C</option>
-                                <option value="au_le_thi_d">Dr. Lê Thị D</option>
-                                <option value="au_hoang_van_e">Prof. Hoàng Văn E</option>
-                                <option value="au_vo_thi_f">Dr. Võ Thị F</option>
-                                <option value="au_bui_van_g">Dr. Bùi Văn G</option>
-                                <option value="au_john_doe">Prof. John Doe</option>
-                                <option value="au_jane_smith">Dr. Jane Smith</option>
-                                <option value="au_michael_johnson">Dr. Michael Johnson</option>
-                                <option value="au_sarah_wilson">Prof. Sarah Wilson</option>
-                                <option value="au_david_brown">Dr. David Brown</option>
-                            </select>
+                        <div class="multiselect-wrapper">
+                            <input type="hidden" id="paperAuthors" name="paperAuthors" required>
+                            <div class="multiselect-trigger" tabindex="0">
+                                <span class="multiselect-label">Chọn tác giả cho bài báo</span>
+                                <div class="select-arrow">
+                                    <i class="fas fa-chevron-down"></i>
+                                </div>
+                            </div>
+                            <div class="multiselect-dropdown">
+                                <div class="multiselect-dropdown-item" data-value="au_nguyen_van_a">
+                                    <input type="checkbox" id="author_au_nguyen_van_a">
+                                    <label for="author_au_nguyen_van_a">Dr. Nguyễn Văn A</label>
+                                </div>
+                                <div class="multiselect-dropdown-item" data-value="au_tran_thi_b">
+                                    <input type="checkbox" id="author_au_tran_thi_b">
+                                    <label for="author_au_tran_thi_b">Dr. Trần Thị B</label>
+                                </div>
+                                <div class="multiselect-dropdown-item" data-value="au_pham_van_c">
+                                    <input type="checkbox" id="author_au_pham_van_c">
+                                    <label for="author_au_pham_van_c">Prof. Phạm Văn C</label>
+                                </div>
+                                <div class="multiselect-dropdown-item" data-value="au_le_thi_d">
+                                    <input type="checkbox" id="author_au_le_thi_d">
+                                    <label for="author_au_le_thi_d">Dr. Lê Thị D</label>
+                                </div>
+                                <div class="multiselect-dropdown-item" data-value="au_hoang_van_e">
+                                    <input type="checkbox" id="author_au_hoang_van_e">
+                                    <label for="author_au_hoang_van_e">Prof. Hoàng Văn E</label>
+                                </div>
+                                <div class="multiselect-dropdown-item" data-value="au_vo_thi_f">
+                                    <input type="checkbox" id="author_au_vo_thi_f">
+                                    <label for="author_au_vo_thi_f">Dr. Võ Thị F</label>
+                                </div>
+                                <div class="multiselect-dropdown-item" data-value="au_bui_van_g">
+                                    <input type="checkbox" id="author_au_bui_van_g">
+                                    <label for="author_au_bui_van_g">Dr. Bùi Văn G</label>
+                                </div>
+                                <div class="multiselect-dropdown-item" data-value="au_john_doe">
+                                    <input type="checkbox" id="author_au_john_doe">
+                                    <label for="author_au_john_doe">Prof. John Doe</label>
+                                </div>
+                                <div class="multiselect-dropdown-item" data-value="au_jane_smith">
+                                    <input type="checkbox" id="author_au_jane_smith">
+                                    <label for="author_au_jane_smith">Dr. Jane Smith</label>
+                                </div>
+                                <div class="multiselect-dropdown-item" data-value="au_michael_johnson">
+                                    <input type="checkbox" id="author_au_michael_johnson">
+                                    <label for="author_au_michael_johnson">Dr. Michael Johnson</label>
+                                </div>
+                                <div class="multiselect-dropdown-item" data-value="au_sarah_wilson">
+                                    <input type="checkbox" id="author_au_sarah_wilson">
+                                    <label for="author_au_sarah_wilson">Prof. Sarah Wilson</label>
+                                </div>
+                                <div class="multiselect-dropdown-item" data-value="au_david_brown">
+                                    <input type="checkbox" id="author_au_david_brown">
+                                    <label for="author_au_david_brown">Dr. David Brown</label>
+                                </div>
+                                <div class="multiselect-dropdown-item add-new-author" data-value="add_new">
+                                    <span class="add-new-icon"><i class="fas fa-plus-circle"></i></span>
+                                    <span>Thêm tác giả mới</span>
+                                </div>
+                            </div>
+                            <div class="selected-tags" id="selectedAuthors">
+                                <!-- Selected authors will appear here -->
+                            </div>
                         </div>
                         <div class="field-hint">Chọn các tác giả của bài báo. Nếu tác giả chưa có trong danh sách, click "Thêm tác giả mới"</div>
                     </div>
@@ -142,6 +192,40 @@
                     </button>
                 </div>
             </form>
+        </div>
+
+        <!-- New Author Modal -->
+        <div class="popup-overlay" id="newAuthorModal" style="display: none;">
+            <div class="entry-popup">
+                <div class="entry-popup-header">
+                    <h3 class="entry-popup-title">Thêm Tác Giả Mới</h3>
+                    <p class="entry-popup-subtitle">Vui lòng nhập thông tin tác giả để thêm vào danh sách</p>
+                </div>
+                <div class="entry-popup-content">
+                    <div class="entry-form-group">
+                        <label for="newAuthorName">Tên tác giả <span class="required">*</span></label>
+                        <input type="text" id="newAuthorName" placeholder="Ví dụ: Prof. John Smith" required>
+                    </div>
+                    <div class="entry-form-group">
+                        <label for="newAuthorTitle">Chức danh</label>
+                        <input type="text" id="newAuthorTitle" placeholder="Ví dụ: Dr., Prof., Mr., Ms.">
+                    </div>
+                    <div class="entry-form-group">
+                        <label for="newAuthorInstitution">Tổ chức (tùy chọn)</label>
+                        <input type="text" id="newAuthorInstitution" placeholder="Ví dụ: Stanford University">
+                    </div>
+                </div>
+                <div class="entry-popup-actions">
+                    <button type="button" class="entry-popup-button back" id="cancelNewAuthor">
+                        <i class="fas fa-times"></i>
+                        Hủy
+                    </button>
+                    <button type="button" class="entry-popup-button submit" id="addNewAuthor">
+                        <i class="fas fa-plus"></i>
+                        Thêm tác giả
+                    </button>
+                </div>
+            </div>
         </div>
 
         <!-- Help Button -->

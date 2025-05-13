@@ -1,0 +1,226 @@
+/* Author Multiselect Specific Styles */
+
+/* Author multiselect wrapper */
+.form-group:has(#paperAuthors) .multiselect-wrapper {
+  background-color: rgba(90, 107, 255, 0.02);
+  padding: 0;
+  border-radius: var(--radius-md);
+  border: 1px solid rgba(90, 107, 255, 0.1);
+}
+
+/* Author multiselect trigger styling */
+#paperAuthors + .multiselect-wrapper .multiselect-trigger {
+  padding: 15px;
+  border: none;
+  background-color: white;
+  box-shadow: var(--shadow-sm);
+}
+
+/* Selected authors display */
+#selectedAuthors {
+  margin-top: 10px;
+  padding: 10px 15px;
+  background-color: var(--bg-light);
+  border-radius: 0 0 var(--radius-md) var(--radius-md);
+}
+
+#selectedAuthors:empty {
+  display: none;
+}
+
+/* Validation states for author field */
+.form-group:has(#paperAuthors) .multiselect-wrapper.has-error .multiselect-trigger {
+  border-color: #ff5c5c;
+  box-shadow: 0 0 0 3px rgba(255, 92, 92, 0.1);
+  background-color: rgba(255, 92, 92, 0.02);
+}
+
+.form-group:has(#paperAuthors) .multiselect-wrapper.has-success .multiselect-trigger {
+  border-color: #4caf50;
+  box-shadow: 0 0 0 3px rgba(76, 175, 80, 0.1);
+  background-color: rgba(76, 175, 80, 0.02);
+}
+
+/* Add new author item styling */
+.multiselect-dropdown-item.add-new-author {
+  border-top: 1px solid var(--primary-light);
+  background-color: rgba(90, 107, 255, 0.05);
+  color: var(--primary-color);
+  font-weight: 600;
+}
+
+.multiselect-dropdown-item.add-new-author:hover {
+  background-color: rgba(90, 107, 255, 0.1);
+}
+
+.add-new-icon {
+  color: var(--primary-color);
+  margin-right: 8px;
+}
+
+/* New Author Modal Styles */
+.popup-overlay {
+  position: fixed;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background-color: rgba(0, 0, 0, 0.5);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  z-index: 2000;
+  animation: fadeIn 0.2s ease;
+}
+
+.entry-popup {
+  background: white;
+  border-radius: 20px;
+  width: 90%;
+  max-width: 500px;
+  display: flex;
+  flex-direction: column;
+  animation: zoomIn 0.3s ease;
+  box-shadow: 0 10px 25px rgba(0, 0, 0, 0.15);
+  overflow: hidden;
+}
+
+.entry-popup-header {
+  padding: 25px 30px;
+  text-align: center;
+  border-bottom: 1px solid rgba(90, 107, 255, 0.1);
+  background: linear-gradient(135deg, #f8f9ff, #ffffff);
+}
+
+.entry-popup-title {
+  color: var(--primary-color);
+  font-size: 24px;
+  font-weight: 700;
+  margin-bottom: 10px;
+}
+
+.entry-popup-subtitle {
+  color: var(--text-light);
+  font-size: 14px;
+  line-height: 1.5;
+}
+
+.entry-popup-content {
+  padding: 25px 30px;
+}
+
+.entry-form-group {
+  margin-bottom: 20px;
+}
+
+.entry-form-group label {
+  display: block;
+  color: var(--primary-color);
+  font-weight: 600;
+  margin-bottom: 10px;
+  font-size: 16px;
+}
+
+.entry-form-group input {
+  width: 100%;
+  padding: 12px 15px;
+  border-radius: var(--radius-md);
+  border: 1px solid rgba(90, 107, 255, 0.2);
+  background-color: white;
+  font-size: 15px;
+  transition: all 0.3s ease;
+}
+
+.entry-form-group input:focus {
+  border-color: var(--primary-color);
+  box-shadow: 0 0 0 2px rgba(90, 107, 255, 0.1);
+  outline: none;
+}
+
+.entry-popup-actions {
+  display: flex;
+  gap: 15px;
+  padding: 0 30px 25px;
+}
+
+.entry-popup-button {
+  flex: 1;
+  padding: 12px 20px;
+  border-radius: 25px;
+  font-weight: 600;
+  font-size: 15px;
+  cursor: pointer;
+  transition: all 0.3s ease;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 8px;
+  border: 2px solid transparent;
+}
+
+.entry-popup-button.back {
+  background-color: white;
+  color: var(--primary-color);
+  border-color: var(--primary-light);
+}
+
+.entry-popup-button.back:hover {
+  background-color: var(--primary-light);
+  border-color: var(--primary-color);
+}
+
+.entry-popup-button.submit {
+  background: linear-gradient(135deg, var(--primary-color), var(--primary-dark));
+  color: white;
+}
+
+.entry-popup-button.submit:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 4px 12px rgba(90, 107, 255, 0.2);
+}
+
+/* Animations */
+@keyframes fadeIn {
+  from { opacity: 0; }
+  to { opacity: 1; }
+}
+
+@keyframes zoomIn {
+  from {
+    opacity: 0;
+    transform: scale(0.95);
+  }
+  to {
+    opacity: 1;
+    transform: scale(1);
+  }
+}
+
+/* Enhanced dropdown positioning for author field */
+#paperAuthors + .multiselect-wrapper .multiselect-dropdown {
+  top: 100%;
+  max-height: 250px;
+  overflow-y: auto;
+}
+
+/* Responsive adjustments */
+@media (max-width: 768px) {
+  .entry-popup {
+    width: 95%;
+  }
+  
+  .entry-popup-header,
+  .entry-popup-content,
+  .entry-popup-actions {
+    padding-left: 20px;
+    padding-right: 20px;
+  }
+  
+  .entry-popup-title {
+    font-size: 20px;
+  }
+  
+  #selectedAuthors {
+    padding: 8px 12px;
+  }
+}
