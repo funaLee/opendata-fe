@@ -1,0 +1,678 @@
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Hot Topics - OpenData</title>
+    <link href="../css/global.css" rel="stylesheet">
+    <link href="../css/pages/hot-topic.css" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.4/css/all.min.css">
+</head>
+<body>
+    <div class="container">
+        <!-- HEADER -->
+        <div data-include="../components/header.html"></div>
+
+        <!-- Overlay -->
+        <div id="overlay" class="overlay"></div>
+        
+        <!-- Sidebar -->
+        <div data-include="../components/slidebar.html"></div>
+
+        <!-- Main Content -->
+        <div class="hot-topic-container">
+            <!-- Hero Section -->
+            <div class="hot-topic-hero">
+                <div class="hero-content">
+                    <h1 class="hero-title">Chủ đề nóng hôm nay</h1>
+                    <p class="hero-subtitle">
+                        Khám phá những chủ đề nghiên cứu đang được quan tâm nhiều nhất trong cộng đồng AI và Machine Learning
+                    </p>
+                    <div class="hero-stats">
+                        <div class="stat-item">
+                            <div class="stat-number" id="hotPapersCount">247</div>
+                            <div class="stat-label">Hot Papers Today</div>
+                        </div>
+                        <div class="stat-item">
+                            <div class="stat-number" id="trendingTopicsCount">12</div>
+                            <div class="stat-label">Trending Topics</div>
+                        </div>
+                        <div class="stat-item">
+                            <div class="stat-number" id="newBreakthroughsCount">5</div>
+                            <div class="stat-label">New Breakthroughs</div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Trending Now Section -->
+            <div class="trending-now-section">
+                <h2 class="section-title">
+                    <span class="title-icon">
+                        <i class="fas fa-fire"></i>
+                    </span>
+                    Trending Now
+                    <span class="live-indicator">
+                        <span class="pulse-dot"></span>
+                        Live
+                    </span>
+                </h2>
+                
+                <div class="trending-cards">
+                    <div class="trending-card featured" data-rank="1">
+                        <div class="card-header">
+                            <div class="trend-rank">#1</div>
+                            <div class="trend-change positive">
+                                <i class="fas fa-arrow-up"></i>
+                                +234%
+                            </div>
+                        </div>
+                        <div class="card-content">
+                            <h3 class="topic-title">Large Language Models & GPT-4</h3>
+                            <p class="topic-description">
+                                Advances trong architectures mới, training techniques và applications của large language models
+                            </p>
+                            <div class="topic-metrics">
+                                <span class="metric">
+                                    <i class="fas fa-eye"></i>
+                                    1.2M views
+                                </span>
+                                <span class="metric">
+                                    <i class="fas fa-file-alt"></i>
+                                    145 papers
+                                </span>
+                                <span class="metric">
+                                    <i class="fas fa-comments"></i>
+                                    3.2K discussions
+                                </span>
+                            </div>
+                            <div class="topic-tags">
+                                <span class="tag">GPT-4</span>
+                                <span class="tag">LLM</span>
+                                <span class="tag">Transformer</span>
+                                <span class="tag">Reasoning</span>
+                            </div>
+                        </div>
+                        <div class="card-footer">
+                            <a href="#" class="explore-link">
+                                Khám phá <i class="fas fa-arrow-right"></i>
+                            </a>
+                        </div>
+                    </div>
+
+                    <div class="trending-card" data-rank="2">
+                        <div class="card-header">
+                            <div class="trend-rank">#2</div>
+                            <div class="trend-change positive">
+                                <i class="fas fa-arrow-up"></i>
+                                +187%
+                            </div>
+                        </div>
+                        <div class="card-content">
+                            <h3 class="topic-title">Diffusion Models & Generative AI</h3>
+                            <p class="topic-description">
+                                Breakthroughs trong image và video generation với DALL-E 3, Midjourney V6 và Stable Diffusion
+                            </p>
+                            <div class="topic-metrics">
+                                <span class="metric">
+                                    <i class="fas fa-eye"></i>
+                                    890K views
+                                </span>
+                                <span class="metric">
+                                    <i class="fas fa-file-alt"></i>
+                                    98 papers
+                                </span>
+                                <span class="metric">
+                                    <i class="fas fa-comments"></i>
+                                    2.1K discussions
+                                </span>
+                            </div>
+                            <div class="topic-tags">
+                                <span class="tag">Diffusion</span>
+                                <span class="tag">DALL-E 3</span>
+                                <span class="tag">Image Generation</span>
+                                <span class="tag">GAN</span>
+                            </div>
+                        </div>
+                        <div class="card-footer">
+                            <a href="#" class="explore-link">
+                                Khám phá <i class="fas fa-arrow-right"></i>
+                            </a>
+                        </div>
+                    </div>
+
+                    <div class="trending-card" data-rank="3">
+                        <div class="card-header">
+                            <div class="trend-rank">#3</div>
+                            <div class="trend-change positive">
+                                <i class="fas fa-arrow-up"></i>
+                                +156%
+                            </div>
+                        </div>
+                        <div class="card-content">
+                            <h3 class="topic-title">Multimodal AI & Vision-Language Models</h3>
+                            <p class="topic-description">
+                                Integration của computer vision và natural language processing trong unified models
+                            </p>
+                            <div class="topic-metrics">
+                                <span class="metric">
+                                    <i class="fas fa-eye"></i>
+                                    654K views
+                                </span>
+                                <span class="metric">
+                                    <i class="fas fa-file-alt"></i>
+                                    76 papers
+                                </span>
+                                <span class="metric">
+                                    <i class="fas fa-comments"></i>
+                                    1.8K discussions
+                                </span>
+                            </div>
+                            <div class="topic-tags">
+                                <span class="tag">CLIP</span>
+                                <span class="tag">BLIP</span>
+                                <span class="tag">Multimodal</span>
+                                <span class="tag">Vision-Language</span>
+                            </div>
+                        </div>
+                        <div class="card-footer">
+                            <a href="#" class="explore-link">
+                                Khám phá <i class="fas fa-arrow-right"></i>
+                            </a>
+                        </div>
+                    </div>
+
+                    <div class="trending-card" data-rank="4">
+                        <div class="card-header">
+                            <div class="trend-rank">#4</div>
+                            <div class="trend-change positive">
+                                <i class="fas fa-arrow-up"></i>
+                                +143%
+                            </div>
+                        </div>
+                        <div class="card-content">
+                            <h3 class="topic-title">AI Agents & Autonomous Systems</h3>
+                            <p class="topic-description">
+                                Development của intelligent agents và autonomous decision-making systems
+                            </p>
+                            <div class="topic-metrics">
+                                <span class="metric">
+                                    <i class="fas fa-eye"></i>
+                                    523K views
+                                </span>
+                                <span class="metric">
+                                    <i class="fas fa-file-alt"></i>
+                                    64 papers
+                                </span>
+                                <span class="metric">
+                                    <i class="fas fa-comments"></i>
+                                    1.5K discussions
+                                </span>
+                            </div>
+                            <div class="topic-tags">
+                                <span class="tag">Agent</span>
+                                <span class="tag">Autonomous</span>
+                                <span class="tag">Planning</span>
+                                <span class="tag">Decision Making</span>
+                            </div>
+                        </div>
+                        <div class="card-footer">
+                            <a href="#" class="explore-link">
+                                Khám phá <i class="fas fa-arrow-right"></i>
+                            </a>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Breaking News Section -->
+            <div class="breaking-news-section">
+                <h2 class="section-title">
+                    <span class="title-icon">
+                        <i class="fas fa-bolt"></i>
+                    </span>
+                    Breaking News in AI
+                </h2>
+                
+                <div class="news-ticker-container">
+                    <div class="news-ticker">
+                        <div class="news-item">
+                            <span class="news-time">2 hours ago</span>
+                            <span class="news-text">Google announces Gemini Ultra - Outperforms GPT-4 in benchmarks</span>
+                        </div>
+                        <div class="news-item">
+                            <span class="news-time">5 hours ago</span>
+                            <span class="news-text">OpenAI releases GPT-4 Turbo with 128K context window</span>
+                        </div>
+                        <div class="news-item">
+                            <span class="news-time">8 hours ago</span>
+                            <span class="news-text">Meta's LLaMA 2 achieves SOTA performance on code generation</span>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="news-cards">
+                    <div class="news-card featured">
+                        <div class="news-badge breaking">BREAKING</div>
+                        <div class="news-time">2 hours ago</div>
+                        <h3 class="news-title">Google Unveils Gemini: A New Multimodal AI Model</h3>
+                        <p class="news-summary">
+                            Google's Gemini demonstrates unprecedented capabilities in reasoning across text, images, and code, 
+                            potentially reshaping the AI landscape.
+                        </p>
+                        <div class="news-source">
+                            <img src="/assets/images/google-gemini-hottopic.png" alt="Source" class="source-icon">
+                            <span>Google DeepMind Blog</span>
+                        </div>
+                    </div>
+
+                    <div class="news-card">
+                        <div class="news-badge hot">HOT</div>
+                        <div class="news-time">6 hours ago</div>
+                        <h3 class="news-title">OpenAI Introduces Custom GPTs for Enterprise</h3>
+                        <p class="news-summary">
+                            Organizations can now create specialized versions of GPT-4 for specific use cases 
+                            while maintaining data privacy and security.
+                        </p>
+                        <div class="news-source">
+                            <img src="/assets/images/openai.jpeg" alt="Source" class="source-icon">
+                            <span>OpenAI Official</span>
+                        </div>
+                    </div>
+
+                    <div class="news-card">
+                        <div class="news-badge trending">TRENDING</div>
+                        <div class="news-time">12 hours ago</div>
+                        <h3 class="news-title">Breakthrough in Quantum-Classical Hybrid Learning</h3>
+                        <p class="news-summary">
+                            Researchers achieve significant speedup in machine learning tasks by combining 
+                            quantum and classical computing approaches.
+                        </p>
+                        <div class="news-source">
+                            <img src="/assets/images/nature-ai-logo.jpeg" alt="Source" class="source-icon">
+                            <span>Nature AI</span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Hot Datasets Section -->
+            <div class="hot-datasets-section">
+                <h2 class="section-title">
+                    <span class="title-icon">
+                        <i class="fas fa-database"></i>
+                    </span>
+                    Hot Datasets This Week
+                    <div class="section-filter">
+                        <button class="filter-btn active" data-filter="all">All</button>
+                        <button class="filter-btn" data-filter="new">New</button>
+                        <button class="filter-btn" data-filter="popular">Popular</button>
+                        <button class="filter-btn" data-filter="requested">Most Requested</button>
+                    </div>
+                </h2>
+
+                <div class="datasets-carousel" id="hotDatasetsCarousel">
+                    <div class="datasets-scroll">
+                        <div class="dataset-card hot" data-category="new popular">
+                            <div class="dataset-header">
+                                <div class="dataset-badge new">NEW</div>
+                                <div class="dataset-trend">
+                                    <i class="fas fa-arrow-up"></i>
+                                    +892%
+                                </div>
+                            </div>
+                            <!-- <img class="dataset-image" src="/api/placeholder/200/120" alt="LLaVA 1.5 Dataset"> -->
+                            <div class="dataset-info">
+                                <h3 class="dataset-title">LLaVA 1.5 Visual Instruction Dataset</h3>
+                                <p class="dataset-author">By <strong>Microsoft Research</strong></p>
+                                <div class="dataset-stats">
+                                    <span class="stat">
+                                        <i class="fas fa-download"></i>
+                                        15.2K downloads
+                                    </span>
+                                    <span class="stat">
+                                        <i class="fas fa-star"></i>
+                                        4.9/5
+                                    </span>
+                                </div>
+                                <div class="dataset-tags">
+                                    <span class="tag">Multimodal</span>
+                                    <span class="tag">Vision-Language</span>
+                                    <span class="tag">Instruction</span>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="dataset-card hot" data-category="popular requested">
+                            <div class="dataset-header">
+                                <div class="dataset-badge popular">POPULAR</div>
+                                <div class="dataset-trend">
+                                    <i class="fas fa-arrow-up"></i>
+                                    +567%
+                                </div>
+                            </div>
+                            <!-- <img class="dataset-image" src="/api/placeholder/200/120" alt="Code Alpaca Dataset"> -->
+                            <div class="dataset-info">
+                                <h3 class="dataset-title">Code Alpaca: Programming Instructions</h3>
+                                <p class="dataset-author">By <strong>Stanford NLP</strong></p>
+                                <div class="dataset-stats">
+                                    <span class="stat">
+                                        <i class="fas fa-download"></i>
+                                        23.5K downloads
+                                    </span>
+                                    <span class="stat">
+                                        <i class="fas fa-star"></i>
+                                        4.8/5
+                                    </span>
+                                </div>
+                                <div class="dataset-tags">
+                                    <span class="tag">Code Generation</span>
+                                    <span class="tag">Programming</span>
+                                    <span class="tag">Instruction</span>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="dataset-card hot" data-category="new trending">
+                            <div class="dataset-header">
+                                <div class="dataset-badge trending">TRENDING</div>
+                                <div class="dataset-trend">
+                                    <i class="fas fa-arrow-up"></i>
+                                    +445%
+                                </div>
+                            </div>
+                            <!-- <img class="dataset-image" src="/api/placeholder/200/120" alt="DALLE-3 Prompts"> -->
+                            <div class="dataset-info">
+                                <h3 class="dataset-title">DALLE-3 High Quality Prompts</h3>
+                                <p class="dataset-author">By <strong>OpenAI Community</strong></p>
+                                <div class="dataset-stats">
+                                    <span class="stat">
+                                        <i class="fas fa-download"></i>
+                                        11.8K downloads
+                                    </span>
+                                    <span class="stat">
+                                        <i class="fas fa-star"></i>
+                                        4.7/5
+                                    </span>
+                                </div>
+                                <div class="dataset-tags">
+                                    <span class="tag">Image Generation</span>
+                                    <span class="tag">Prompts</span>
+                                    <span class="tag">DALLE-3</span>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="dataset-card hot" data-category="requested popular">
+                            <div class="dataset-header">
+                                <div class="dataset-badge requested">REQUESTED</div>
+                                <div class="dataset-trend">
+                                    <i class="fas fa-arrow-up"></i>
+                                    +334%
+                                </div>
+                            </div>
+                            <!-- <img class="dataset-image" src="/api/placeholder/200/120" alt="ChatGPT Conversations"> -->
+                            <div class="dataset-info">
+                                <h3 class="dataset-title">ChatGPT Conversation Dataset</h3>
+                                <p class="dataset-author">By <strong>AI Research Lab</strong></p>
+                                <div class="dataset-stats">
+                                    <span class="stat">
+                                        <i class="fas fa-download"></i>
+                                        19.3K downloads
+                                    </span>
+                                    <span class="stat">
+                                        <i class="fas fa-star"></i>
+                                        4.6/5
+                                    </span>
+                                </div>
+                                <div class="dataset-tags">
+                                    <span class="tag">Conversations</span>
+                                    <span class="tag">LLM Training</span>
+                                    <span class="tag">Human Feedback</span>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <button class="carousel-btn prev" id="prevBtn">
+                        <i class="fas fa-chevron-left"></i>
+                    </button>
+                    <button class="carousel-btn next" id="nextBtn">
+                        <i class="fas fa-chevron-right"></i>
+                    </button>
+                </div>
+            </div>
+
+            <!-- Research Spotlight Section -->
+            <div class="research-spotlight-section">
+                <h2 class="section-title">
+                    <span class="title-icon">
+                        <i class="fas fa-star"></i>
+                    </span>
+                    Research Spotlight
+                </h2>
+
+                <div class="spotlight-featured">
+                    <div class="spotlight-card">
+                        <div class="spotlight-badge">Featured Research</div>
+                        <div class="spotlight-content">
+                            <h3 class="spotlight-title">
+                                "Attention Is All You Need" Turns 7: Impact and Evolution
+                            </h3>
+                            <p class="spotlight-author">
+                                Featured Analysis by Dr. Nguyen Anh Tuan, OpenData Editorial Team
+                            </p>
+                            <p class="spotlight-summary">
+                                A deep dive into how the Transformer architecture revolutionized AI and continues 
+                                to influence modern language models and computer vision systems.
+                            </p>
+                            <div class="spotlight-stats">
+                                <span class="stat">
+                                    <i class="fas fa-eye"></i>
+                                    50K+ views
+                                </span>
+                                <span class="stat">
+                                    <i class="fas fa-share"></i>
+                                    2.3K shares
+                                </span>
+                                <span class="stat">
+                                    <i class="fas fa-clock"></i>
+                                    15 min read
+                                </span>
+                            </div>
+                        </div>
+                        <div class="spotlight-image">
+                            <img src="/api/placeholder/300/200" alt="Transformer Architecture Visualization">
+                        </div>
+                    </div>
+                </div>
+
+                <div class="spotlight-list">
+                    <div class="spotlight-item">
+                        <div class="item-number">01</div>
+                        <div class="item-content">
+                            <h4>The Rise of Mixture of Experts (MoE) Models</h4>
+                            <p>Exploring how MoE architectures are enabling larger, more efficient models</p>
+                            <span class="item-author">By Prof. Le Minh Quan</span>
+                        </div>
+                        <div class="item-stats">
+                            <span class="views">12K views</span>
+                        </div>
+                    </div>
+
+                    <div class="spotlight-item">
+                        <div class="item-number">02</div>
+                        <div class="item-content">
+                            <h4>Understanding Retrieval-Augmented Generation (RAG)</h4>
+                            <p>How RAG is solving the knowledge cutoff problem in language models</p>
+                            <span class="item-author">By Dr. Tran Thuy Vy</span>
+                        </div>
+                        <div class="item-stats">
+                            <span class="views">8.5K views</span>
+                        </div>
+                    </div>
+
+                    <div class="spotlight-item">
+                        <div class="item-number">03</div>
+                        <div class="item-content">
+                            <h4>Advances in Real-time AI Video Generation</h4>
+                            <p>From RunwayML to Pika Labs: The evolution of AI video creation</p>
+                            <span class="item-author">By AI Trends Team</span>
+                        </div>
+                        <div class="item-stats">
+                            <span class="views">15.2K views</span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Community Buzz Section -->
+            <div class="community-buzz-section">
+                <h2 class="section-title">
+                    <span class="title-icon">
+                        <i class="fas fa-comments"></i>
+                    </span>
+                    Community Buzz
+                </h2>
+
+                <div class="buzz-grid">
+                    <div class="buzz-card">
+                        <div class="buzz-header">
+                            <div class="buzz-type discussions">
+                                <i class="fas fa-comments"></i>
+                                Hot Discussions
+                            </div>
+                        </div>
+                        <div class="buzz-list">
+                            <div class="buzz-item">
+                                <div class="discussion-title">
+                                    Will GPT-5 achieve AGI?
+                                </div>
+                                <div class="discussion-stats">
+                                    <span class="replies">234 replies</span>
+                                    <span class="activity">Active 2 min ago</span>
+                                </div>
+                            </div>
+                            <div class="buzz-item">
+                                <div class="discussion-title">
+                                    Best practices for fine-tuning LLMs
+                                </div>
+                                <div class="discussion-stats">
+                                    <span class="replies">156 replies</span>
+                                    <span class="activity">Active 15 min ago</span>
+                                </div>
+                            </div>
+                            <div class="buzz-item">
+                                <div class="discussion-title">
+                                    Ethical implications of AI agents
+                                </div>
+                                <div class="discussion-stats">
+                                    <span class="replies">89 replies</span>
+                                    <span class="activity">Active 1 hour ago</span>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="buzz-card">
+                        <div class="buzz-header">
+                            <div class="buzz-type polls">
+                                <i class="fas fa-poll"></i>
+                                Community Polls
+                            </div>
+                        </div>
+                        <div class="poll-container">
+                            <div class="poll-question">
+                                Which AI trend will dominate 2024?
+                            </div>
+                            <div class="poll-options">
+                                <div class="poll-option">
+                                    <div class="option-text">Multimodal AI</div>
+                                    <div class="option-bar">
+                                        <div class="option-fill" style="width: 35%"></div>
+                                    </div>
+                                    <div class="option-percent">35%</div>
+                                </div>
+                                <div class="poll-option">
+                                    <div class="option-text">AI Agents</div>
+                                    <div class="option-bar">
+                                        <div class="option-fill" style="width: 25%"></div>
+                                    </div>
+                                    <div class="option-percent">25%</div>
+                                </div>
+                                <div class="poll-option">
+                                    <div class="option-text">Edge AI</div>
+                                    <div class="option-bar">
+                                        <div class="option-fill" style="width: 20%"></div>
+                                    </div>
+                                    <div class="option-percent">20%</div>
+                                </div>
+                                <div class="poll-option">
+                                    <div class="option-text">Quantum-AI</div>
+                                    <div class="option-bar">
+                                        <div class="option-fill" style="width: 20%"></div>
+                                    </div>
+                                    <div class="option-percent">20%</div>
+                                </div>
+                            </div>
+                            <div class="poll-footer">
+                                <span class="poll-votes">1,234 votes</span>
+                                <button class="vote-btn">Vote</button>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="buzz-card">
+                        <div class="buzz-header">
+                            <div class="buzz-type mentions">
+                                <i class="fas fa-hashtag"></i>
+                                Trending Tags
+                            </div>
+                        </div>
+                        <div class="trending-tags">
+                            <div class="trending-tag">
+                                <span class="tag-rank">#1</span>
+                                <span class="tag-name">#GPT4</span>
+                                <span class="tag-count">12.5K mentions</span>
+                            </div>
+                            <div class="trending-tag">
+                                <span class="tag-rank">#2</span>
+                                <span class="tag-name">#Gemini</span>
+                                <span class="tag-count">8.9K mentions</span>
+                            </div>
+                            <div class="trending-tag">
+                                <span class="tag-rank">#3</span>
+                                <span class="tag-name">#Diffusion</span>
+                                <span class="tag-count">6.7K mentions</span>
+                            </div>
+                            <div class="trending-tag">
+                                <span class="tag-rank">#4</span>
+                                <span class="tag-name">#LLaVA15</span>
+                                <span class="tag-count">5.2K mentions</span>
+                            </div>
+                            <div class="trending-tag">
+                                <span class="tag-rank">#5</span>
+                                <span class="tag-name">#AIAgent</span>
+                                <span class="tag-count">4.8K mentions</span>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Help Button -->
+        <button class="help-button">
+            <i class="fas fa-question"></i>
+        </button>
+        
+        <!-- Include Help Center Popup -->
+        <div data-include="../components/help-center-popup.html"></div>
+    </div>
+
+    <script src="../js/include.js"></script>
+    <script src="../js/header-dropdown.js"></script>
+    <script src="../js/help-center.js"></script>
+    <script src="../js/hot-topic.js"></script>
+</body>
+</html>
