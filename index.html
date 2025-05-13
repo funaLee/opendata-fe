@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>OpenData</title>
+    <title>Dữ liệu Mở</title>
     <link href="/css/global.css" rel="stylesheet">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.4/css/all.min.css">
 </head>
@@ -18,122 +18,122 @@
         <!-- Sidebar -->
         <div data-include="/components/slidebar.html"></div>
 
-        <!-- Main Search Content -->
+        <!-- Nội dung chính -->
         <div class="main-content">
-            <h1 class="search-title">BẠN MUỐN TÌM KIẾM GÌ?</h1>
+            <h1 class="search-title">BẠN MUỐN TÌM GÌ?</h1>
             
             <div class="search-big">
                 <i class="fas fa-search search-icon"></i>
-                <input type="text" placeholder="What do you find now?">
+                <input type="text" placeholder="Nhập nội dung cần tìm...">
                 <button class="search-button">
                     <i class="fas fa-arrow-right"></i>
                 </button>
             </div>
 
-            <!-- Category Icons -->
+            <!-- Biểu tượng danh mục -->
             <div class="category-icons">
                 <a href="/pages/hot-topic.html" class="category-item">
                     <div class="icon-circle hot-topic">
-                        <img src="/assets/images/hot-topic-icon.png" alt="Hot Topic">
+                        <img src="/assets/images/hot-topic-icon.png" alt="Chủ đề nóng">
                     </div>
-                    <span class="category-name">Hot topic</span>
+                    <span class="category-name">Chủ đề nóng</span>
                 </a>
                 <a href="/pages/dataset.html" class="category-item">
                     <div class="icon-circle dataset">
-                        <img src="/assets/images/dataset-icon.png" alt="Dataset">
+                        <img src="/assets/images/dataset-icon.png" alt="Bộ dữ liệu">
                     </div>
-                    <span class="category-name">Dataset</span>
+                    <span class="category-name">Bộ dữ liệu</span>
                 </a>
                 <a href="/pages/paper.html" class="category-item">
                     <div class="icon-circle paper">
-                        <img src="/assets/images/paper-icon.png" alt="Paper">
+                        <img src="/assets/images/paper-icon.png" alt="Bài báo">
                     </div>
-                    <span class="category-name">Paper</span>
+                    <span class="category-name">Bài báo</span>
                 </a>
                 <a href="/pages/model.html" class="category-item">
                     <div class="icon-circle model">
-                        <img src="/assets/images/model-icon.png" alt="Model">
+                        <img src="/assets/images/model-icon.png" alt="Mô hình">
                     </div>
-                    <span class="category-name">Model</span>
+                    <span class="category-name">Mô hình</span>
                 </a>
                 <a href="/pages/benchmark.html" class="category-item">
                     <div class="icon-circle benchmark">
-                        <img src="/assets/images/benchmark-icon.png" alt="Benchmark">
+                        <img src="/assets/images/benchmark-icon.png" alt="Đánh giá chuẩn">
                     </div>
                     <span class="category-name">Benchmark</span>
                 </a>
                 <a href="/maps/map-author.html" class="category-item">
                     <div class="icon-circle author">
-                        <img src="/assets/images/author-icon.png" alt="Author">
+                        <img src="/assets/images/author-icon.png" alt="Tác giả">
                     </div>
-                    <span class="category-name">Author</span>
+                    <span class="category-name">Tác giả</span>
+                </a>
+                <a href="/pages/community.html" class="category-item">
+                    <div class="icon-circle community">
+                        <img src="/assets/images/community.png" alt="Tác giả">
+                    </div>
+                    <span class="category-name">Cộng đồng</span>
                 </a>
                 <a href="/upload/upload-dataset.html" class="category-item">
                     <div class="icon-circle upload">
-                        <img src="/assets/images/upload-icon.png" alt="Upload">
+                        <img src="/assets/images/upload-icon.png" alt="Tải lên">
                     </div>
-                    <span class="category-name">Upload</span>
+                    <span class="category-name">Tải dữ liệu</span>
                 </a>
                 <a href="/pages/more.html" class="category-item">
                     <div class="icon-circle others">
-                        <img src="/assets/images/others-icon.png" alt="Others">
+                        <img src="/assets/images/others-icon.png" alt="Khác">
                     </div>
-                    <span class="category-name">Others</span>
+                    <span class="category-name">Khác</span>
                 </a>
             </div>
         </div>
 
-        <!-- Recent Datasets -->
-        <h2 class="recent-section-title">Bộ dữ liệu đã mở gần đây</h2>
+        <!-- Bộ dữ liệu mở gần đây -->
+        <h2 class="recent-section-title">Bộ dữ liệu đã xem gần đây</h2>
 
-        <!-- Load template first -->
+        <!-- Nạp mẫu thẻ trước -->
         <div data-include="/components/dataset-card.html"></div>
 
-        <!-- Container for dataset cards -->
+        <!-- Nơi hiển thị các thẻ dữ liệu -->
         <div id="dataset-card-container__cifar10"></div>
 
-        <!-- Help Button -->
+        <!-- Nút trợ giúp -->
         <button class="help-button">
             <i class="fas fa-question"></i>
         </button>
 
-        <!-- Include Help Center Popup -->
+        <!-- Hộp thoại trung tâm trợ giúp -->
         <div data-include="/components/help-center-popup.html"></div>
 
     </div>
 
+    <!-- Script -->
     <script type="module" src="/js/include.js"></script>
     <script type="module" src="/js/dataset-render.js"></script>
     <script type="module" src="/js/header-dropdown.js"></script>
     <script type="module" src="/js/dataset-render.js">
-        // Wait for everything to be loaded including components
         document.addEventListener("DOMContentLoaded", () => {
-            // Function to check if components are loaded
-            function checkComponentsLoaded() {
+            function kiemTraTaiThanhPhan() {
                 const template = document.getElementById('dataset-card-template');
                 const renderFunction = window.renderDatasetCard;
                 
                 if (template && renderFunction) {
-                    // Components are loaded, render the dataset card
                     renderDatasetCard('#dataset-card-container__cifar10', {
                         image: '/assets/images/cifar-10.png',
-                        title: 'CIFAR-10 (Canadian Institute for Advanced Research, 10 classes)',
+                        title: 'CIFAR-10 (Viện Nghiên cứu Tiên tiến Canada, 10 lớp)',
                         author: 'Krizhevsky et al.',
                         paperUrl: 'http://www.cs.utoronto.ca/~kriz/learning-features-2009-TR.pdf',
-                        paperTitle: 'Learning multiple layers of features from tiny images',
+                        paperTitle: 'Học nhiều tầng đặc trưng từ hình ảnh nhỏ',
                         homepage: '#',
-                        tags: ['Image Classification', 'Low-Resolution Images']
+                        tags: ['Phân loại hình ảnh', 'Ảnh độ phân giải thấp']
                     });
-                    
-                    console.log('Dataset card rendered successfully');
+                    console.log('Thẻ dữ liệu đã được hiển thị thành công');
                 } else {
-                    // Components not loaded yet, wait a bit more
-                    setTimeout(checkComponentsLoaded, 100);
+                    setTimeout(kiemTraTaiThanhPhan, 100);
                 }
             }
-            
-            // Give some time for all includes to be processed
-            setTimeout(checkComponentsLoaded, 500);
+            setTimeout(kiemTraTaiThanhPhan, 500);
         });
     </script>
     <script type="module" src="/js/dropdown.js"></script>

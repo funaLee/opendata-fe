@@ -92,6 +92,10 @@
     background: linear-gradient(145deg, #79dbe5, #69c4cd); 
 }
 
+.community { 
+    background: linear-gradient(145deg, #acfcb4, #6bfc96); 
+}
+
 .upload { 
     background: linear-gradient(145deg, #f0f0f0, #e0e0e0); 
 }
