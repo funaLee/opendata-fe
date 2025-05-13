@@ -1,0 +1,222 @@
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>OpenAskAI - OpenData</title>
+    <link href="../css/global.css" rel="stylesheet">
+    <link href="../css/pages/openaskai.css" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.4/css/all.min.css">
+</head>
+<body>
+    <div class="container">
+        <!-- HEADER -->
+        <div data-include="../components/header.html"></div>
+
+        <!-- Overlay -->
+        <div id="overlay" class="overlay"></div>
+        
+        <!-- Sidebar -->
+        <div data-include="../components/slidebar.html"></div>
+
+        <!-- Main Content -->
+        <div class="openaskai-container">
+            <!-- Hero Section -->
+            <div class="ai-hero">
+                <div class="ai-hero-content">
+                    <div class="ai-icon-container">
+                        <div class="ai-icon">
+                            <i class="fas fa-robot"></i>
+                        </div>
+                    </div>
+                    <h1 class="ai-title">OpenAskAI</h1>
+                    <p class="ai-subtitle">Trợ lý AI thông minh của OpenData</p>
+                    <p class="ai-description">
+                        Đặt câu hỏi về bộ dữ liệu, nghiên cứu, metrics và mọi thứ liên quan đến OpenData. 
+                        AI của chúng tôi sẽ cung cấp câu trả lời nhanh chóng và chính xác.
+                    </p>
+                </div>
+            </div>
+
+            <!-- Quick Actions -->
+            <div class="quick-actions">
+                <div class="quick-action-cards">
+                    <div class="quick-action-card" data-question="Cách tải dataset lên OpenData">
+                        <div class="card-icon"><i class="fas fa-upload"></i></div>
+                        <h3>Hướng dẫn upload dataset</h3>
+                        <p>Tìm hiểu cách tải dữ liệu lên platform</p>
+                    </div>
+                    <div class="quick-action-card" data-question="Các loại metrics phổ biến trong machine learning">
+                        <div class="card-icon"><i class="fas fa-chart-line"></i></div>
+                        <h3>Metrics phổ biến</h3>
+                        <p>Tìm hiểu về các metrics đánh giá</p>
+                    </div>
+                    <div class="quick-action-card" data-question="Cách tạo benchmark mới">
+                        <div class="card-icon"><i class="fas fa-trophy"></i></div>
+                        <h3>Tạo benchmark</h3>
+                        <p>Hướng dẫn tạo benchmark cho mô hình</p>
+                    </div>
+                    <div class="quick-action-card" data-question="Giải thích về các loại dataset multimodal">
+                        <div class="card-icon"><i class="fas fa-layer-group"></i></div>
+                        <h3>Dataset multimodal</h3>
+                        <p>Tìm hiểu về dữ liệu đa phương thức</p>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Chat Interface -->
+            <div class="chat-container">
+                <div class="chat-header">
+                    <div class="chat-header-content">
+                        <div class="ai-avatar">
+                            <i class="fas fa-robot"></i>
+                        </div>
+                        <div class="chat-info">
+                            <h3>OpenAskAI</h3>
+                            <span class="status online">
+                                <i class="fas fa-circle"></i>
+                                Sẵn sàng hỗ trợ
+                            </span>
+                        </div>
+                    </div>
+                    <div class="chat-actions">
+                        <button class="chat-action-btn" id="clearChat">
+                            <i class="fas fa-trash"></i>
+                        </button>
+                        <button class="chat-action-btn" id="newChat">
+                            <i class="fas fa-plus"></i>
+                        </button>
+                    </div>
+                </div>
+
+                <div class="chat-messages" id="chatMessages">
+                    <div class="message ai-message">
+                        <div class="message-avatar">
+                            <i class="fas fa-robot"></i>
+                        </div>
+                        <div class="message-content">
+                            <div class="message-text">
+                                Xin chào! Tôi là OpenAskAI, trợ lý AI của OpenData. Tôi có thể giúp bạn:
+                                <ul>
+                                    <li>Tìm hiểu cách sử dụng các tính năng của OpenData</li>
+                                    <li>Giải thích về datasets, papers, và benchmarks</li>
+                                    <li>Hướng dẫn tải lên và quản lý dữ liệu</li>
+                                    <li>Tư vấn về metrics và đánh giá mô hình</li>
+                                </ul>
+                                Hãy đặt câu hỏi để tôi có thể hỗ trợ bạn!
+                            </div>
+                            <div class="message-time">Bây giờ</div>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="chat-input-container">
+                    <div class="chat-input-wrapper">
+                        <input type="text" id="chatInput" placeholder="Đặt câu hỏi cho OpenAskAI..." 
+                               autocomplete="off" maxlength="500">
+                        <button class="chat-send-btn" id="sendButton">
+                            <i class="fas fa-paper-plane"></i>
+                        </button>
+                    </div>
+                    <div class="input-suggestions" id="inputSuggestions">
+                        <div class="suggestion-chip" data-text="Cách tìm dataset phù hợp cho nghiên cứu của tôi?">
+                            <i class="fas fa-search"></i>
+                            Tìm dataset phù hợp
+                        </div>
+                        <div class="suggestion-chip" data-text="Giải thích sự khác biệt giữa các metrics đánh giá?">
+                            <i class="fas fa-question-circle"></i>
+                            Phân biệt metrics
+                        </div>
+                        <div class="suggestion-chip" data-text="Hướng dẫn upload paper mới lên OpenData">
+                            <i class="fas fa-file-upload"></i>
+                            Upload paper
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Features Section -->
+            <div class="ai-features">
+                <h2 class="features-title">Khả năng của OpenAskAI</h2>
+                <div class="features-grid">
+                    <div class="feature-card">
+                        <div class="feature-icon">
+                            <i class="fas fa-brain"></i>
+                        </div>
+                        <h3>Hiểu biết sâu sắc</h3>
+                        <p>Được đào tạo trên kiến thức về AI, ML và các tài liệu OpenData</p>
+                    </div>
+                    <div class="feature-card">
+                        <div class="feature-icon">
+                            <i class="fas fa-language"></i>
+                        </div>
+                        <h3>Đa ngôn ngữ</h3>
+                        <p>Hỗ trợ tiếng Việt và tiếng Anh, phù hợp cho nghiên cứu quốc tế</p>
+                    </div>
+                    <div class="feature-card">
+                        <div class="feature-icon">
+                            <i class="fas fa-clock"></i>
+                        </div>
+                        <h3>Phản hồi nhanh</h3>
+                        <p>Trả lời ngay lập tức, 24/7 không ngừng nghỉ</p>
+                    </div>
+                    <div class="feature-card">
+                        <div class="feature-icon">
+                            <i class="fas fa-lightbulb"></i>
+                        </div>
+                        <h3>Tư vấn thông minh</h3>
+                        <p>Đưa ra gợi ý và giải pháp phù hợp với từng tình huống cụ thể</p>
+                    </div>
+                </div>
+            </div>
+
+            <!-- FAQ Section -->
+            <div class="faq-section">
+                <h2 class="faq-title">Câu hỏi thường gặp</h2>
+                <div class="faq-container">
+                    <div class="faq-item">
+                        <div class="faq-question">
+                            <span>OpenAskAI có thể giúp tôi viết code không?</span>
+                            <i class="fas fa-chevron-down"></i>
+                        </div>
+                        <div class="faq-answer">
+                            OpenAskAI tập trung vào việc hỗ trợ sử dụng OpenData platform. Tôi có thể hướng dẫn cách sử dụng API, tải dữ liệu, và tích hợp với platform, nhưng không chuyên về viết code tổng quát.
+                        </div>
+                    </div>
+                    <div class="faq-item">
+                        <div class="faq-question">
+                            <span>Làm sao để tôi biết OpenAskAI đang online?</span>
+                            <i class="fas fa-chevron-down"></i>
+                        </div>
+                        <div class="faq-answer">
+                            Bạn có thể thấy trạng thái "Sẵn sàng hỗ trợ" với dấu chấm xanh trong chat header. OpenAskAI luôn sẵn sàng 24/7.
+                        </div>
+                    </div>
+                    <div class="faq-item">
+                        <div class="faq-question">
+                            <span>Thông tin tôi chia sẻ có được bảo mật không?</span>
+                            <i class="fas fa-chevron-down"></i>
+                        </div>
+                        <div class="faq-answer">
+                            Có, tất cả cuộc trò chuyện được mã hóa và không được chia sẻ với bên thứ ba. Chúng tôi chỉ sử dụng dữ liệu để cải thiện chất lượng phản hồi của AI.
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Help Button -->
+        <button class="help-button">
+            <i class="fas fa-question"></i>
+        </button>
+        
+        <!-- Include Help Center Popup -->
+        <div data-include="../components/help-center-popup.html"></div>
+    </div>
+
+    <script src="../js/include.js"></script>
+    <script src="../js/header-dropdown.js"></script>
+    <script src="../js/help-center.js"></script>
+    <script src="../js/openaskai.js"></script>
+</body>
+</html>

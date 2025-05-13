@@ -1,5 +1,5 @@
 /**
- * Enhanced Upload Benchmark Functionality
+ * Enhanced Upload Benchmark Functionality - Fixed UI Issues
  */
 document.addEventListener('DOMContentLoaded', function() {
   // Initialize form state
@@ -25,17 +25,244 @@ document.addEventListener('DOMContentLoaded', function() {
     updateProgress();
     
     // Add event listeners for navigation
-    nextBtn.addEventListener('click', nextStep);
-    prevBtn.addEventListener('click', prevStep);
+    if (nextBtn) nextBtn.addEventListener('click', nextStep);
+    if (prevBtn) prevBtn.addEventListener('click', prevStep);
     
     // Add form submission handler
-    form.addEventListener('submit', handleSubmit);
+    if (form) form.addEventListener('submit', handleSubmit);
     
     // Add validation for each step
     addStepValidation();
     
     // Add auto-save functionality
     addAutoSave();
+    
+    // Ensure inputs start in normal state (no validation styling)
+    clearInitialValidationStates();
+    
+    // Initialize "Khác..." functionality
+    initializeOtherOptions();
+  }
+  
+  function initializeOtherOptions() {
+    // Dataset "Khác..." functionality
+    const datasetSelect = document.getElementById('datasetSelect');
+    const datasetOtherAction = document.getElementById('datasetOtherAction');
+    const uploadNewDataset = document.getElementById('uploadNewDataset');
+    const datasetModal = document.getElementById('datasetCreationModal');
+    const confirmDatasetCreation = document.getElementById('confirmDatasetCreation');
+    const cancelDatasetCreation = document.getElementById('cancelDatasetCreation');
+    
+    // Task "Khác..." functionality
+    const taskSelect = document.getElementById('taskSelect');
+    const taskOtherAction = document.getElementById('taskOtherAction');
+    const uploadNewTask = document.getElementById('uploadNewTask');
+    const taskModal = document.getElementById('taskCreationModal');
+    const confirmTaskCreation = document.getElementById('confirmTaskCreation');
+    const cancelTaskCreation = document.getElementById('cancelTaskCreation');
+    
+    // Dataset selection handling
+    if (datasetSelect) {
+      datasetSelect.addEventListener('change', function() {
+        if (this.value === 'other_dataset') {
+          datasetOtherAction.style.display = 'block';
+          // Reset to empty value since "Khác..." is not a valid selection
+          setTimeout(() => {
+            this.value = '';
+          }, 100);
+        } else {
+          datasetOtherAction.style.display = 'none';
+        }
+        validateInput(this);
+      });
+    }
+    
+    // Task selection handling
+    if (taskSelect) {
+      taskSelect.addEventListener('change', function() {
+        if (this.value === 'other_task') {
+          taskOtherAction.style.display = 'block';
+          // Reset to empty value since "Khác..." is not a valid selection
+          setTimeout(() => {
+            this.value = '';
+          }, 100);
+        } else {
+          taskOtherAction.style.display = 'none';
+        }
+        validateInput(this);
+      });
+    }
+    
+    // Dataset upload button
+    if (uploadNewDataset) {
+      uploadNewDataset.addEventListener('click', function() {
+        datasetModal.style.display = 'flex';
+      });
+    }
+    
+    // Task creation button
+    if (uploadNewTask) {
+      uploadNewTask.addEventListener('click', function() {
+        taskModal.style.display = 'flex';
+      });
+    }
+    
+    // Dataset modal actions
+    if (confirmDatasetCreation) {
+      confirmDatasetCreation.addEventListener('click', function() {
+        // Save current form data
+        saveFormData();
+        
+        // Show loading state
+        this.innerHTML = '<i class="fas fa-spinner fa-spin"></i> Đang chuyến...';
+        this.disabled = true;
+        
+        setTimeout(() => {
+          // Navigate to dataset upload page
+          window.location.href = '../upload/upload-dataset.html?return=benchmark';
+        }, 500);
+      });
+    }
+    
+    if (cancelDatasetCreation) {
+      cancelDatasetCreation.addEventListener('click', function() {
+        datasetModal.style.display = 'none';
+        datasetOtherAction.style.display = 'none';
+      });
+    }
+    
+    // Task modal actions
+    if (confirmTaskCreation) {
+      confirmTaskCreation.addEventListener('click', function() {
+        const taskName = document.getElementById('newTaskName')?.value.trim();
+        const taskDescription = document.getElementById('newTaskDescription')?.value.trim();
+        
+        if (!taskName) {
+          alert('Vui lòng nhập tên task');
+          return;
+        }
+        
+        if (!taskDescription) {
+          alert('Vui lòng nhập mô tả task');
+          return;
+        }
+        
+        // Show loading state
+        this.innerHTML = '<i class="fas fa-spinner fa-spin"></i> Đang tạo...';
+        this.disabled = true;
+        
+        // Simulate task creation
+        setTimeout(() => {
+          // Add new task to select
+          const newOption = document.createElement('option');
+          newOption.value = `task_${taskName.toLowerCase().replace(/\s+/g, '_')}`;
+          newOption.textContent = taskName;
+          newOption.selected = true;
+          
+          // Insert before "Khác..." option
+          const otherOption = taskSelect.querySelector('option[value="other_task"]');
+          taskSelect.insertBefore(newOption, otherOption);
+          
+          // Close modal and hide other action
+          taskModal.style.display = 'none';
+          taskOtherAction.style.display = 'none';
+          
+          // Clear modal inputs
+          document.getElementById('newTaskName').value = '';
+          document.getElementById('newTaskDescription').value = '';
+          
+          // Restore button state
+          this.innerHTML = '<i class="fas fa-check"></i> Tạo task';
+          this.disabled = false;
+          
+          // Validate the new selection
+          validateInput(taskSelect);
+          
+          // Show success message
+          showToast('Task mới đã được tạo thành công!', 'success');
+        }, 1000);
+      });
+    }
+    
+    if (cancelTaskCreation) {
+      cancelTaskCreation.addEventListener('click', function() {
+        taskModal.style.display = 'none';
+        taskOtherAction.style.display = 'none';
+        // Clear modal inputs
+        document.getElementById('newTaskName').value = '';
+        document.getElementById('newTaskDescription').value = '';
+      });
+    }
+    
+    // Close modals when clicking outside
+    [datasetModal, taskModal].forEach(modal => {
+      if (modal) {
+        modal.addEventListener('click', function(e) {
+          if (e.target === this) {
+            this.style.display = 'none';
+            if (this === datasetModal) {
+              datasetOtherAction.style.display = 'none';
+            } else {
+              taskOtherAction.style.display = 'none';
+            }
+          }
+        });
+      }
+    });
+  }
+  
+  function showToast(message, type = 'info') {
+    // Remove existing toast
+    const existingToast = document.querySelector('.toast-notification');
+    if (existingToast) {
+      existingToast.remove();
+    }
+    
+    // Create toast element
+    const toast = document.createElement('div');
+    toast.className = `toast-notification toast-${type}`;
+    toast.innerHTML = `
+      <div class="toast-content">
+        <i class="fas fa-${type === 'success' ? 'check-circle' : 'info-circle'}"></i>
+        <span>${message}</span>
+      </div>
+    `;
+    toast.style.cssText = `
+      position: fixed;
+      top: 20px;
+      right: 20px;
+      background: ${type === 'success' ? '#4caf50' : '#2196F3'};
+      color: white;
+      padding: 15px 20px;
+      border-radius: 10px;
+      z-index: 10000;
+      animation: slideInRight 0.3s ease-out;
+      box-shadow: 0 4px 12px rgba(0,0,0,0.15);
+      display: flex;
+      align-items: center;
+      gap: 10px;
+      font-weight: 500;
+    `;
+    
+    document.body.appendChild(toast);
+    
+    // Remove after 3 seconds
+    setTimeout(() => {
+      toast.style.animation = 'slideOutRight 0.3s ease-out';
+      setTimeout(() => {
+        if (toast.parentNode) {
+          toast.parentNode.removeChild(toast);
+        }
+      }, 300);
+    }, 3000);
+  }
+  
+  function clearInitialValidationStates() {
+    // Remove any validation classes from inputs on page load
+    const inputs = form?.querySelectorAll('input, textarea, select') || [];
+    inputs.forEach(input => {
+      input.classList.remove('valid', 'invalid');
+    });
   }
   
   function initializeMetricsSelector() {
@@ -47,10 +274,14 @@ document.addEventListener('DOMContentLoaded', function() {
     const selectedCount = document.getElementById('selectedCount');
     const clearButton = document.getElementById('clearSelectedMetrics');
     
+    if (!metricsGrid) return; // Exit if elements not found
+    
     // Search functionality
-    searchInput.addEventListener('input', function() {
-      filterMetrics(this.value);
-    });
+    if (searchInput) {
+      searchInput.addEventListener('input', function() {
+        filterMetrics(this.value);
+      });
+    }
     
     // Category filtering
     categoryTabs.forEach(tab => {
@@ -75,13 +306,15 @@ document.addEventListener('DOMContentLoaded', function() {
     });
     
     // Clear all selected metrics
-    clearButton.addEventListener('click', function() {
-      metricCheckboxes.forEach(checkbox => {
-        checkbox.checked = false;
+    if (clearButton) {
+      clearButton.addEventListener('click', function() {
+        metricCheckboxes.forEach(checkbox => {
+          checkbox.checked = false;
+        });
+        updateSelectedMetrics();
+        validateMetricsStep();
       });
-      updateSelectedMetrics();
-      validateMetricsStep();
-    });
+    }
   }
   
   function filterMetrics(searchTerm) {
@@ -117,38 +350,45 @@ document.addEventListener('DOMContentLoaded', function() {
     const selectedCount = document.getElementById('selectedCount');
     const checkedMetrics = document.querySelectorAll('.metric-item input[type="checkbox"]:checked');
     
-    selectedCount.textContent = `(${checkedMetrics.length})`;
+    if (selectedCount) {
+      selectedCount.textContent = `(${checkedMetrics.length})`;
+    }
     
-    if (checkedMetrics.length === 0) {
-      selectedMetricsContainer.innerHTML = '<p class="empty-selection">Chưa có metric nào được chọn</p>';
-    } else {
-      const metricsHtml = Array.from(checkedMetrics).map(checkbox => {
-        const metricItem = checkbox.closest('.metric-item');
-        const metricName = metricItem.querySelector('.metric-name').textContent;
-        const metricIcon = metricItem.querySelector('.metric-icon i').className;
+    if (selectedMetricsContainer) {
+      if (checkedMetrics.length === 0) {
+        selectedMetricsContainer.innerHTML = '<p class="empty-selection">Chưa có metric nào được chọn</p>';
+      } else {
+        const metricsHtml = Array.from(checkedMetrics).map(checkbox => {
+          const metricItem = checkbox.closest('.metric-item');
+          const metricName = metricItem.querySelector('.metric-name').textContent;
+          const metricIcon = metricItem.querySelector('.metric-icon i').className;
+          
+          return `
+            <div class="selected-metric-tag">
+              <i class="${metricIcon}"></i>
+              <span>${metricName}</span>
+              <button type="button" class="remove-metric" data-metric="${checkbox.id}">
+                <i class="fas fa-times"></i>
+              </button>
+            </div>
+          `;
+        }).join('');
         
-        return `
-          <div class="selected-metric-tag">
-            <i class="${metricIcon}"></i>
-            <span>${metricName}</span>
-            <button type="button" class="remove-metric" data-metric="${checkbox.id}">
-              <i class="fas fa-times"></i>
-            </button>
-          </div>
-        `;
-      }).join('');
-      
-      selectedMetricsContainer.innerHTML = metricsHtml;
-      
-      // Add event listeners to remove buttons
-      selectedMetricsContainer.querySelectorAll('.remove-metric').forEach(button => {
-        button.addEventListener('click', function() {
-          const metricId = this.dataset.metric;
-          document.getElementById(metricId).checked = false;
-          updateSelectedMetrics();
-          validateMetricsStep();
+        selectedMetricsContainer.innerHTML = metricsHtml;
+        
+        // Add event listeners to remove buttons
+        selectedMetricsContainer.querySelectorAll('.remove-metric').forEach(button => {
+          button.addEventListener('click', function() {
+            const metricId = this.dataset.metric;
+            const checkbox = document.getElementById(metricId);
+            if (checkbox) {
+              checkbox.checked = false;
+              updateSelectedMetrics();
+              validateMetricsStep();
+            }
+          });
         });
-      });
+      }
     }
   }
   
@@ -167,12 +407,18 @@ document.addEventListener('DOMContentLoaded', function() {
   }
   
   function goToStep(step) {
-    // Hide current step
-    steps[currentStep - 1].style.display = 'none';
+    // Hide current step with fade effect
+    if (steps[currentStep - 1]) {
+      steps[currentStep - 1].style.display = 'none';
+    }
     
     // Show target step
     currentStep = step;
-    steps[currentStep - 1].style.display = 'block';
+    if (steps[currentStep - 1]) {
+      steps[currentStep - 1].style.display = 'block';
+      // Trigger reflow for animation
+      steps[currentStep - 1].offsetHeight;
+    }
     
     // Update navigation
     updateNavigation();
@@ -186,27 +432,29 @@ document.addEventListener('DOMContentLoaded', function() {
   
   function updateNavigation() {
     // Update previous button
-    if (currentStep === 1) {
-      prevBtn.style.display = 'none';
-    } else {
-      prevBtn.style.display = 'block';
+    if (prevBtn) {
+      if (currentStep === 1) {
+        prevBtn.style.display = 'none';
+      } else {
+        prevBtn.style.display = 'block';
+      }
     }
     
     // Update next/submit button
     if (currentStep === totalSteps) {
-      nextBtn.style.display = 'none';
-      submitBtn.style.display = 'block';
+      if (nextBtn) nextBtn.style.display = 'none';
+      if (submitBtn) submitBtn.style.display = 'block';
     } else {
-      nextBtn.style.display = 'block';
-      submitBtn.style.display = 'none';
+      if (nextBtn) nextBtn.style.display = 'block';
+      if (submitBtn) submitBtn.style.display = 'none';
     }
   }
   
   function updateProgress() {
     const percentage = (currentStep / totalSteps) * 100;
-    progressFill.style.width = percentage + '%';
-    progressText.textContent = `Bước ${currentStep} / ${totalSteps}`;
-    progressPercentage.textContent = Math.round(percentage) + '%';
+    if (progressFill) progressFill.style.width = percentage + '%';
+    if (progressText) progressText.textContent = `Bước ${currentStep} / ${totalSteps}`;
+    if (progressPercentage) progressPercentage.textContent = Math.round(percentage) + '%';
   }
   
   function validateCurrentStep() {
@@ -232,8 +480,8 @@ document.addEventListener('DOMContentLoaded', function() {
     let isValid = true;
     
     // Validate name
-    if (!name.value.trim()) {
-      markInvalid(name, 'Tên benchmark là bắt buộc');
+    if (!name || !name.value.trim()) {
+      if (name) markInvalid(name, 'Tên benchmark là bắt buộc');
       isValid = false;
     } else if (name.value.length < 3) {
       markInvalid(name, 'Tên benchmark phải có ít nhất 3 ký tự');
@@ -243,8 +491,8 @@ document.addEventListener('DOMContentLoaded', function() {
     }
     
     // Validate description
-    if (!description.value.trim()) {
-      markInvalid(description, 'Mô tả benchmark là bắt buộc');
+    if (!description || !description.value.trim()) {
+      if (description) markInvalid(description, 'Mô tả benchmark là bắt buộc');
       isValid = false;
     } else if (description.value.length < 20) {
       markInvalid(description, 'Mô tả phải có ít nhất 20 ký tự');
@@ -261,15 +509,15 @@ document.addEventListener('DOMContentLoaded', function() {
     const task = document.getElementById('taskSelect');
     let isValid = true;
     
-    if (!dataset.value) {
-      markInvalid(dataset, 'Vui lòng chọn dataset');
+    if (!dataset || !dataset.value || dataset.value === 'other_dataset') {
+      if (dataset) markInvalid(dataset, 'Vui lòng chọn dataset hợp lệ');
       isValid = false;
     } else {
       markValid(dataset);
     }
     
-    if (!task.value) {
-      markInvalid(task, 'Vui lòng chọn task');
+    if (!task || !task.value || task.value === 'other_task') {
+      if (task) markInvalid(task, 'Vui lòng chọn task hợp lệ');
       isValid = false;
     } else {
       markValid(task);
@@ -321,7 +569,7 @@ document.addEventListener('DOMContentLoaded', function() {
     
     metricItems.forEach(item => {
       const checkbox = item.querySelector('input[type="checkbox"]');
-      if (metricIds.includes(checkbox.id)) {
+      if (checkbox && metricIds.includes(checkbox.id)) {
         item.classList.add('suggested');
       } else {
         item.classList.remove('suggested');
@@ -329,6 +577,9 @@ document.addEventListener('DOMContentLoaded', function() {
     });
     
     // Show suggestion banner
+    const existingBanner = document.querySelector('.metric-suggestions');
+    if (existingBanner) existingBanner.remove();
+    
     const suggestionBanner = document.createElement('div');
     suggestionBanner.className = 'metric-suggestions';
     suggestionBanner.innerHTML = `
@@ -341,68 +592,95 @@ document.addEventListener('DOMContentLoaded', function() {
     `;
     
     const metricsGrid = document.getElementById('metricsGrid');
-    metricsGrid.insertBefore(suggestionBanner, metricsGrid.firstChild);
-    
-    // Handle suggestion actions
-    suggestionBanner.querySelector('.apply-suggestions').addEventListener('click', function() {
-      metricIds.forEach(id => {
-        document.getElementById(id).checked = true;
+    if (metricsGrid) {
+      metricsGrid.insertBefore(suggestionBanner, metricsGrid.firstChild);
+      
+      // Handle suggestion actions
+      suggestionBanner.querySelector('.apply-suggestions').addEventListener('click', function() {
+        metricIds.forEach(id => {
+          const checkbox = document.getElementById(id);
+          if (checkbox) checkbox.checked = true;
+        });
+        updateSelectedMetrics();
+        suggestionBanner.remove();
       });
-      updateSelectedMetrics();
-      suggestionBanner.remove();
-    });
-    
-    suggestionBanner.querySelector('.dismiss-suggestions').addEventListener('click', function() {
-      metricItems.forEach(item => item.classList.remove('suggested'));
-      suggestionBanner.remove();
-    });
+      
+      suggestionBanner.querySelector('.dismiss-suggestions').addEventListener('click', function() {
+        metricItems.forEach(item => item.classList.remove('suggested'));
+        suggestionBanner.remove();
+      });
+    }
   }
   
   function updateReviewSection() {
     // Update review section with current form data
-    document.getElementById('reviewName').textContent = 
-      document.getElementById('benchmarkName').value || '-';
-    document.getElementById('reviewDescription').textContent = 
-      document.getElementById('benchmarkDescription').value || '-';
+    const nameElement = document.getElementById('reviewName');
+    const descElement = document.getElementById('reviewDescription');
+    const datasetElement = document.getElementById('reviewDataset');
+    const taskElement = document.getElementById('reviewTask');
+    const metricsElement = document.getElementById('reviewMetrics');
     
-    const datasetSelect = document.getElementById('datasetSelect');
-    document.getElementById('reviewDataset').textContent = 
-      datasetSelect.options[datasetSelect.selectedIndex]?.text || '-';
+    if (nameElement) {
+      nameElement.textContent = document.getElementById('benchmarkName')?.value || '-';
+    }
     
-    const taskSelect = document.getElementById('taskSelect');
-    document.getElementById('reviewTask').textContent = 
-      taskSelect.options[taskSelect.selectedIndex]?.text || '-';
+    if (descElement) {
+      descElement.textContent = document.getElementById('benchmarkDescription')?.value || '-';
+    }
+    
+    if (datasetElement) {
+      const datasetSelect = document.getElementById('datasetSelect');
+      datasetElement.textContent = datasetSelect?.options[datasetSelect.selectedIndex]?.text || '-';
+    }
+    
+    if (taskElement) {
+      const taskSelect = document.getElementById('taskSelect');
+      taskElement.textContent = taskSelect?.options[taskSelect.selectedIndex]?.text || '-';
+    }
     
     // Update selected metrics
-    const selectedMetrics = document.querySelectorAll('.metric-item input[type="checkbox"]:checked');
-    const reviewMetrics = document.getElementById('reviewMetrics');
-    
-    if (selectedMetrics.length === 0) {
-      reviewMetrics.innerHTML = '-';
-    } else {
-      const metricsHtml = Array.from(selectedMetrics).map(checkbox => {
-        const metricItem = checkbox.closest('.metric-item');
-        const metricName = metricItem.querySelector('.metric-name').textContent;
-        return `<span class="review-metric-tag">${metricName}</span>`;
-      }).join('');
+    if (metricsElement) {
+      const selectedMetrics = document.querySelectorAll('.metric-item input[type="checkbox"]:checked');
       
-      reviewMetrics.innerHTML = metricsHtml;
+      if (selectedMetrics.length === 0) {
+        metricsElement.innerHTML = '-';
+      } else {
+        const metricsHtml = Array.from(selectedMetrics).map(checkbox => {
+          const metricItem = checkbox.closest('.metric-item');
+          const metricName = metricItem?.querySelector('.metric-name')?.textContent || '';
+          return `<span class="review-metric-tag">${metricName}</span>`;
+        }).join('');
+        
+        metricsElement.innerHTML = metricsHtml;
+      }
     }
   }
   
   function addStepValidation() {
-    // Real-time validation for each input
-    const inputs = form.querySelectorAll('input, textarea, select');
+    // Real-time validation for each input - only after interaction
+    const inputs = form?.querySelectorAll('input, textarea, select') || [];
     
     inputs.forEach(input => {
+      let hasInteracted = false;
+      
+      // Mark as interacted on first interaction
+      const markInteracted = () => {
+        hasInteracted = true;
+      };
+      
+      input.addEventListener('focus', markInteracted, { once: true });
+      input.addEventListener('input', markInteracted, { once: true });
+      
+      // Validate on blur if user has interacted
       input.addEventListener('blur', function() {
-        if (this.value.trim()) {
+        if (hasInteracted && this.value.trim()) {
           validateInput(this);
         }
       });
       
+      // Validate on input if field is currently invalid
       input.addEventListener('input', function() {
-        if (this.classList.contains('invalid')) {
+        if (hasInteracted && this.classList.contains('invalid')) {
           validateInput(this);
         }
       });
@@ -433,22 +711,32 @@ document.addEventListener('DOMContentLoaded', function() {
         }
         break;
         
+      case 'datasetSelect':
+        // Clear any previous validation
+        clearValidation(input);
+        // Don't validate if "other_dataset" is selected
+        if (value && value !== 'other_dataset') {
+          markValid(input);
+        } else if (!value) {
+          // Only mark invalid if user has tried to submit
+          // This will be handled by validateDatasetTask()
+        }
+        break;
+        
+      case 'taskSelect':
+        // Clear any previous validation
+        clearValidation(input);
+        // Don't validate if "other_task" is selected
+        if (value && value !== 'other_task') {
+          markValid(input);
+        } else if (!value) {
+          // Only mark invalid if user has tried to submit
+          // This will be handled by validateDatasetTask()
+        }
+        break;
+        
       case 'benchmarkPaper':
-        if (value && !isValidUrl(value)) {
-          markInvalid(input, 'Vui lòng nhập URL hợp lệ');
-        } else {
-          markValid(input);
-        }
-        break;
-        
       case 'benchmarkCode':
-        if (value && !isValidUrl(value)) {
-          markInvalid(input, 'Vui lòng nhập URL hợp lệ');
-        } else {
-          markValid(input);
-        }
-        break;
-        
       case 'benchmarkLeaderboard':
         if (value && !isValidUrl(value)) {
           markInvalid(input, 'Vui lòng nhập URL hợp lệ');
@@ -468,7 +756,7 @@ document.addEventListener('DOMContentLoaded', function() {
   
   function addAutoSave() {
     // Auto-save form data to localStorage
-    const inputs = form.querySelectorAll('input, textarea, select');
+    const inputs = form?.querySelectorAll('input, textarea, select') || [];
     
     inputs.forEach(input => {
       input.addEventListener('input', debounce(function() {
@@ -482,38 +770,50 @@ document.addEventListener('DOMContentLoaded', function() {
   
   function saveFormData() {
     const formData = {
-      benchmarkName: document.getElementById('benchmarkName').value,
-      benchmarkDescription: document.getElementById('benchmarkDescription').value,
-      datasetSelect: document.getElementById('datasetSelect').value,
-      taskSelect: document.getElementById('taskSelect').value,
+      benchmarkName: document.getElementById('benchmarkName')?.value || '',
+      benchmarkDescription: document.getElementById('benchmarkDescription')?.value || '',
+      datasetSelect: document.getElementById('datasetSelect')?.value || '',
+      taskSelect: document.getElementById('taskSelect')?.value || '',
       selectedMetrics: Array.from(document.querySelectorAll('.metric-item input[type="checkbox"]:checked'))
         .map(checkbox => checkbox.id),
-      benchmarkPaper: document.getElementById('benchmarkPaper').value,
-      benchmarkCode: document.getElementById('benchmarkCode').value,
-      benchmarkLeaderboard: document.getElementById('benchmarkLeaderboard').value,
+      benchmarkPaper: document.getElementById('benchmarkPaper')?.value || '',
+      benchmarkCode: document.getElementById('benchmarkCode')?.value || '',
+      benchmarkLeaderboard: document.getElementById('benchmarkLeaderboard')?.value || '',
       currentStep: currentStep,
       timestamp: Date.now()
     };
     
-    localStorage.setItem('uploadBenchmarkForm', JSON.stringify(formData));
+    try {
+      localStorage.setItem('uploadBenchmarkForm', JSON.stringify(formData));
+    } catch (e) {
+      console.warn('Could not save form data:', e);
+    }
   }
   
   function loadFormData() {
-    const savedData = localStorage.getItem('uploadBenchmarkForm');
-    
-    if (savedData) {
-      try {
+    try {
+      const savedData = localStorage.getItem('uploadBenchmarkForm');
+      
+      if (savedData) {
         const formData = JSON.parse(savedData);
         
         // Only load if data is less than 24 hours old
         if (Date.now() - formData.timestamp < 24 * 60 * 60 * 1000) {
-          document.getElementById('benchmarkName').value = formData.benchmarkName || '';
-          document.getElementById('benchmarkDescription').value = formData.benchmarkDescription || '';
-          document.getElementById('datasetSelect').value = formData.datasetSelect || '';
-          document.getElementById('taskSelect').value = formData.taskSelect || '';
-          document.getElementById('benchmarkPaper').value = formData.benchmarkPaper || '';
-          document.getElementById('benchmarkCode').value = formData.benchmarkCode || '';
-          document.getElementById('benchmarkLeaderboard').value = formData.benchmarkLeaderboard || '';
+          const nameInput = document.getElementById('benchmarkName');
+          const descInput = document.getElementById('benchmarkDescription');
+          const datasetSelect = document.getElementById('datasetSelect');
+          const taskSelect = document.getElementById('taskSelect');
+          const paperInput = document.getElementById('benchmarkPaper');
+          const codeInput = document.getElementById('benchmarkCode');
+          const leaderboardInput = document.getElementById('benchmarkLeaderboard');
+          
+          if (nameInput) nameInput.value = formData.benchmarkName || '';
+          if (descInput) descInput.value = formData.benchmarkDescription || '';
+          if (datasetSelect) datasetSelect.value = formData.datasetSelect || '';
+          if (taskSelect) taskSelect.value = formData.taskSelect || '';
+          if (paperInput) paperInput.value = formData.benchmarkPaper || '';
+          if (codeInput) codeInput.value = formData.benchmarkCode || '';
+          if (leaderboardInput) leaderboardInput.value = formData.benchmarkLeaderboard || '';
           
           // Restore selected metrics
           if (formData.selectedMetrics) {
@@ -524,20 +824,22 @@ document.addEventListener('DOMContentLoaded', function() {
             updateSelectedMetrics();
           }
           
-          // Restore current step
+          // Restore current step - but don't validate restored fields
           if (formData.currentStep && formData.currentStep > 1) {
             goToStep(formData.currentStep);
           }
         }
-      } catch (e) {
-        console.warn('Failed to load saved form data:', e);
       }
+    } catch (e) {
+      console.warn('Failed to load saved form data:', e);
     }
   }
   
   function addCharacterCounters() {
     const descriptionInput = document.getElementById('benchmarkDescription');
-    addCharacterCounter(descriptionInput, 2000);
+    if (descriptionInput) {
+      addCharacterCounter(descriptionInput, 2000);
+    }
   }
   
   function addCharacterCounter(element, maxLength) {
@@ -548,7 +850,16 @@ document.addEventListener('DOMContentLoaded', function() {
     function updateCounter() {
       const length = element.value.length;
       counter.textContent = `${length}/${maxLength} ký tự`;
-      counter.style.color = length > maxLength * 0.9 ? '#ff5c5c' : '#666';
+      
+      // Add warning and danger classes based on usage
+      counter.classList.remove('warning', 'danger');
+      const percentage = (length / maxLength) * 100;
+      
+      if (percentage > 90) {
+        counter.classList.add('danger');
+      } else if (percentage > 75) {
+        counter.classList.add('warning');
+      }
     }
     
     element.addEventListener('input', updateCounter);
@@ -564,24 +875,26 @@ document.addEventListener('DOMContentLoaded', function() {
     
     // Show loading state
     const submitButton = document.getElementById('submitBtn');
+    if (!submitButton) return;
+    
     const originalContent = submitButton.innerHTML;
     submitButton.innerHTML = '<i class="fas fa-spinner fa-spin"></i> Đang xử lý...';
     submitButton.disabled = true;
     
     // Collect all form data
     const formData = {
-      name: document.getElementById('benchmarkName').value.trim(),
-      description: document.getElementById('benchmarkDescription').value.trim(),
-      dataset: document.getElementById('datasetSelect').value,
-      task: document.getElementById('taskSelect').value,
+      name: document.getElementById('benchmarkName')?.value.trim() || '',
+      description: document.getElementById('benchmarkDescription')?.value.trim() || '',
+      dataset: document.getElementById('datasetSelect')?.value || '',
+      task: document.getElementById('taskSelect')?.value || '',
       metrics: Array.from(document.querySelectorAll('.metric-item input[type="checkbox"]:checked'))
         .map(checkbox => ({
           id: checkbox.value,
-          name: checkbox.closest('.metric-item').querySelector('.metric-name').textContent
+          name: checkbox.closest('.metric-item')?.querySelector('.metric-name')?.textContent || ''
         })),
-      paperUrl: document.getElementById('benchmarkPaper').value.trim(),
-      codeUrl: document.getElementById('benchmarkCode').value.trim(),
-      leaderboardUrl: document.getElementById('benchmarkLeaderboard').value.trim(),
+      paperUrl: document.getElementById('benchmarkPaper')?.value.trim() || '',
+      codeUrl: document.getElementById('benchmarkCode')?.value.trim() || '',
+      leaderboardUrl: document.getElementById('benchmarkLeaderboard')?.value.trim() || '',
       timestamp: new Date().toISOString()
     };
     
@@ -590,15 +903,22 @@ document.addEventListener('DOMContentLoaded', function() {
     // Simulate submission
     setTimeout(() => {
       // Clear saved data
-      localStorage.removeItem('uploadBenchmarkForm');
+      try {
+        localStorage.removeItem('uploadBenchmarkForm');
+      } catch (e) {
+        console.warn('Could not remove saved data:', e);
+      }
       
       // Show success message
       showSuccessMessage();
       
-      // Reset form
-      form.reset();
+      // Reset form if possible
+      if (form && form.reset) {
+        form.reset();
+      }
       goToStep(1);
       updateSelectedMetrics();
+      clearInitialValidationStates();
       
       // Restore button
       submitButton.innerHTML = originalContent;
@@ -608,23 +928,27 @@ document.addEventListener('DOMContentLoaded', function() {
   
   // Utility functions
   function markInvalid(element, message) {
+    if (!element) return;
+    
     element.classList.add('invalid');
     element.classList.remove('valid');
     
-    let errorElement = element.parentElement.querySelector('.error-message');
+    let errorElement = element.parentElement?.querySelector('.error-message');
     if (!errorElement) {
       errorElement = document.createElement('div');
       errorElement.className = 'error-message';
-      element.parentElement.appendChild(errorElement);
+      element.parentElement?.appendChild(errorElement);
     }
     errorElement.textContent = message;
   }
   
   function markValid(element) {
+    if (!element) return;
+    
     element.classList.remove('invalid');
     element.classList.add('valid');
     
-    const errorElement = element.parentElement.querySelector('.error-message');
+    const errorElement = element.parentElement?.querySelector('.error-message');
     if (errorElement) {
       errorElement.remove();
     }
@@ -632,6 +956,8 @@ document.addEventListener('DOMContentLoaded', function() {
   
   function showStepError(message, step) {
     const stepElement = document.getElementById(`step${step}`);
+    if (!stepElement) return;
+    
     let errorElement = stepElement.querySelector('.step-error');
     
     if (!errorElement) {
@@ -648,7 +974,7 @@ document.addEventListener('DOMContentLoaded', function() {
   
   function hideStepError(step) {
     const stepElement = document.getElementById(`step${step}`);
-    const errorElement = stepElement.querySelector('.step-error');
+    const errorElement = stepElement?.querySelector('.step-error');
     if (errorElement) {
       errorElement.remove();
     }
@@ -669,7 +995,9 @@ document.addEventListener('DOMContentLoaded', function() {
     
     // Auto-remove after 5 seconds
     setTimeout(() => {
-      successMessage.remove();
+      if (successMessage.parentNode) {
+        successMessage.remove();
+      }
     }, 5000);
   }
   

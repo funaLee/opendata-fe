@@ -5,7 +5,8 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Upload Benchmark - OpenData</title>
     <link href="../css/global.css" rel="stylesheet">
-    <link href="../css/pages/upload.css" rel="stylesheet">
+    <link href="../css/pages/upload-benchmark.css" rel="stylesheet">
+    <link href="../css/components/metric-selector.css" rel="stylesheet">
     <link href="../css/components/custom-select.css" rel="stylesheet">
     <link href="../css/components/enhanced-select.css" rel="stylesheet">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.4/css/all.min.css">
@@ -28,83 +29,397 @@
                 Benchmark mà bạn tải lên phải được sử dụng để đánh giá hiệu suất của các mô hình trong một bài báo khoa học uy tín. Chúng tôi sẽ kiểm tra thông tin mà bạn cung cấp, vậy nên hãy đảm bảo thông tin chính xác.
             </p>
             
+            <!-- Progress Indicator -->
+            <div class="form-progress">
+                <div class="progress-bar">
+                    <div class="progress-fill" id="progressFill"></div>
+                </div>
+                <div class="progress-text">
+                    <span id="progressText">Bước 1 / 5</span>
+                    <span id="progressPercentage">20%</span>
+                </div>
+            </div>
+            
             <form id="uploadBenchmarkForm" class="upload-form">
-                <div class="form-row">
-                    <div class="form-group full-width">
-                        <label for="benchmarkName">Tên benchmark <span class="required">*</span></label>
-                        <input type="text" id="benchmarkName" placeholder="Nhập tên benchmark" required>
-                    </div>
-                </div>
-                
-                <div class="form-row">
-                    <div class="form-group full-width">
-                        <label for="benchmarkDescription">Mô tả benchmark <span class="required">*</span></label>
-                        <textarea id="benchmarkDescription" placeholder="Nhập mô tả chi tiết về benchmark" required></textarea>
-                    </div>
-                </div>
-                
-                <div class="form-row two-columns">
-                    <div class="form-group">
-                        <label for="datasetSelect">Dataset sử dụng <span class="required">*</span></label>
-                        <select id="datasetSelect" required>
-                            <option value="" disabled selected>Chọn dataset cho benchmark</option>
-                            <option value="ds_imagenet">ImageNet</option>
-                            <option value="ds_cifar10">CIFAR-10</option>
-                            <option value="ds_cifar100">CIFAR-100</option>
-                            <option value="ds_coco">MS COCO</option>
-                            <option value="ds_glue">GLUE</option>
-                            <option value="ds_squad">SQuAD</option>
-                            <option value="ds_librispeech">LibriSpeech</option>
-                            <option value="ds_wmt">WMT</option>
-                            <option value="ds_openai_gym">OpenAI Gym</option>
-                            <option value="ds_atari">Atari Games</option>
-                        </select>
+                <!-- Step 1: Basic Information -->
+                <div class="form-step" id="step1" style="display: block;">
+                    <h2 class="step-title">Bước 1: Thông tin cơ bản</h2>
+                    
+                    <div class="form-row">
+                        <div class="form-group full-width">
+                            <label for="benchmarkName">Tên benchmark <span class="required">*</span></label>
+                            <input type="text" id="benchmarkName" placeholder="Nhập tên benchmark" required>
+                        </div>
                     </div>
                     
-                    <div class="form-group">
-                        <label for="taskSelect">Task <span class="required">*</span></label>
-                        <select id="taskSelect" required>
-                            <option value="" disabled selected>Chọn task cho benchmark</option>
-                            <option value="task_image_classification">Image Classification</option>
-                            <option value="task_object_detection">Object Detection</option>
-                            <option value="task_semantic_segmentation">Semantic Segmentation</option>
-                            <option value="task_instance_segmentation">Instance Segmentation</option>
-                            <option value="task_text_classification">Text Classification</option>
-                            <option value="task_named_entity_recognition">Named Entity Recognition</option>
-                            <option value="task_question_answering">Question Answering</option>
-                            <option value="task_machine_translation">Machine Translation</option>
-                            <option value="task_speech_recognition">Speech Recognition</option>
-                            <option value="task_reinforcement_learning">Reinforcement Learning</option>
-                        </select>
+                    <div class="form-row">
+                        <div class="form-group full-width">
+                            <label for="benchmarkDescription">Mô tả benchmark <span class="required">*</span></label>
+                            <textarea id="benchmarkDescription" placeholder="Nhập mô tả chi tiết về benchmark" required></textarea>
+                        </div>
                     </div>
                 </div>
                 
-                <div class="form-row">
-                    <div class="form-group full-width">
-                        <label for="metricsSelect">Metrics <span class="required">*</span></label>
-                        <select id="metricsSelect" multiple required>
-                            <option value="" disabled>Chọn danh sách metrics cho benchmark</option>
-                            <option value="metric_accuracy">Accuracy</option>
-                            <option value="metric_precision">Precision</option>
-                            <option value="metric_recall">Recall</option>
-                            <option value="metric_f1_score">F1 Score</option>
-                            <option value="metric_iou">IoU (Intersection over Union)</option>
-                            <option value="metric_map">mAP (mean Average Precision)</option>
-                            <option value="metric_bleu">BLEU Score</option>
-                            <option value="metric_rouge">ROUGE Score</option>
-                            <option value="metric_wer">WER (Word Error Rate)</option>
-                            <option value="metric_reward">Reward</option>
-                            <option value="metric_success_rate">Success Rate</option>
-                            <option value="metric_top1_error">Top-1 Error</option>
-                            <option value="metric_top5_error">Top-5 Error</option>
-                            <option value="metric_perplexity">Perplexity</option>
-                            <option value="metric_cer">CER (Character Error Rate)</option>
-                        </select>
+                <!-- Step 2: Dataset & Task Selection -->
+                <div class="form-step" id="step2" style="display: none;">
+                    <h2 class="step-title">Bước 2: Dataset và Task</h2>
+                    
+                    <div class="form-row two-columns">
+                        <div class="form-group">
+                            <label for="datasetSelect">Dataset sử dụng <span class="required">*</span></label>
+                            <div class="custom-select">
+                                <select id="datasetSelect" required>
+                                    <option value="" disabled selected>Chọn dataset cho benchmark</option>
+                                    <option value="ds_imagenet">ImageNet</option>
+                                    <option value="ds_cifar10">CIFAR-10</option>
+                                    <option value="ds_cifar100">CIFAR-100</option>
+                                    <option value="ds_coco">MS COCO</option>
+                                    <option value="ds_glue">GLUE</option>
+                                    <option value="ds_squad">SQuAD</option>
+                                    <option value="ds_librispeech">LibriSpeech</option>
+                                    <option value="ds_wmt">WMT</option>
+                                    <option value="ds_openai_gym">OpenAI Gym</option>
+                                    <option value="ds_atari">Atari Games</option>
+                                    <option value="other_dataset" class="other-option">Khác...</option>
+                                </select>
+                                <i class="fas fa-chevron-down select-arrow"></i>
+                            </div>
+                            <div class="other-action" id="datasetOtherAction" style="display: none;">
+                                <p class="other-hint">Bạn có thể tạo dataset mới bằng cách:</p>
+                                <button type="button" class="other-upload-btn" id="uploadNewDataset">
+                                    <i class="fas fa-plus"></i>
+                                    Tải lên dataset mới
+                                </button>
+                            </div>
+                        </div>
+                        
+                        <div class="form-group">
+                            <label for="taskSelect">Task <span class="required">*</span></label>
+                            <div class="custom-select">
+                                <select id="taskSelect" required>
+                                    <option value="" disabled selected>Chọn task cho benchmark</option>
+                                    <option value="task_image_classification">Image Classification</option>
+                                    <option value="task_object_detection">Object Detection</option>
+                                    <option value="task_semantic_segmentation">Semantic Segmentation</option>
+                                    <option value="task_instance_segmentation">Instance Segmentation</option>
+                                    <option value="task_text_classification">Text Classification</option>
+                                    <option value="task_named_entity_recognition">Named Entity Recognition</option>
+                                    <option value="task_question_answering">Question Answering</option>
+                                    <option value="task_machine_translation">Machine Translation</option>
+                                    <option value="task_speech_recognition">Speech Recognition</option>
+                                    <option value="task_reinforcement_learning">Reinforcement Learning</option>
+                                    <option value="other_task" class="other-option">Khác...</option>
+                                </select>
+                                <i class="fas fa-chevron-down select-arrow"></i>
+                            </div>
+                            <div class="other-action" id="taskOtherAction" style="display: none;">
+                                <p class="other-hint">Task bạn cần không có trong danh sách?</p>
+                                <button type="button" class="other-upload-btn" id="uploadNewTask">
+                                    <i class="fas fa-plus"></i>
+                                    Tạo task mới
+                                </button>
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <!-- Dataset/Task Creation Modal -->
+                    <div class="creation-modal" id="datasetCreationModal" style="display: none;">
+                        <div class="modal-content">
+                            <h3>Tạo Dataset Mới</h3>
+                            <p>Bạn sẽ được chuyển đến trang tạo dataset mới. Thông tin form hiện tại sẽ được lưu tự động.</p>
+                            <div class="modal-actions">
+                                <button type="button" class="modal-btn cancel" id="cancelDatasetCreation">Hủy</button>
+                                <button type="button" class="modal-btn confirm" id="confirmDatasetCreation">
+                                    <i class="fas fa-external-link-alt"></i>
+                                    Đến trang tạo dataset
+                                </button>
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <div class="creation-modal" id="taskCreationModal" style="display: none;">
+                        <div class="modal-content">
+                            <h3>Tạo Task Mới</h3>
+                            <p>Chúng tôi sẽ thêm task mới vào hệ thống. Vui lòng nhập thông tin task:</p>
+                            <div class="modal-form">
+                                <div class="form-group">
+                                    <label for="newTaskName">Tên task:</label>
+                                    <input type="text" id="newTaskName" placeholder="Nhập tên task">
+                                </div>
+                                <div class="form-group">
+                                    <label for="newTaskDescription">Mô tả task:</label>
+                                    <textarea id="newTaskDescription" placeholder="Mô tả chi tiết về task"></textarea>
+                                </div>
+                            </div>
+                            <div class="modal-actions">
+                                <button type="button" class="modal-btn cancel" id="cancelTaskCreation">Hủy</button>
+                                <button type="button" class="modal-btn confirm" id="confirmTaskCreation">
+                                    <i class="fas fa-check"></i>
+                                    Tạo task
+                                </button>
+                            </div>
+                        </div>
                     </div>
                 </div>
                 
-                <div class="form-actions">
-                    <button type="submit" class="submit-button">
+                <!-- Step 3: Metrics Selection -->
+                <div class="form-step" id="step3" style="display: none;">
+                    <h2 class="step-title">Bước 3: Chọn Metrics</h2>
+                    
+                    <!-- Metric Search -->
+                    <div class="metric-search">
+                        <input type="text" id="metricSearchInput" placeholder="Tìm kiếm metrics...">
+                        <i class="fas fa-search"></i>
+                    </div>
+                    
+                    <!-- Metric Categories -->
+                    <div class="metric-categories">
+                        <button type="button" class="metric-category-tab active" data-category="all">
+                            <i class="fas fa-th"></i> Tất cả
+                        </button>
+                        <button type="button" class="metric-category-tab" data-category="accuracy">
+                            <i class="fas fa-bullseye"></i> Accuracy
+                        </button>
+                        <button type="button" class="metric-category-tab" data-category="precision">
+                            <i class="fas fa-crosshairs"></i> Precision
+                        </button>
+                        <button type="button" class="metric-category-tab" data-category="detection">
+                            <i class="fas fa-search-location"></i> Detection
+                        </button>
+                        <button type="button" class="metric-category-tab" data-category="nlp">
+                            <i class="fas fa-language"></i> NLP
+                        </button>
+                    </div>
+                    
+                    <!-- Metrics Grid -->
+                    <div class="metrics-grid" id="metricsGrid">
+                        <!-- Accuracy Category -->
+                        <div class="metric-item" data-category="accuracy">
+                            <input type="checkbox" id="metric_accuracy" value="metric_accuracy">
+                            <label for="metric_accuracy">
+                                <div class="metric-icon"><i class="fas fa-bullseye"></i></div>
+                                <div class="metric-info">
+                                    <span class="metric-name">Accuracy</span>
+                                    <span class="metric-description">Tỷ lệ phần trăm các dự đoán chính xác so với tổng số dự đoán</span>
+                                </div>
+                            </label>
+                        </div>
+                        
+                        <div class="metric-item" data-category="accuracy">
+                            <input type="checkbox" id="metric_top1_error" value="metric_top1_error">
+                            <label for="metric_top1_error">
+                                <div class="metric-icon"><i class="fas fa-times-circle"></i></div>
+                                <div class="metric-info">
+                                    <span class="metric-name">Top-1 Error</span>
+                                    <span class="metric-description">Tỷ lệ lỗi khi dự đoán hàng đầu không chính xác</span>
+                                </div>
+                            </label>
+                        </div>
+                        
+                        <div class="metric-item" data-category="accuracy">
+                            <input type="checkbox" id="metric_top5_error" value="metric_top5_error">
+                            <label for="metric_top5_error">
+                                <div class="metric-icon"><i class="fas fa-list-ol"></i></div>
+                                <div class="metric-info">
+                                    <span class="metric-name">Top-5 Error</span>
+                                    <span class="metric-description">Tỷ lệ lỗi khi nhãn đúng không nằm trong 5 dự đoán hàng đầu</span>
+                                </div>
+                            </label>
+                        </div>
+                        
+                        <!-- Precision/Recall Category -->
+                        <div class="metric-item" data-category="precision">
+                            <input type="checkbox" id="metric_precision" value="metric_precision">
+                            <label for="metric_precision">
+                                <div class="metric-icon"><i class="fas fa-crosshairs"></i></div>
+                                <div class="metric-info">
+                                    <span class="metric-name">Precision</span>
+                                    <span class="metric-description">Tỷ lệ các dự đoán dương đúng trong tất cả dự đoán dương</span>
+                                </div>
+                            </label>
+                        </div>
+                        
+                        <div class="metric-item" data-category="precision">
+                            <input type="checkbox" id="metric_recall" value="metric_recall">
+                            <label for="metric_recall">
+                                <div class="metric-icon"><i class="fas fa-search"></i></div>
+                                <div class="metric-info">
+                                    <span class="metric-name">Recall</span>
+                                    <span class="metric-description">Tỷ lệ các trường hợp dương thực được phát hiện chính xác</span>
+                                </div>
+                            </label>
+                        </div>
+                        
+                        <div class="metric-item" data-category="precision">
+                            <input type="checkbox" id="metric_f1_score" value="metric_f1_score">
+                            <label for="metric_f1_score">
+                                <div class="metric-icon"><i class="fas fa-balance-scale"></i></div>
+                                <div class="metric-info">
+                                    <span class="metric-name">F1 Score</span>
+                                    <span class="metric-description">Trung bình điều hòa của precision và recall</span>
+                                </div>
+                            </label>
+                        </div>
+                        
+                        <!-- Detection Category -->
+                        <div class="metric-item" data-category="detection">
+                            <input type="checkbox" id="metric_iou" value="metric_iou">
+                            <label for="metric_iou">
+                                <div class="metric-icon"><i class="fas fa-copy"></i></div>
+                                <div class="metric-info">
+                                    <span class="metric-name">IoU (Intersection over Union)</span>
+                                    <span class="metric-description">Thước đo độ chính xác của object detection</span>
+                                </div>
+                            </label>
+                        </div>
+                        
+                        <div class="metric-item" data-category="detection">
+                            <input type="checkbox" id="metric_map" value="metric_map">
+                            <label for="metric_map">
+                                <div class="metric-icon"><i class="fas fa-map"></i></div>
+                                <div class="metric-info">
+                                    <span class="metric-name">mAP (mean Average Precision)</span>
+                                    <span class="metric-description">Trung bình của Average Precision trên các classes</span>
+                                </div>
+                            </label>
+                        </div>
+                        
+                        <!-- NLP Category -->
+                        <div class="metric-item" data-category="nlp">
+                            <input type="checkbox" id="metric_bleu" value="metric_bleu">
+                            <label for="metric_bleu">
+                                <div class="metric-icon"><i class="fas fa-language"></i></div>
+                                <div class="metric-info">
+                                    <span class="metric-name">BLEU Score</span>
+                                    <span class="metric-description">Thước đo chất lượng machine translation</span>
+                                </div>
+                            </label>
+                        </div>
+                        
+                        <div class="metric-item" data-category="nlp">
+                            <input type="checkbox" id="metric_rouge" value="metric_rouge">
+                            <label for="metric_rouge">
+                                <div class="metric-icon"><i class="fas fa-file-alt"></i></div>
+                                <div class="metric-info">
+                                    <span class="metric-name">ROUGE Score</span>
+                                    <span class="metric-description">Thước đo chất lượng text summarization</span>
+                                </div>
+                            </label>
+                        </div>
+                        
+                        <div class="metric-item" data-category="nlp">
+                            <input type="checkbox" id="metric_wer" value="metric_wer">
+                            <label for="metric_wer">
+                                <div class="metric-icon"><i class="fas fa-microphone"></i></div>
+                                <div class="metric-info">
+                                    <span class="metric-name">WER (Word Error Rate)</span>
+                                    <span class="metric-description">Tỷ lệ lỗi từ trong speech recognition</span>
+                                </div>
+                            </label>
+                        </div>
+                        
+                        <div class="metric-item" data-category="nlp">
+                            <input type="checkbox" id="metric_cer" value="metric_cer">
+                            <label for="metric_cer">
+                                <div class="metric-icon"><i class="fas fa-keyboard"></i></div>
+                                <div class="metric-info">
+                                    <span class="metric-name">CER (Character Error Rate)</span>
+                                    <span class="metric-description">Tỷ lệ lỗi ký tự trong speech recognition</span>
+                                </div>
+                            </label>
+                        </div>
+                        
+                        <!-- Additional Metrics -->
+                        <div class="metric-item" data-category="other">
+                            <input type="checkbox" id="metric_perplexity" value="metric_perplexity">
+                            <label for="metric_perplexity">
+                                <div class="metric-icon"><i class="fas fa-chart-line"></i></div>
+                                <div class="metric-info">
+                                    <span class="metric-name">Perplexity</span>
+                                    <span class="metric-description">Thước đo chất lượng language model</span>
+                                </div>
+                            </label>
+                        </div>
+                    </div>
+                    
+                    <!-- Selected Metrics -->
+                    <div class="selected-metrics">
+                        <div class="selected-metrics-header">
+                            <span>Metrics đã chọn <span id="selectedCount">(0)</span></span>
+                            <button type="button" class="clear-button" id="clearSelectedMetrics">
+                                <i class="fas fa-times"></i> Xóa tất cả
+                            </button>
+                        </div>
+                        <div class="selected-metrics-list" id="selectedMetricsList">
+                            <p class="empty-selection">Chưa có metric nào được chọn</p>
+                        </div>
+                    </div>
+                </div>
+                
+                <!-- Step 4: Additional Information (Optional) -->
+                <div class="form-step" id="step4" style="display: none;">
+                    <h2 class="step-title">Bước 4: Thông tin bổ sung (Tùy chọn)</h2>
+                    
+                    <div class="form-row">
+                        <div class="form-group full-width">
+                            <label for="benchmarkPaper">Link bài báo</label>
+                            <input type="url" id="benchmarkPaper" placeholder="https://example.com/paper.pdf">
+                            <div class="field-hint">Link đến bài báo gốc giới thiệu benchmark này</div>
+                        </div>
+                    </div>
+                    
+                    <div class="form-row two-columns">
+                        <div class="form-group">
+                            <label for="benchmarkCode">Link mã nguồn</label>
+                            <input type="url" id="benchmarkCode" placeholder="https://github.com/example/benchmark">
+                            <div class="field-hint">Link đến repository chứa code của benchmark</div>
+                        </div>
+                        
+                        <div class="form-group">
+                            <label for="benchmarkLeaderboard">Link leaderboard</label>
+                            <input type="url" id="benchmarkLeaderboard" placeholder="https://example.com/leaderboard">
+                            <div class="field-hint">Link đến bảng xếp hạng của benchmark</div>
+                        </div>
+                    </div>
+                </div>
+                
+                <!-- Step 5: Review -->
+                <div class="form-step" id="step5" style="display: none;">
+                    <h2 class="step-title">Bước 5: Xem lại thông tin</h2>
+                    
+                    <div class="review-section">
+                        <div class="review-item">
+                            <label>Tên benchmark:</label>
+                            <span id="reviewName">-</span>
+                        </div>
+                        <div class="review-item">
+                            <label>Mô tả:</label>
+                            <span id="reviewDescription">-</span>
+                        </div>
+                        <div class="review-item">
+                            <label>Dataset:</label>
+                            <span id="reviewDataset">-</span>
+                        </div>
+                        <div class="review-item">
+                            <label>Task:</label>
+                            <span id="reviewTask">-</span>
+                        </div>
+                        <div class="review-item">
+                            <label>Metrics:</label>
+                            <div id="reviewMetrics" class="review-metrics">-</div>
+                        </div>
+                    </div>
+                </div>
+                
+                <!-- Form Navigation -->
+                <div class="form-navigation">
+                    <button type="button" class="nav-btn" id="prevBtn" style="display: none;">
+                        <i class="fas fa-chevron-left"></i> Trước
+                    </button>
+                    <button type="button" class="nav-btn primary" id="nextBtn">
+                        Tiếp theo <i class="fas fa-chevron-right"></i>
+                    </button>
+                    <button type="submit" class="nav-btn primary" id="submitBtn" style="display: none;">
                         <i class="fas fa-chart-line"></i> Tạo benchmark
                     </button>
                 </div>
