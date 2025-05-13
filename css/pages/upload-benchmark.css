@@ -1,4 +1,7 @@
-/* Upload Benchmark Styles */
+/* Enhanced Upload Benchmark Styles */
+@import url('../components/metric-selector.css');
+
+/* Upload Form Container */
 .upload-form-container {
   background: linear-gradient(135deg, #e6e9ff, #f0f5ff, #e8f0ff);
   border-radius: var(--radius-lg);
@@ -9,12 +12,26 @@
   overflow: hidden;
 }
 
+.upload-form-container::before {
+  content: '';
+  position: absolute;
+  top: -50%;
+  left: -50%;
+  width: 200%;
+  height: 200%;
+  background: radial-gradient(circle, rgba(255,255,255,0.3) 0%, transparent 70%);
+  pointer-events: none;
+  z-index: 1;
+}
+
 .upload-title {
   color: var(--primary-color);
   font-size: 36px;
   font-weight: 700;
   margin-bottom: 15px;
   text-align: center;
+  position: relative;
+  z-index: 2;
 }
 
 .upload-description {
@@ -26,14 +43,18 @@
   max-width: 900px;
   margin-left: auto;
   margin-right: auto;
+  position: relative;
+  z-index: 2;
 }
 
 .upload-form {
-  max-width: 900px;
+  max-width: 1000px;
   margin: 0 auto;
+  position: relative;
+  z-index: 2;
 }
 
-/* Form Rows */
+/* Form Rows Enhancement */
 .form-row {
   display: flex;
   margin-bottom: 24px;
@@ -43,6 +64,11 @@
 .form-row.two-columns {
   display: grid;
   grid-template-columns: 1fr 1fr;
+}
+
+.form-row.three-columns {
+  display: grid;
+  grid-template-columns: 1fr 1fr 1fr;
 }
 
 .form-group {
@@ -56,7 +82,7 @@
   width: 100%;
 }
 
-/* Form Labels */
+/* Enhanced Form Labels */
 .form-group label {
   color: var(--primary-color);
   font-weight: 600;
@@ -64,20 +90,23 @@
   font-size: 16px;
   display: flex;
   align-items: center;
+  position: relative;
+  z-index: 1;
 }
 
 .required {
   color: var(--primary-dark);
   margin-left: 4px;
+  font-size: 18px;
 }
 
-/* Form Inputs */
+/* Enhanced Form Inputs */
 .form-group input,
 .form-group textarea,
 .form-group select {
   padding: 15px;
   border-radius: var(--radius-md);
-  border: 1px solid transparent;
+  border: 2px solid transparent;
   background-color: white;
   font-size: 16px;
   color: var(--text-dark);
@@ -88,25 +117,67 @@
 .form-group input:focus,
 .form-group textarea:focus,
 .form-group select:focus {
-  border-color: var(--primary-light);
-  box-shadow: 0 0 0 2px rgba(90, 107, 255, 0.2);
+  border-color: var(--primary-color);
+  box-shadow: 0 0 0 4px rgba(90, 107, 255, 0.1);
   outline: none;
   transform: translateY(-2px);
 }
 
-.form-group input::placeholder,
-.form-group textarea::placeholder {
-  color: var(--text-light);
-  opacity: 0.7;
+/* Error and Success States */
+.form-group input.invalid,
+.form-group textarea.invalid,
+.form-group select.invalid {
+  border-color: #ff5c5c;
+  box-shadow: 0 0 0 4px rgba(255, 92, 92, 0.1);
+  animation: shake 0.5s ease-in-out;
 }
 
-/* Textarea */
-.form-group textarea {
-  min-height: 120px;
-  resize: vertical;
+.form-group input.valid,
+.form-group textarea.valid,
+.form-group select.valid {
+  border-color: #4caf50;
+  box-shadow: 0 0 0 4px rgba(76, 175, 80, 0.1);
 }
 
-/* Custom Select */
+/* Character Counter Enhancement */
+.character-counter {
+  font-size: 13px;
+  color: #666;
+  text-align: right;
+  margin-top: 8px;
+  transition: color 0.3s ease;
+  font-weight: 500;
+}
+
+.character-counter.warning {
+  color: #ff9500;
+}
+
+.character-counter.danger {
+  color: #ff5c5c;
+  font-weight: 700;
+}
+
+/* Error Messages */
+.error-message {
+  color: #ff5c5c;
+  font-size: 14px;
+  margin-top: 8px;
+  text-align: left;
+  animation: slideIn 0.3s ease;
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  font-weight: 500;
+}
+
+.error-message::before {
+  content: '⚠';
+  font-size: 16px;
+  opacity: 0.8;
+}
+
+/* Custom Select Enhancement */
 .custom-select {
   position: relative;
 }
@@ -116,6 +187,7 @@
   -webkit-appearance: none;
   width: 100%;
   cursor: pointer;
+  padding-right: 45px;
 }
 
 .select-arrow {
@@ -126,31 +198,77 @@
   color: var(--primary-color);
   pointer-events: none;
   transition: transform 0.3s ease;
+  display: flex;
+  align-items: center;
+  justify-content: center;
 }
 
 .custom-select:focus-within .select-arrow {
   transform: translateY(-50%) rotate(180deg);
 }
 
-/* Multiple Select Styling */
-.custom-select select[multiple] {
-  min-height: 120px;
-  padding: 10px;
+/* Animations */
+@keyframes slideIn {
+  from {
+    opacity: 0;
+    transform: translateY(-10px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
 }
 
-/* Form Actions */
+@keyframes shake {
+  0%, 100% { transform: translateX(0); }
+  10%, 30%, 50%, 70%, 90% { transform: translateX(-2px); }
+  20%, 40%, 60%, 80% { transform: translateX(2px); }
+}
+
+/* Textarea Enhancement */
+.form-group textarea {
+  min-height: 120px;
+  resize: vertical;
+  line-height: 1.6;
+  font-family: inherit;
+}
+
+/* Progress Steps Integration */
+.form-step {
+  margin-bottom: 40px;
+  background-color: white;
+  border-radius: var(--radius-lg);
+  padding: 30px;
+  box-shadow: var(--shadow-sm);
+  border: 1px solid rgba(90, 107, 255, 0.1);
+}
+
+.form-step[style*="display: none"] {
+  display: none !important;
+}
+
+/* Enhanced Form Navigation */
+.form-navigation {
+  position: sticky;
+  bottom: 0;
+  background: white;
+  padding: 20px 0;
+  border-top: 1px solid var(--primary-light);
+  margin-top: 30px;
+}
+
+/* Form Actions Enhancement */
 .form-actions {
   margin-top: 40px;
   display: flex;
   justify-content: center;
 }
 
-.submit-button {
+.submit-button,
+.nav-btn {
   display: flex;
   align-items: center;
   gap: 10px;
-  background: linear-gradient(135deg, var(--gradient-benchmark));
-  color: var(--white);
   border: none;
   border-radius: 30px;
   padding: 14px 28px;
@@ -158,9 +276,16 @@
   font-weight: 600;
   cursor: pointer;
   transition: all 0.3s ease;
-  box-shadow: var(--shadow-md);
   position: relative;
   overflow: hidden;
+  box-shadow: var(--shadow-md);
+}
+
+.submit-button {
+  background: linear-gradient(135deg, var(--gradient-benchmark));
+  color: var(--white);
+  min-width: 200px;
+  justify-content: center;
 }
 
 .submit-button:hover {
@@ -193,160 +318,64 @@
   transform: translateY(-2px);
 }
 
-/* Enhanced Validation Styles */
-.form-group input.invalid,
-.form-group textarea.invalid,
-.form-group select.invalid,
-.custom-select.invalid select,
-.multiselect-trigger.invalid {
-  border-color: #ff5c5c;
-  box-shadow: 0 0 0 3px rgba(255, 92, 92, 0.1);
-  background-color: rgba(255, 92, 92, 0.02);
-}
-
-.form-group input.valid,
-.form-group textarea.valid,
-.form-group select.valid,
-.custom-select.valid select,
-.multiselect-trigger.valid {
-  border-color: #4caf50;
-  box-shadow: 0 0 0 3px rgba(76, 175, 80, 0.1);
-  background-color: rgba(76, 175, 80, 0.02);
-}
-
-.error-message {
-  color: #ff5c5c;
-  font-size: 14px;
-  margin-top: 8px;
-  text-align: left;
-  animation: slideIn 0.3s ease;
-  display: flex;
-  align-items: center;
-  gap: 8px;
-}
-
-.error-message::before {
-  content: '⚠';
-  font-size: 16px;
-  opacity: 0.8;
-}
-
-/* Character counter */
-.character-counter {
-  font-size: 13px;
-  color: #666;
-  text-align: right;
-  margin-top: 8px;
-  transition: color 0.3s ease;
-  font-weight: 500;
-}
-
-/* Loading state */
-.form-group.loading input,
-.form-group.loading textarea,
-.form-group.loading select {
-  opacity: 0.7;
-  pointer-events: none;
-}
-
-/* Enhanced submit button states */
+/* Loading State */
 .submit-button:disabled {
-  opacity: 0.6;
+  opacity: 0.8;
   cursor: not-allowed;
   transform: none;
-  background: #e0e0e0;
-  color: #999;
 }
 
 .submit-button:disabled:hover {
   transform: none;
-  box-shadow: none;
+  box-shadow: var(--shadow-md);
 }
 
-/* Form disabled state */
-form[style*="pointer-events: none"] {
-  filter: grayscale(0.3);
-}
-
-/* Enhanced animations */
-@keyframes slideIn {
-  from {
-    opacity: 0;
-    transform: translateY(-10px);
-  }
-  to {
-    opacity: 1;
-    transform: translateY(0);
-  }
-}
-
-/* Input focus states */
-.form-group input:focus,
-.form-group textarea:focus,
-.form-group select:focus {
-  transform: translateY(-2px);
-  box-shadow: 0 4px 12px rgba(90, 107, 255, 0.15);
-}
-
-/* Submission Message */
-.submission-message {
-  padding: 20px 25px;
-  border-radius: 15px;
-  margin-bottom: 30px;
+/* Step-specific Enhancements */
+.form-step h2 {
   position: relative;
-  animation: slideDown 0.4s ease;
-  text-align: center;
-  font-weight: 500;
+  margin-bottom: 30px;
 }
 
-.submission-message.success {
-  background-color: rgba(139, 208, 180, 0.15);
-  color: #2a846a;
-  border-left: 5px solid #8bd0b4;
-}
-
-.submission-message.error {
-  background-color: rgba(255, 92, 92, 0.15);
-  color: #e64040;
-  border-left: 5px solid #ff5c5c;
-}
-
-.close-message {
+.form-step h2::after {
+  content: '';
   position: absolute;
-  top: 15px;
-  right: 20px;
-  background: none;
-  border: none;
-  color: inherit;
-  font-size: 24px;
-  cursor: pointer;
-  opacity: 0.7;
-  transition: opacity 0.3s ease;
-  width: 30px;
-  height: 30px;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  border-radius: 50%;
+  bottom: -10px;
+  left: 0;
+  width: 50px;
+  height: 3px;
+  background: linear-gradient(90deg, var(--primary-color), transparent);
+  border-radius: 3px;
 }
 
-.close-message:hover {
-  opacity: 1;
-  background-color: rgba(0, 0, 0, 0.05);
+/* Metric Field Specific Styles */
+#metricsSelect {
+  min-height: 150px;
+  padding: 15px;
 }
 
-@keyframes slideDown {
-  from { 
-    opacity: 0;
-    transform: translateY(-15px);
+#metricsSelect option {
+  padding: 10px;
+  margin: 5px 0;
+  background-color: white;
+  border-radius: 5px;
+}
+
+#metricsSelect option:checked {
+  background-color: var(--primary-light);
+  color: var(--primary-color);
+}
+
+/* Enhanced Responsive Design */
+@media (max-width: 950px) {
+  .form-row.three-columns {
+    grid-template-columns: 1fr 1fr;
   }
-  to { 
-    opacity: 1;
-    transform: translateY(0);
+  
+  .form-group:last-child {
+    grid-column: span 2;
   }
 }
 
-/* Responsive design */
 @media (max-width: 768px) {
   .upload-form-container {
     padding: 30px 20px;
@@ -356,10 +385,23 @@ form[style*="pointer-events: none"] {
     font-size: 28px;
   }
   
+  .upload-description {
+    font-size: 15px;
+  }
+  
   .form-row,
-  .form-row.two-columns {
+  .form-row.two-columns,
+  .form-row.three-columns {
     flex-direction: column;
     grid-template-columns: 1fr;
+  }
+  
+  .form-group:last-child {
+    grid-column: span 1;
+  }
+  
+  .form-step {
+    padding: 20px;
   }
   
   .form-group input,
@@ -368,9 +410,146 @@ form[style*="pointer-events: none"] {
     padding: 12px;
     font-size: 15px;
   }
-
-  .submit-button {
-    width: 100%;
-    justify-content: center;
+  
+  .step-title {
+    font-size: 20px;
   }
+}
+
+/* Field Hint Enhancement */
+.field-hint {
+  margin-top: 5px;
+  font-size: 13px;
+  color: var(--text-light);
+  font-style: italic;
+  opacity: 0.8;
+  transition: opacity 0.3s ease;
+}
+
+.form-group:focus-within .field-hint {
+  opacity: 1;
+}
+
+/* Validation Icons */
+.form-group input.valid,
+.form-group textarea.valid,
+.form-group select.valid {
+  background-image: url("data:image/svg+xml,%3csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 20 20' fill='%234caf50'%3e%3cpath fill-rule='evenodd' d='M16.707 5.293a1 1 0 010 1.414l-8 8a1 1 0 01-1.414 0l-4-4a1 1 0 011.414-1.414L8 12.586l7.293-7.293a1 1 0 011.414 0z' clip-rule='evenodd'/%3e%3c/svg%3e");
+  background-repeat: no-repeat;
+  background-position: right 15px center;
+  background-size: 20px;
+  padding-right: 45px;
+}
+
+.form-group input.invalid,
+.form-group textarea.invalid,
+.form-group select.invalid {
+  background-image: url("data:image/svg+xml,%3csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 20 20' fill='%23ff5c5c'%3e%3cpath fill-rule='evenodd' d='M18 10a8 8 0 11-16 0 8 8 0 0116 0zM8.707 7.293a1 1 0 00-1.414 1.414L8.586 10l-1.293 1.293a1 1 0 101.414 1.414L10 11.414l1.293 1.293a1 1 0 001.414-1.414L11.414 10l1.293-1.293a1 1 0 00-1.414-1.414L10 8.586 8.707 7.293z' clip-rule='evenodd'/%3e%3c/svg%3e");
+  background-repeat: no-repeat;
+  background-position: right 15px center;
+  background-size: 20px;
+  padding-right: 45px;
+}
+
+/* Improved Focus States */
+.form-group input:focus,
+.form-group textarea:focus,
+.form-group select:focus {
+  border-color: var(--primary-color);
+  box-shadow: 0 0 0 4px rgba(90, 107, 255, 0.1);
+  outline: none;
+  transform: translateY(-2px);
+  z-index: 2;
+  position: relative;
+}
+
+/* Enhanced Submit Button States */
+.submit-button {
+  background: linear-gradient(135deg, #f5d47c, #e0c16c);
+  position: relative;
+}
+
+.submit-button:hover {
+  background: linear-gradient(135deg, #e0c16c, #d4b055);
+}
+
+.submit-button:active {
+  transform: translateY(-1px);
+  box-shadow: 0 3px 10px rgba(245, 212, 124, 0.3);
+}
+
+/* Auto-save indicator */
+.auto-save-indicator {
+  position: fixed;
+  top: 20px;
+  right: 20px;
+  background: linear-gradient(135deg, var(--primary-color), var(--primary-dark));
+  color: white;
+  padding: 8px 16px;
+  border-radius: 20px;
+  font-size: 14px;
+  font-weight: 500;
+  z-index: 1000;
+  opacity: 0;
+  transform: translateY(-20px);
+  transition: all 0.3s ease;
+}
+
+.auto-save-indicator.show {
+  opacity: 1;
+  transform: translateY(0);
+}
+
+/* Improved Typography */
+.upload-form {
+  font-family: 'Inter', 'Segoe UI', -apple-system, BlinkMacSystemFont, sans-serif;
+}
+
+/* Enhanced spacing */
+.form-group {
+  margin-bottom: 25px;
+}
+
+.form-group label {
+  margin-bottom: 12px;
+}
+
+/* Better select styling */
+.custom-select select option {
+  padding: 12px;
+  color: var(--text-dark);
+}
+
+.custom-select select option:checked {
+  background-color: var(--primary-light);
+  color: var(--primary-color);
+}
+
+/* Loading indicator */
+.form-loading {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background: rgba(255, 255, 255, 0.9);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  z-index: 9999;
+  backdrop-filter: blur(5px);
+}
+
+.form-loading .spinner {
+  width: 60px;
+  height: 60px;
+  border: 4px solid var(--primary-light);
+  border-top: 4px solid var(--primary-color);
+  border-radius: 50%;
+  animation: spin 1s linear infinite;
+}
+
+@keyframes spin {
+  0% { transform: rotate(0deg); }
+  100% { transform: rotate(360deg); }
 }

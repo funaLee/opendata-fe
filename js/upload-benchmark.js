@@ -1,433 +1,696 @@
 /**
- * Complete Benchmark List Page Functionality
+ * Enhanced Upload Benchmark Functionality
  */
 document.addEventListener('DOMContentLoaded', function() {
-  // State management
-  let allBenchmarks = [];
-  let filteredBenchmarks = [];
-  let currentFilters = {
-    task: ['all'],
-    search: ''
-  };
-
+  // Initialize form state
+  let currentStep = 1;
+  const totalSteps = 5;
+  
   // Get DOM elements
-  const filterToggle = document.getElementById('filterToggle');
-  const filterPanel = document.getElementById('filterPanel');
-  const searchInput = document.getElementById('benchmarkSearch');
-  const benchmarksGrid = document.getElementById('benchmarksGrid');
-  const loadMoreBtn = document.getElementById('loadMoreBtn');
-  const totalBenchmarksCount = document.getElementById('totalBenchmarks');
-
-  // Initialize page
-  initializePage();
-
-  function initializePage() {
-    // Add animations to main elements
-    addPageAnimations();
+  const form = document.getElementById('uploadBenchmarkForm');
+  const steps = document.querySelectorAll('.form-step');
+  const prevBtn = document.getElementById('prevBtn');
+  const nextBtn = document.getElementById('nextBtn');
+  const submitBtn = document.getElementById('submitBtn');
+  const progressFill = document.getElementById('progressFill');
+  const progressText = document.getElementById('progressText');
+  const progressPercentage = document.getElementById('progressPercentage');
+  
+  // Initialize components
+  initializeForm();
+  initializeMetricsSelector();
+  addCharacterCounters();
+  
+  function initializeForm() {
+    updateProgress();
     
-    // Set up event listeners
-    setupEventListeners();
+    // Add event listeners for navigation
+    nextBtn.addEventListener('click', nextStep);
+    prevBtn.addEventListener('click', prevStep);
     
-    // Initialize filter functionality
-    setupFilters();
+    // Add form submission handler
+    form.addEventListener('submit', handleSubmit);
     
-    // Store initial benchmarks
-    allBenchmarks = Array.from(document.querySelectorAll('.benchmark-card'));
-    filteredBenchmarks = [...allBenchmarks];
+    // Add validation for each step
+    addStepValidation();
     
-    // Apply initial animations to cards
-    animateBenchmarkCards();
+    // Add auto-save functionality
+    addAutoSave();
   }
-
-  function addPageAnimations() {
-    const searchTitle = document.querySelector('.search-title');
-    const subtitle = document.querySelector('.subtitle');
-    const actionButtons = document.querySelector('.action-buttons');
-    const benchmarkSearch = document.querySelector('.benchmark-search');
-    const benchmarkStats = document.querySelector('.benchmark-stats');
+  
+  function initializeMetricsSelector() {
+    // Metric search functionality
+    const searchInput = document.getElementById('metricSearchInput');
+    const categoryTabs = document.querySelectorAll('.metric-category-tab');
+    const metricsGrid = document.getElementById('metricsGrid');
+    const selectedMetricsList = document.getElementById('selectedMetricsList');
+    const selectedCount = document.getElementById('selectedCount');
+    const clearButton = document.getElementById('clearSelectedMetrics');
     
-    if (searchTitle) searchTitle.classList.add('animate-fadeInDown');
-    if (subtitle) subtitle.classList.add('animate-fadeInUp');
-    if (actionButtons) actionButtons.classList.add('animate-fadeIn');
-    if (benchmarkSearch) benchmarkSearch.classList.add('animate-fadeInUp');
-    if (benchmarkStats) {
-      setTimeout(() => {
-        benchmarkStats.classList.add('animate-fadeInUp');
-      }, 300);
-    }
-  }
-
-  function setupEventListeners() {
-    // Filter toggle
-    if (filterToggle && filterPanel) {
-      filterToggle.addEventListener('click', toggleFilterPanel);
-    }
-
     // Search functionality
-    if (searchInput) {
-      searchInput.addEventListener('input', debounce(handleSearch, 300));
-      searchInput.addEventListener('keypress', function(e) {
-        if (e.key === 'Enter') {
-          e.preventDefault();
-          handleSearch();
-        }
+    searchInput.addEventListener('input', function() {
+      filterMetrics(this.value);
+    });
+    
+    // Category filtering
+    categoryTabs.forEach(tab => {
+      tab.addEventListener('click', function() {
+        // Update active tab
+        categoryTabs.forEach(t => t.classList.remove('active'));
+        this.classList.add('active');
+        
+        // Filter metrics by category
+        const category = this.dataset.category;
+        filterMetricsByCategory(category);
       });
-    }
-
-    // Load more button
-    if (loadMoreBtn) {
-      loadMoreBtn.addEventListener('click', loadMoreBenchmarks);
-    }
-
-    // View results and submit result buttons
-    document.addEventListener('click', function(e) {
-      if (e.target.closest('.view-results-btn')) {
-        handleViewResults(e.target.closest('.view-results-btn'));
-      }
-      if (e.target.closest('.submit-result-btn')) {
-        handleSubmitResult(e.target.closest('.submit-result-btn'));
-      }
     });
-
-    // Close filter panel when clicking outside
-    document.addEventListener('click', function(e) {
-      if (!e.target.closest('.filter-panel') && !e.target.closest('.filter-button')) {
-        filterPanel?.classList.remove('active');
-      }
+    
+    // Metric selection handling
+    const metricCheckboxes = metricsGrid.querySelectorAll('input[type="checkbox"]');
+    metricCheckboxes.forEach(checkbox => {
+      checkbox.addEventListener('change', function() {
+        updateSelectedMetrics();
+        validateMetricsStep();
+      });
+    });
+    
+    // Clear all selected metrics
+    clearButton.addEventListener('click', function() {
+      metricCheckboxes.forEach(checkbox => {
+        checkbox.checked = false;
+      });
+      updateSelectedMetrics();
+      validateMetricsStep();
     });
   }
-
-  function setupFilters() {
-    const filterCheckboxes = document.querySelectorAll('.filter-option input[type="checkbox"]');
+  
+  function filterMetrics(searchTerm) {
+    const metricItems = document.querySelectorAll('.metric-item');
+    const searchLower = searchTerm.toLowerCase();
     
-    filterCheckboxes.forEach(checkbox => {
-      checkbox.addEventListener('change', handleFilterChange);
-    });
-  }
-
-  function toggleFilterPanel() {
-    filterPanel.classList.toggle('active');
-    
-    // Update filter button icon
-    const icon = filterToggle.querySelector('i');
-    if (filterPanel.classList.contains('active')) {
-      icon.style.transform = 'rotate(180deg)';
-    } else {
-      icon.style.transform = 'rotate(0deg)';
-    }
-  }
-
-  function handleSearch() {
-    const searchQuery = searchInput.value.trim().toLowerCase();
-    currentFilters.search = searchQuery;
-    applyFilters();
-  }
-
-  function handleFilterChange(e) {
-    const value = e.target.value;
-    const isChecked = e.target.checked;
-    
-    if (value === 'all') {
-      // If "All Tasks" is checked, uncheck all others
-      if (isChecked) {
-        currentFilters.task = ['all'];
-        document.querySelectorAll('.filter-option input[type="checkbox"]').forEach(cb => {
-          cb.checked = cb.value === 'all';
-        });
-      }
-    } else {
-      // If specific task is checked, uncheck "All Tasks"
-      if (isChecked) {
-        currentFilters.task = currentFilters.task.filter(t => t !== 'all');
-        if (!currentFilters.task.includes(value)) {
-          currentFilters.task.push(value);
-        }
-        document.querySelector('input[value="all"]').checked = false;
+    metricItems.forEach(item => {
+      const metricName = item.querySelector('.metric-name').textContent.toLowerCase();
+      const metricDescription = item.querySelector('.metric-description').textContent.toLowerCase();
+      
+      if (metricName.includes(searchLower) || metricDescription.includes(searchLower)) {
+        item.style.display = 'block';
       } else {
-        currentFilters.task = currentFilters.task.filter(t => t !== value);
-        
-        // If no tasks are selected, check "All Tasks"
-        if (currentFilters.task.length === 0) {
-          currentFilters.task = ['all'];
-          document.querySelector('input[value="all"]').checked = true;
-        }
+        item.style.display = 'none';
       }
-    }
-    
-    applyFilters();
+    });
   }
-
-  function applyFilters() {
-    const searchQuery = currentFilters.search.toLowerCase();
-    const selectedTasks = currentFilters.task;
+  
+  function filterMetricsByCategory(category) {
+    const metricItems = document.querySelectorAll('.metric-item');
     
-    filteredBenchmarks = allBenchmarks.filter(card => {
-      // Search filter
-      if (searchQuery) {
-        const title = card.querySelector('.benchmark-title').textContent.toLowerCase();
-        const task = card.querySelector('.benchmark-task').textContent.toLowerCase();
-        const description = card.querySelector('.benchmark-description').textContent.toLowerCase();
-        const dataset = card.querySelector('.detail-item .value').textContent.toLowerCase();
-        
-        const matchesSearch = title.includes(searchQuery) || 
-                             task.includes(searchQuery) || 
-                             description.includes(searchQuery) ||
-                             dataset.includes(searchQuery);
-        
-        if (!matchesSearch) return false;
+    metricItems.forEach(item => {
+      if (category === 'all' || item.dataset.category === category) {
+        item.style.display = 'block';
+      } else {
+        item.style.display = 'none';
       }
-      
-      // Task filter
-      if (!selectedTasks.includes('all')) {
-        const cardTask = card.getAttribute('data-task');
-        if (!selectedTasks.includes(cardTask)) return false;
-      }
-      
-      return true;
     });
-    
-    updateDisplay();
   }
-
-  function updateDisplay() {
-    // Hide all cards
-    allBenchmarks.forEach(card => {
-      card.style.display = 'none';
-    });
+  
+  function updateSelectedMetrics() {
+    const selectedMetricsContainer = document.getElementById('selectedMetricsList');
+    const selectedCount = document.getElementById('selectedCount');
+    const checkedMetrics = document.querySelectorAll('.metric-item input[type="checkbox"]:checked');
     
-    // Show filtered cards with animation
-    filteredBenchmarks.forEach((card, index) => {
-      card.style.display = 'flex';
-      card.style.opacity = '0';
-      card.style.transform = 'translateY(20px)';
-      
-      setTimeout(() => {
-        card.style.transition = 'all 0.6s ease-out';
-        card.style.opacity = '1';
-        card.style.transform = 'translateY(0)';
-      }, index * 50);
-    });
+    selectedCount.textContent = `(${checkedMetrics.length})`;
     
-    // Show empty state if no results
-    showEmptyState(filteredBenchmarks.length === 0);
-    
-    // Update total count
-    if (totalBenchmarksCount) {
-      totalBenchmarksCount.textContent = filteredBenchmarks.length;
-    }
-  }
-
-  function showEmptyState(show) {
-    let emptyState = document.querySelector('.empty-state');
-    
-    if (show && !emptyState) {
-      emptyState = document.createElement('div');
-      emptyState.className = 'empty-state';
-      emptyState.innerHTML = `
-        <i class="fas fa-search"></i>
-        <h3>No benchmarks found</h3>
-        <p>Try adjusting your search criteria or filters</p>
-      `;
-      benchmarksGrid.appendChild(emptyState);
-    } else if (!show && emptyState) {
-      emptyState.remove();
-    }
-  }
-
-  function animateBenchmarkCards() {
-    setTimeout(() => {
-      const cards = document.querySelectorAll('.benchmark-card');
-      
-      cards.forEach((card, index) => {
-        card.style.opacity = '0';
-        card.style.transform = 'translateY(20px)';
+    if (checkedMetrics.length === 0) {
+      selectedMetricsContainer.innerHTML = '<p class="empty-selection">Chưa có metric nào được chọn</p>';
+    } else {
+      const metricsHtml = Array.from(checkedMetrics).map(checkbox => {
+        const metricItem = checkbox.closest('.metric-item');
+        const metricName = metricItem.querySelector('.metric-name').textContent;
+        const metricIcon = metricItem.querySelector('.metric-icon i').className;
         
-        setTimeout(() => {
-          card.style.transition = 'all 0.6s ease-out';
-          card.style.opacity = '1';
-          card.style.transform = 'translateY(0)';
-        }, index * 100);
+        return `
+          <div class="selected-metric-tag">
+            <i class="${metricIcon}"></i>
+            <span>${metricName}</span>
+            <button type="button" class="remove-metric" data-metric="${checkbox.id}">
+              <i class="fas fa-times"></i>
+            </button>
+          </div>
+        `;
+      }).join('');
+      
+      selectedMetricsContainer.innerHTML = metricsHtml;
+      
+      // Add event listeners to remove buttons
+      selectedMetricsContainer.querySelectorAll('.remove-metric').forEach(button => {
+        button.addEventListener('click', function() {
+          const metricId = this.dataset.metric;
+          document.getElementById(metricId).checked = false;
+          updateSelectedMetrics();
+          validateMetricsStep();
+        });
       });
-    }, 300);
+    }
   }
-
-  function loadMoreBenchmarks() {
-    // Show loading state
-    loadMoreBtn.innerHTML = '<i class="fas fa-spinner fa-spin"></i> Loading...';
-    loadMoreBtn.disabled = true;
-    
-    // Simulate loading more benchmarks
-    setTimeout(() => {
-      const newBenchmarks = generateMoreBenchmarks();
-      const currentCount = allBenchmarks.length;
-      
-      newBenchmarks.forEach((benchmarkData, index) => {
-        const card = createBenchmarkCard(benchmarkData);
-        allBenchmarks.push(card);
-        benchmarksGrid.appendChild(card);
-        
-        // Apply current filters to new card
-        if (shouldShowCard(card)) {
-          filteredBenchmarks.push(card);
-          
-          // Animate new card
-          card.style.opacity = '0';
-          card.style.transform = 'translateY(20px)';
-          
-          setTimeout(() => {
-            card.style.transition = 'all 0.6s ease-out';
-            card.style.opacity = '1';
-            card.style.transform = 'translateY(0)';
-          }, (index + 1) * 100);
-        } else {
-          card.style.display = 'none';
-        }
-      });
-      
-      // Reset button
-      loadMoreBtn.innerHTML = '<i class="fas fa-plus"></i> Load More Benchmarks';
-      loadMoreBtn.disabled = false;
-      
-      // Update counters
-      updateStatNumbers();
-      
-      // Hide load more button if we've loaded enough
-      if (allBenchmarks.length >= 20) {
-        loadMoreBtn.style.display = 'none';
+  
+  function nextStep() {
+    if (validateCurrentStep()) {
+      if (currentStep < totalSteps) {
+        goToStep(currentStep + 1);
       }
-    }, 1000);
+    }
   }
-
-  function generateMoreBenchmarks() {
-    return [
-      {
-        title: 'CityscapeSemanticSegmentation',
-        task: 'Semantic Segmentation',
-        taskType: 'object-detection',
-        description: 'Urban street scene understanding với pixel-level annotations cho 19 lớp object.',
-        dataset: 'Cityscapes',
-        size: '25K images',
-        metrics: ['IoU', 'Pixel Accuracy', 'Mean IoU'],
-        badges: ['standard', 'task-tag'],
-        icon: 'fa-road',
-        modelCount: 89,
-        date: 'Sep 2024'
-      },
-      {
-        title: 'CommonVoice',
-        task: 'Speech Recognition',
-        taskType: 'speech-recognition',
-        description: 'Multilingual speech recognition dataset với 100+ ngôn ngữ từ Mozilla.',
-        dataset: 'Common Voice',
-        size: '25,000 hours',
-        metrics: ['WER', 'CER', 'Language Coverage'],
-        badges: ['multilingual', 'task-tag'],
-        icon: 'fa-volume-up',
-        modelCount: 34,
-        date: 'Aug 2024'
-      },
-      {
-        title: 'OPUS-MT Evaluation',
-        task: 'Machine Translation',
-        taskType: 'machine-translation',
-        description: 'Large-scale evaluation suite cho machine translation với 1000+ language pairs.',
-        dataset: 'OPUS-100',
-        size: '100 languages',
-        metrics: ['BLEU', 'chrF++', 'METEOR', 'BERTScore'],
-        badges: ['comprehensive', 'task-tag'],
-        icon: 'fa-exchange-alt',
-        modelCount: 67,
-        date: 'Jul 2024'
-      }
-    ];
+  
+  function prevStep() {
+    if (currentStep > 1) {
+      goToStep(currentStep - 1);
+    }
   }
-
-  function createBenchmarkCard(data) {
-    const card = document.createElement('div');
-    card.className = 'benchmark-card';
-    card.setAttribute('data-task', data.taskType);
+  
+  function goToStep(step) {
+    // Hide current step
+    steps[currentStep - 1].style.display = 'none';
     
-    card.innerHTML = `
-      <div class="benchmark-header">
-        <div class="benchmark-icon">
-          <i class="fas ${data.icon}"></i>
-        </div>
-        <div class="benchmark-info">
-          <h3 class="benchmark-title">${data.title}</h3>
-          <p class="benchmark-task">${data.task}</p>
-          <div class="benchmark-badges">
-            ${data.badges.map(badge => `<span class="badge ${badge}">${badge}</span>`).join('')}
-          </div>
-        </div>
-      </div>
-      <div class="benchmark-content">
-        <p class="benchmark-description">${data.description}</p>
-        <div class="benchmark-details">
-          <div class="detail-row">
-            <div class="detail-item">
-              <span class="label">Dataset:</span>
-              <span class="value">${data.dataset}</span>
-            </div>
-            <div class="detail-item">
-              <span class="label">Size:</span>
-              <span class="value">${data.size}</span>
-            </div>
-          </div>
-          <div class="detail-item metrics-item">
-            <span class="label">Metrics:</span>
-            <div class="metrics-list">
-              ${data.metrics.map(metric => `<span class="metric-tag">${metric}</span>`).join('')}
-            </div>
-          </div>
-        </div>
-      </div>
-      <div class="benchmark-footer">
-        <div class="benchmark-actions">
-          <button class="view-results-btn" data-benchmark="${data.title.toLowerCase().replace(/\s+/g, '-')}">
-            <i class="fas fa-eye"></i>
-            View Results
-          </button>
-          <button class="submit-result-btn" data-benchmark="${data.title.toLowerCase().replace(/\s+/g, '-')}">
-            <i class="fas fa-plus"></i>
-            Submit Result
-          </button>
-        </div>
-        <div class="benchmark-meta">
-          <span class="model-count">
-            <i class="fas fa-robot"></i> ${data.modelCount} models evaluated
-          </span>
-          <span class="benchmark-date">Updated: ${data.date}</span>
-        </div>
+    // Show target step
+    currentStep = step;
+    steps[currentStep - 1].style.display = 'block';
+    
+    // Update navigation
+    updateNavigation();
+    updateProgress();
+    
+    // Update review on final step
+    if (currentStep === totalSteps) {
+      updateReviewSection();
+    }
+  }
+  
+  function updateNavigation() {
+    // Update previous button
+    if (currentStep === 1) {
+      prevBtn.style.display = 'none';
+    } else {
+      prevBtn.style.display = 'block';
+    }
+    
+    // Update next/submit button
+    if (currentStep === totalSteps) {
+      nextBtn.style.display = 'none';
+      submitBtn.style.display = 'block';
+    } else {
+      nextBtn.style.display = 'block';
+      submitBtn.style.display = 'none';
+    }
+  }
+  
+  function updateProgress() {
+    const percentage = (currentStep / totalSteps) * 100;
+    progressFill.style.width = percentage + '%';
+    progressText.textContent = `Bước ${currentStep} / ${totalSteps}`;
+    progressPercentage.textContent = Math.round(percentage) + '%';
+  }
+  
+  function validateCurrentStep() {
+    switch (currentStep) {
+      case 1:
+        return validateBasicInfo();
+      case 2:
+        return validateDatasetTask();
+      case 3:
+        return validateMetricsStep();
+      case 4:
+        return true; // Optional step
+      case 5:
+        return true; // Review step
+      default:
+        return true;
+    }
+  }
+  
+  function validateBasicInfo() {
+    const name = document.getElementById('benchmarkName');
+    const description = document.getElementById('benchmarkDescription');
+    let isValid = true;
+    
+    // Validate name
+    if (!name.value.trim()) {
+      markInvalid(name, 'Tên benchmark là bắt buộc');
+      isValid = false;
+    } else if (name.value.length < 3) {
+      markInvalid(name, 'Tên benchmark phải có ít nhất 3 ký tự');
+      isValid = false;
+    } else {
+      markValid(name);
+    }
+    
+    // Validate description
+    if (!description.value.trim()) {
+      markInvalid(description, 'Mô tả benchmark là bắt buộc');
+      isValid = false;
+    } else if (description.value.length < 20) {
+      markInvalid(description, 'Mô tả phải có ít nhất 20 ký tự');
+      isValid = false;
+    } else {
+      markValid(description);
+    }
+    
+    return isValid;
+  }
+  
+  function validateDatasetTask() {
+    const dataset = document.getElementById('datasetSelect');
+    const task = document.getElementById('taskSelect');
+    let isValid = true;
+    
+    if (!dataset.value) {
+      markInvalid(dataset, 'Vui lòng chọn dataset');
+      isValid = false;
+    } else {
+      markValid(dataset);
+    }
+    
+    if (!task.value) {
+      markInvalid(task, 'Vui lòng chọn task');
+      isValid = false;
+    } else {
+      markValid(task);
+      // Auto-suggest metrics based on task
+      suggestMetrics(task.value);
+    }
+    
+    return isValid;
+  }
+  
+  function validateMetricsStep() {
+    const selectedMetrics = document.querySelectorAll('.metric-item input[type="checkbox"]:checked');
+    
+    if (selectedMetrics.length === 0) {
+      showStepError('Vui lòng chọn ít nhất một metric đánh giá', 3);
+      return false;
+    }
+    
+    if (selectedMetrics.length > 10) {
+      showStepError('Tối đa 10 metrics có thể được chọn', 3);
+      return false;
+    }
+    
+    hideStepError(3);
+    return true;
+  }
+  
+  function suggestMetrics(taskType) {
+    const metricSuggestions = {
+      'task_image_classification': ['metric_accuracy', 'metric_top1_error', 'metric_top5_error'],
+      'task_object_detection': ['metric_map', 'metric_accuracy', 'metric_iou'],
+      'task_semantic_segmentation': ['metric_iou', 'metric_accuracy', 'metric_precision', 'metric_recall'],
+      'task_text_classification': ['metric_accuracy', 'metric_f1_score', 'metric_precision', 'metric_recall'],
+      'task_machine_translation': ['metric_bleu', 'metric_rouge'],
+      'task_speech_recognition': ['metric_wer', 'metric_cer'],
+      'task_question_answering': ['metric_f1_score', 'metric_accuracy'],
+    };
+    
+    const suggestions = metricSuggestions[taskType] || [];
+    
+    if (suggestions.length > 0) {
+      showMetricSuggestions(suggestions);
+    }
+  }
+  
+  function showMetricSuggestions(metricIds) {
+    // Highlight suggested metrics
+    const metricItems = document.querySelectorAll('.metric-item');
+    
+    metricItems.forEach(item => {
+      const checkbox = item.querySelector('input[type="checkbox"]');
+      if (metricIds.includes(checkbox.id)) {
+        item.classList.add('suggested');
+      } else {
+        item.classList.remove('suggested');
+      }
+    });
+    
+    // Show suggestion banner
+    const suggestionBanner = document.createElement('div');
+    suggestionBanner.className = 'metric-suggestions';
+    suggestionBanner.innerHTML = `
+      <div class="suggestion-content">
+        <i class="fas fa-lightbulb"></i>
+        <span>Chúng tôi đề xuất các metrics phù hợp cho task này</span>
+        <button type="button" class="apply-suggestions">Áp dụng</button>
+        <button type="button" class="dismiss-suggestions">&times;</button>
       </div>
     `;
     
-    return card;
-  }
-
-  function shouldShowCard(card) {
-    const searchQuery = currentFilters.search.toLowerCase();
-    const selectedTasks = currentFilters.task;
+    const metricsGrid = document.getElementById('metricsGrid');
+    metricsGrid.insertBefore(suggestionBanner, metricsGrid.firstChild);
     
-    // Search filter
-    if (searchQuery) {
-      const title = card.querySelector('.benchmark-title').textContent.toLowerCase();
-      const task = card.querySelector('.benchmark-task').textContent.toLowerCase();
-      const description = card.querySelector('.benchmark-description').textContent.toLowerCase();
+    // Handle suggestion actions
+    suggestionBanner.querySelector('.apply-suggestions').addEventListener('click', function() {
+      metricIds.forEach(id => {
+        document.getElementById(id).checked = true;
+      });
+      updateSelectedMetrics();
+      suggestionBanner.remove();
+    });
+    
+    suggestionBanner.querySelector('.dismiss-suggestions').addEventListener('click', function() {
+      metricItems.forEach(item => item.classList.remove('suggested'));
+      suggestionBanner.remove();
+    });
+  }
+  
+  function updateReviewSection() {
+    // Update review section with current form data
+    document.getElementById('reviewName').textContent = 
+      document.getElementById('benchmarkName').value || '-';
+    document.getElementById('reviewDescription').textContent = 
+      document.getElementById('benchmarkDescription').value || '-';
+    
+    const datasetSelect = document.getElementById('datasetSelect');
+    document.getElementById('reviewDataset').textContent = 
+      datasetSelect.options[datasetSelect.selectedIndex]?.text || '-';
+    
+    const taskSelect = document.getElementById('taskSelect');
+    document.getElementById('reviewTask').textContent = 
+      taskSelect.options[taskSelect.selectedIndex]?.text || '-';
+    
+    // Update selected metrics
+    const selectedMetrics = document.querySelectorAll('.metric-item input[type="checkbox"]:checked');
+    const reviewMetrics = document.getElementById('reviewMetrics');
+    
+    if (selectedMetrics.length === 0) {
+      reviewMetrics.innerHTML = '-';
+    } else {
+      const metricsHtml = Array.from(selectedMetrics).map(checkbox => {
+        const metricItem = checkbox.closest('.metric-item');
+        const metricName = metricItem.querySelector('.metric-name').textContent;
+        return `<span class="review-metric-tag">${metricName}</span>`;
+      }).join('');
       
-      const matchesSearch = title.includes(searchQuery) || 
-                           task.includes(searchQuery) || 
-                           description.includes(searchQuery);
+      reviewMetrics.innerHTML = metricsHtml;
+    }
+  }
+  
+  function addStepValidation() {
+    // Real-time validation for each input
+    const inputs = form.querySelectorAll('input, textarea, select');
+    
+    inputs.forEach(input => {
+      input.addEventListener('blur', function() {
+        if (this.value.trim()) {
+          validateInput(this);
+        }
+      });
       
-      if (!matchesSearch) return false;
+      input.addEventListener('input', function() {
+        if (this.classList.contains('invalid')) {
+          validateInput(this);
+        }
+      });
+    });
+  }
+  
+  function validateInput(input) {
+    const value = input.value.trim();
+    
+    switch (input.id) {
+      case 'benchmarkName':
+        if (!value) {
+          markInvalid(input, 'Tên benchmark là bắt buộc');
+        } else if (value.length < 3) {
+          markInvalid(input, 'Tên benchmark phải có ít nhất 3 ký tự');
+        } else {
+          markValid(input);
+        }
+        break;
+        
+      case 'benchmarkDescription':
+        if (!value) {
+          markInvalid(input, 'Mô tả benchmark là bắt buộc');
+        } else if (value.length < 20) {
+          markInvalid(input, 'Mô tả phải có ít nhất 20 ký tự');
+        } else {
+          markValid(input);
+        }
+        break;
+        
+      case 'benchmarkPaper':
+        if (value && !isValidUrl(value)) {
+          markInvalid(input, 'Vui lòng nhập URL hợp lệ');
+        } else {
+          markValid(input);
+        }
+        break;
+        
+      case 'benchmarkCode':
+        if (value && !isValidUrl(value)) {
+          markInvalid(input, 'Vui lòng nhập URL hợp lệ');
+        } else {
+          markValid(input);
+        }
+        break;
+        
+      case 'benchmarkLeaderboard':
+        if (value && !isValidUrl(value)) {
+          markInvalid(input, 'Vui lòng nhập URL hợp lệ');
+        } else {
+          markValid(input);
+        }
+        break;
+        
+      default:
+        if (input.hasAttribute('required') && !value) {
+          markInvalid(input, 'Trường này là bắt buộc');
+        } else {
+          markValid(input);
+        }
+    }
+  }
+  
+  function addAutoSave() {
+    // Auto-save form data to localStorage
+    const inputs = form.querySelectorAll('input, textarea, select');
+    
+    inputs.forEach(input => {
+      input.addEventListener('input', debounce(function() {
+        saveFormData();
+      }, 1000));
+    });
+    
+    // Load saved data on page load
+    loadFormData();
+  }
+  
+  function saveFormData() {
+    const formData = {
+      benchmarkName: document.getElementById('benchmarkName').value,
+      benchmarkDescription: document.getElementById('benchmarkDescription').value,
+      datasetSelect: document.getElementById('datasetSelect').value,
+      taskSelect: document.getElementById('taskSelect').value,
+      selectedMetrics: Array.from(document.querySelectorAll('.metric-item input[type="checkbox"]:checked'))
+        .map(checkbox => checkbox.id),
+      benchmarkPaper: document.getElementById('benchmarkPaper').value,
+      benchmarkCode: document.getElementById('benchmarkCode').value,
+      benchmarkLeaderboard: document.getElementById('benchmarkLeaderboard').value,
+      currentStep: currentStep,
+      timestamp: Date.now()
+    };
+    
+    localStorage.setItem('uploadBenchmarkForm', JSON.stringify(formData));
+  }
+  
+  function loadFormData() {
+    const savedData = localStorage.getItem('uploadBenchmarkForm');
+    
+    if (savedData) {
+      try {
+        const formData = JSON.parse(savedData);
+        
+        // Only load if data is less than 24 hours old
+        if (Date.now() - formData.timestamp < 24 * 60 * 60 * 1000) {
+          document.getElementById('benchmarkName').value = formData.benchmarkName || '';
+          document.getElementById('benchmarkDescription').value = formData.benchmarkDescription || '';
+          document.getElementById('datasetSelect').value = formData.datasetSelect || '';
+          document.getElementById('taskSelect').value = formData.taskSelect || '';
+          document.getElementById('benchmarkPaper').value = formData.benchmarkPaper || '';
+          document.getElementById('benchmarkCode').value = formData.benchmarkCode || '';
+          document.getElementById('benchmarkLeaderboard').value = formData.benchmarkLeaderboard || '';
+          
+          // Restore selected metrics
+          if (formData.selectedMetrics) {
+            formData.selectedMetrics.forEach(metricId => {
+              const checkbox = document.getElementById(metricId);
+              if (checkbox) checkbox.checked = true;
+            });
+            updateSelectedMetrics();
+          }
+          
+          // Restore current step
+          if (formData.currentStep && formData.currentStep > 1) {
+            goToStep(formData.currentStep);
+          }
+        }
+      } catch (e) {
+        console.warn('Failed to load saved form data:', e);
+      }
+    }
+  }
+  
+  function addCharacterCounters() {
+    const descriptionInput = document.getElementById('benchmarkDescription');
+    addCharacterCounter(descriptionInput, 2000);
+  }
+  
+  function addCharacterCounter(element, maxLength) {
+    const counter = document.createElement('div');
+    counter.className = 'character-counter';
+    element.parentElement.appendChild(counter);
+    
+    function updateCounter() {
+      const length = element.value.length;
+      counter.textContent = `${length}/${maxLength} ký tự`;
+      counter.style.color = length > maxLength * 0.9 ? '#ff5c5c' : '#666';
     }
     
-    // Task filter
-    if (!selectedTasks.includes('all')) {
-      const cardTask = card.getAttribute('data-task');
-      if (!selectedTasks.includes(cardTask)) return false;
+    element.addEventListener('input', updateCounter);
+    updateCounter();
+  }
+  
+  function handleSubmit(e) {
+    e.preventDefault();
+    
+    if (!validateCurrentStep()) {
+      return;
     }
     
-    return true;
+    // Show loading state
+    const submitButton = document.getElementById('submitBtn');
+    const originalContent = submitButton.innerHTML;
+    submitButton.innerHTML = '<i class="fas fa-spinner fa-spin"></i> Đang xử lý...';
+    submitButton.disabled = true;
+    
+    // Collect all form data
+    const formData = {
+      name: document.getElementById('benchmarkName').value.trim(),
+      description: document.getElementById('benchmarkDescription').value.trim(),
+      dataset: document.getElementById('datasetSelect').value,
+      task: document.getElementById('taskSelect').value,
+      metrics: Array.from(document.querySelectorAll('.metric-item input[type="checkbox"]:checked'))
+        .map(checkbox => ({
+          id: checkbox.value,
+          name: checkbox.closest('.metric-item').querySelector('.metric-name').textContent
+        })),
+      paperUrl: document.getElementById('benchmarkPaper').value.trim(),
+      codeUrl: document.getElementById('benchmarkCode').value.trim(),
+      leaderboardUrl: document.getElementById('benchmarkLeaderboard').value.trim(),
+      timestamp: new Date().toISOString()
+    };
+    
+    console.log('Submitting benchmark data:', formData);
+    
+    // Simulate submission
+    setTimeout(() => {
+      // Clear saved data
+      localStorage.removeItem('uploadBenchmarkForm');
+      
+      // Show success message
+      showSuccessMessage();
+      
+      // Reset form
+      form.reset();
+      goToStep(1);
+      updateSelectedMetrics();
+      
+      // Restore button
+      submitButton.innerHTML = originalContent;
+      submitButton.disabled = false;
+    }, 2000);
   }
-}
-)
+  
+  // Utility functions
+  function markInvalid(element, message) {
+    element.classList.add('invalid');
+    element.classList.remove('valid');
+    
+    let errorElement = element.parentElement.querySelector('.error-message');
+    if (!errorElement) {
+      errorElement = document.createElement('div');
+      errorElement.className = 'error-message';
+      element.parentElement.appendChild(errorElement);
+    }
+    errorElement.textContent = message;
+  }
+  
+  function markValid(element) {
+    element.classList.remove('invalid');
+    element.classList.add('valid');
+    
+    const errorElement = element.parentElement.querySelector('.error-message');
+    if (errorElement) {
+      errorElement.remove();
+    }
+  }
+  
+  function showStepError(message, step) {
+    const stepElement = document.getElementById(`step${step}`);
+    let errorElement = stepElement.querySelector('.step-error');
+    
+    if (!errorElement) {
+      errorElement = document.createElement('div');
+      errorElement.className = 'step-error';
+      stepElement.insertBefore(errorElement, stepElement.firstChild);
+    }
+    
+    errorElement.innerHTML = `
+      <i class="fas fa-exclamation-triangle"></i>
+      <span>${message}</span>
+    `;
+  }
+  
+  function hideStepError(step) {
+    const stepElement = document.getElementById(`step${step}`);
+    const errorElement = stepElement.querySelector('.step-error');
+    if (errorElement) {
+      errorElement.remove();
+    }
+  }
+  
+  function showSuccessMessage() {
+    const successMessage = document.createElement('div');
+    successMessage.className = 'success-message';
+    successMessage.innerHTML = `
+      <div class="success-content">
+        <i class="fas fa-check-circle"></i>
+        <h3>Benchmark đã được tạo thành công!</h3>
+        <p>Chúng tôi sẽ xem xét và xác thực thông tin trong vòng 24-48 giờ.</p>
+      </div>
+    `;
+    
+    document.body.appendChild(successMessage);
+    
+    // Auto-remove after 5 seconds
+    setTimeout(() => {
+      successMessage.remove();
+    }, 5000);
+  }
+  
+  function isValidUrl(url) {
+    try {
+      new URL(url);
+      return true;
+    } catch {
+      return false;
+    }
+  }
+  
+  function debounce(func, wait) {
+    let timeout;
+    return function executedFunction(...args) {
+      const later = () => {
+        clearTimeout(timeout);
+        func(...args);
+      };
+      clearTimeout(timeout);
+      timeout = setTimeout(later, wait);
+    };
+  }
+});
