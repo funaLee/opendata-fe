@@ -1,0 +1,433 @@
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Research Trends - OpenData</title>
+    <link href="../css/global.css" rel="stylesheet">
+    <link href="../css/pages/trend.css" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.4/css/all.min.css">
+</head>
+<body>
+    <div class="container">
+        <!-- HEADER -->
+        <div data-include="../components/header.html"></div>
+
+        <!-- Overlay -->
+        <div id="overlay" class="overlay"></div>
+        
+        <!-- Sidebar -->
+        <div data-include="../components/slidebar.html"></div>
+
+        <!-- Main Content -->
+        <div class="trend-container">
+            <!-- Header Section -->
+            <div class="trend-header">
+                <h1 class="page-title">Research Trends</h1>
+                <p class="page-subtitle">Discover what's trending in AI and Machine Learning research</p>
+            </div>
+
+            <!-- Trending Topics Section -->
+            <div class="trending-topics">
+                <h2 class="section-title">
+                    <i class="fas fa-fire"></i>
+                    Trending This Week
+                </h2>
+                <div class="topics-grid">
+                    <div class="topic-card hot">
+                        <div class="topic-badge">HOT</div>
+                        <h3 class="topic-title">Large Language Models</h3>
+                        <div class="topic-stats">
+                            <span class="stat">
+                                <i class="fas fa-chart-line"></i>
+                                +847% interest
+                            </span>
+                            <span class="stat">
+                                <i class="fas fa-file-alt"></i>
+                                234 papers
+                            </span>
+                        </div>
+                        <div class="topic-tags">
+                            <span class="tag">GPT</span>
+                            <span class="tag">Transformer</span>
+                            <span class="tag">ChatGPT</span>
+                        </div>
+                    </div>
+
+                    <div class="topic-card trending">
+                        <div class="topic-badge trending">TRENDING</div>
+                        <h3 class="topic-title">Diffusion Models</h3>
+                        <div class="topic-stats">
+                            <span class="stat">
+                                <i class="fas fa-chart-line"></i>
+                                +245% interest
+                            </span>
+                            <span class="stat">
+                                <i class="fas fa-file-alt"></i>
+                                156 papers
+                            </span>
+                        </div>
+                        <div class="topic-tags">
+                            <span class="tag">Stable Diffusion</span>
+                            <span class="tag">DALL-E</span>
+                            <span class="tag">Midjourney</span>
+                        </div>
+                    </div>
+
+                    <div class="topic-card emerging">
+                        <div class="topic-badge emerging">EMERGING</div>
+                        <h3 class="topic-title">Multimodal AI</h3>
+                        <div class="topic-stats">
+                            <span class="stat">
+                                <i class="fas fa-chart-line"></i>
+                                +123% interest
+                            </span>
+                            <span class="stat">
+                                <i class="fas fa-file-alt"></i>
+                                89 papers
+                            </span>
+                        </div>
+                        <div class="topic-tags">
+                            <span class="tag">CLIP</span>
+                            <span class="tag">BLIP</span>
+                            <span class="tag">Flamingo</span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Latest Papers Section -->
+            <div class="latest-papers">
+                <h2 class="section-title">
+                    <i class="fas fa-clock"></i>
+                    Latest Trending Papers
+                </h2>
+                <div class="papers-list">
+                    <div class="paper-item">
+                        <div class="paper-header">
+                            <span class="paper-venue">NeurIPS 2024</span>
+                            <span class="paper-date">2 days ago</span>
+                        </div>
+                        <h3 class="paper-title">
+                            <a href="#">Attention Is All You Need: Next Generation</a>
+                        </h3>
+                        <div class="paper-authors">
+                            Ashish Vaswani, Noam Shazeer, Niki Parmar, Jakob Uszkoreit
+                        </div>
+                        <div class="paper-metrics">
+                            <span class="metric">
+                                <i class="fas fa-heart"></i>
+                                1.2k likes
+                            </span>
+                            <span class="metric">
+                                <i class="fas fa-bookmark"></i>
+                                345 saves
+                            </span>
+                            <span class="metric">
+                                <i class="fas fa-comment"></i>
+                                89 discussions
+                            </span>
+                        </div>
+                        <div class="paper-tags">
+                            <span class="tag">Transformer</span>
+                            <span class="tag">Attention</span>
+                            <span class="tag">NLP</span>
+                        </div>
+                    </div>
+
+                    <div class="paper-item">
+                        <div class="paper-header">
+                            <span class="paper-venue">ICML 2024</span>
+                            <span class="paper-date">5 days ago</span>
+                        </div>
+                        <h3 class="paper-title">
+                            <a href="#">Scaling Laws for Neural Language Models</a>
+                        </h3>
+                        <div class="paper-authors">
+                            Jared Kaplan, Sam McCandlish, Tom Henighan, Tom B. Brown
+                        </div>
+                        <div class="paper-metrics">
+                            <span class="metric">
+                                <i class="fas fa-heart"></i>
+                                892 likes
+                            </span>
+                            <span class="metric">
+                                <i class="fas fa-bookmark"></i>
+                                234 saves
+                            </span>
+                            <span class="metric">
+                                <i class="fas fa-comment"></i>
+                                156 discussions
+                            </span>
+                        </div>
+                        <div class="paper-tags">
+                            <span class="tag">Scaling</span>
+                            <span class="tag">Language Model</span>
+                            <span class="tag">GPT</span>
+                        </div>
+                    </div>
+
+                    <div class="paper-item">
+                        <div class="paper-header">
+                            <span class="paper-venue">ICLR 2024</span>
+                            <span class="paper-date">1 week ago</span>
+                        </div>
+                        <h3 class="paper-title">
+                            <a href="#">Masked Autoencoders Are Scalable Vision Learners</a>
+                        </h3>
+                        <div class="paper-authors">
+                            Kaiming He, Xinlei Chen, Saining Xie, Yanghao Li
+                        </div>
+                        <div class="paper-metrics">
+                            <span class="metric">
+                                <i class="fas fa-heart"></i>
+                                756 likes
+                            </span>
+                            <span class="metric">
+                                <i class="fas fa-bookmark"></i>
+                                189 saves
+                            </span>
+                            <span class="metric">
+                                <i class="fas fa-comment"></i>
+                                97 discussions
+                            </span>
+                        </div>
+                        <div class="paper-tags">
+                            <span class="tag">Computer Vision</span>
+                            <span class="tag">Self-Supervised</span>
+                            <span class="tag">MAE</span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Popular Tasks Section -->
+            <div class="popular-tasks">
+                <h2 class="section-title">
+                    <i class="fas fa-trophy"></i>
+                    Popular Tasks
+                </h2>
+                <div class="tasks-grid">
+                    <div class="task-card">
+                        <div class="task-header">
+                            <h3 class="task-name">Image Classification</h3>
+                            <span class="task-papers">2,134 papers</span>
+                        </div>
+                        <div class="task-leaderboard">
+                            <div class="leaderboard-item">
+                                <span class="rank">#1</span>
+                                <span class="model">EfficientNet-B7</span>
+                                <span class="score">88.4%</span>
+                            </div>
+                            <div class="leaderboard-item">
+                                <span class="rank">#2</span>
+                                <span class="model">ResNet-152</span>
+                                <span class="score">87.9%</span>
+                            </div>
+                            <div class="leaderboard-item">
+                                <span class="rank">#3</span>
+                                <span class="model">Vision Transformer</span>
+                                <span class="score">87.1%</span>
+                            </div>
+                        </div>
+                        <div class="task-datasets">
+                            <span class="dataset-pill">ImageNet</span>
+                            <span class="dataset-pill">CIFAR-10</span>
+                            <span class="dataset-pill">CIFAR-100</span>
+                        </div>
+                    </div>
+
+                    <div class="task-card">
+                        <div class="task-header">
+                            <h3 class="task-name">Language Modeling</h3>
+                            <span class="task-papers">1,892 papers</span>
+                        </div>
+                        <div class="task-leaderboard">
+                            <div class="leaderboard-item">
+                                <span class="rank">#1</span>
+                                <span class="model">GPT-4</span>
+                                <span class="score">15.2 PPL</span>
+                            </div>
+                            <div class="leaderboard-item">
+                                <span class="rank">#2</span>
+                                <span class="model">PaLM 2</span>
+                                <span class="score">16.8 PPL</span>
+                            </div>
+                            <div class="leaderboard-item">
+                                <span class="rank">#3</span>
+                                <span class="model">Claude-2</span>
+                                <span class="score">17.1 PPL</span>
+                            </div>
+                        </div>
+                        <div class="task-datasets">
+                            <span class="dataset-pill">WikiText-103</span>
+                            <span class="dataset-pill">OpenWebText</span>
+                            <span class="dataset-pill">The Pile</span>
+                        </div>
+                    </div>
+
+                    <div class="task-card">
+                        <div class="task-header">
+                            <h3 class="task-name">Object Detection</h3>
+                            <span class="task-papers">1,567 papers</span>
+                        </div>
+                        <div class="task-leaderboard">
+                            <div class="leaderboard-item">
+                                <span class="rank">#1</span>
+                                <span class="model">DETA</span>
+                                <span class="score">63.5 mAP</span>
+                            </div>
+                            <div class="leaderboard-item">
+                                <span class="rank">#2</span>
+                                <span class="model">YOLO v8</span>
+                                <span class="score">61.2 mAP</span>
+                            </div>
+                            <div class="leaderboard-item">
+                                <span class="rank">#3</span>
+                                <span class="model">RT-DETR</span>
+                                <span class="score">60.9 mAP</span>
+                            </div>
+                        </div>
+                        <div class="task-datasets">
+                            <span class="dataset-pill">COCO</span>
+                            <span class="dataset-pill">Open Images</span>
+                            <span class="dataset-pill">Pascal VOC</span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Statistics Section -->
+            <div class="statistics-section">
+                <h2 class="section-title">
+                    <i class="fas fa-chart-bar"></i>
+                    Platform Statistics
+                </h2>
+                <div class="stats-grid">
+                    <div class="stat-card">
+                        <div class="stat-icon">
+                            <i class="fas fa-file-alt"></i>
+                        </div>
+                        <div class="stat-number">125K+</div>
+                        <div class="stat-label">Papers</div>
+                        <div class="stat-change positive">+12% this month</div>
+                    </div>
+
+                    <div class="stat-card">
+                        <div class="stat-icon">
+                            <i class="fas fa-database"></i>
+                        </div>
+                        <div class="stat-number">45K+</div>
+                        <div class="stat-label">Datasets</div>
+                        <div class="stat-change positive">+8% this month</div>
+                    </div>
+
+                    <div class="stat-card">
+                        <div class="stat-icon">
+                            <i class="fas fa-chart-line"></i>
+                        </div>
+                        <div class="stat-number">1.2K+</div>
+                        <div class="stat-label">Benchmarks</div>
+                        <div class="stat-change positive">+15% this month</div>
+                    </div>
+
+                    <div class="stat-card">
+                        <div class="stat-icon">
+                            <i class="fas fa-users"></i>
+                        </div>
+                        <div class="stat-number">89K+</div>
+                        <div class="stat-label">Researchers</div>
+                        <div class="stat-change positive">+23% this month</div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Recent Activity Feed -->
+            <div class="activity-feed">
+                <h2 class="section-title">
+                    <i class="fas fa-activity-alt"></i>
+                    Recent Activity
+                </h2>
+                <div class="activity-list">
+                    <div class="activity-item">
+                        <div class="activity-avatar">
+                            <i class="fas fa-user-circle"></i>
+                        </div>
+                        <div class="activity-content">
+                            <div class="activity-text">
+                                <strong>Dr. Nguyen Anh</strong> uploaded a new dataset
+                                <strong>"Vietnamese Text Classification"</strong>
+                            </div>
+                            <div class="activity-timestamp">2 hours ago</div>
+                        </div>
+                        <div class="activity-type dataset">
+                            <i class="fas fa-database"></i>
+                        </div>
+                    </div>
+
+                    <div class="activity-item">
+                        <div class="activity-avatar">
+                            <i class="fas fa-user-circle"></i>
+                        </div>
+                        <div class="activity-content">
+                            <div class="activity-text">
+                                <strong>Prof. Tran Minh</strong> achieved new SOTA on
+                                <strong>ImageNet Classification</strong>
+                            </div>
+                            <div class="activity-timestamp">6 hours ago</div>
+                        </div>
+                        <div class="activity-type sota">
+                            <i class="fas fa-crown"></i>
+                        </div>
+                    </div>
+
+                    <div class="activity-item">
+                        <div class="activity-avatar">
+                            <i class="fas fa-user-circle"></i>
+                        </div>
+                        <div class="activity-content">
+                            <div class="activity-text">
+                                <strong>Research Team AI-VN</strong> published
+                                <strong>"Transformer for Vietnamese"</strong>
+                            </div>
+                            <div class="activity-timestamp">1 day ago</div>
+                        </div>
+                        <div class="activity-type paper">
+                            <i class="fas fa-file-alt"></i>
+                        </div>
+                    </div>
+
+                    <div class="activity-item">
+                        <div class="activity-avatar">
+                            <i class="fas fa-user-circle"></i>
+                        </div>
+                        <div class="activity-content">
+                            <div class="activity-text">
+                                <strong>Dr. Le Hoa</strong> created benchmark
+                                <strong>"Vietnamese NER Evaluation"</strong>
+                            </div>
+                            <div class="activity-timestamp">2 days ago</div>
+                        </div>
+                        <div class="activity-type benchmark">
+                            <i class="fas fa-chart-line"></i>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Help Button -->
+        <button class="help-button">
+            <i class="fas fa-question"></i>
+        </button>
+        
+        <!-- Include Help Center Popup -->
+        <div data-include="../components/help-center-popup.html"></div>
+    </div>
+
+    <script src="../js/include.js"></script>
+    <script src="../js/header-dropdown.js"></script>
+    <script src="../js/help-center.js"></script>
+    <script src="../js/trend.js"></script>
+</body>
+</html>
