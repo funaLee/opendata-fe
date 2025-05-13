@@ -1,0 +1,434 @@
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Bắt đầu sử dụng - OpenData</title>
+    <link href="../css/global.css" rel="stylesheet">
+    <link href="../css/pages/getting-started.css" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.4/css/all.min.css">
+</head>
+<body>
+    <div class="container">
+        <!-- HEADER -->
+        <div data-include="../components/header.html"></div>
+
+        <!-- Overlay -->
+        <div id="overlay" class="overlay"></div>
+        
+        <!-- Sidebar -->
+        <div data-include="../components/slidebar.html"></div>
+
+        <!-- Main Content -->
+        <div class="getting-started-container">
+            <!-- Page Header -->
+            <div class="page-header">
+                <div class="breadcrumb">
+                    <a href="../index.html">Home</a>
+                    <span class="separator">></span>
+                    <a href="../pages/help.html">Help Center</a>
+                    <span class="separator">></span>
+                    <span class="current">Bắt đầu sử dụng</span>
+                </div>
+                <h1 class="page-title">OpenData help center</h1>
+            </div>
+
+            <!-- Hero Section -->
+            <div class="hero-section">
+                <h1 class="hero-title">Trung tâm hướng dẫn</h1>
+                <p class="hero-subtitle">Hướng dẫn mọi thứ để bạn có thể sử dụng OpenData</p>
+            </div>
+
+            <!-- Tab Navigation -->
+            <div class="tab-navigation">
+                <button class="tab-button active" data-tab="getting-started">
+                    <i class="fas fa-rocket"></i>
+                    Bắt đầu sử dụng
+                </button>
+                <button class="tab-button" data-tab="using-opendata">
+                    <i class="fas fa-cog"></i>
+                    Dùng OpenData
+                </button>
+                <button class="tab-button" data-tab="video-tutorials">
+                    <i class="fas fa-play"></i>
+                    Video hướng dẫn
+                </button>
+                <button class="tab-button" data-tab="faq">
+                    <i class="fas fa-question-circle"></i>
+                    Câu hỏi thường gặp
+                </button>
+            </div>
+
+            <!-- Tab Content -->
+            <div class="tab-content-container">
+                <!-- Getting Started Tab -->
+                <div class="tab-content active" id="getting-started">
+                    <div class="content-section">
+                        <div class="section-icon">
+                            <i class="fas fa-book-open"></i>
+                        </div>
+                        <h2 class="section-title">Giới thiệu về OpenData</h2>
+                        <div class="content-grid">
+                            <div class="content-item">
+                                <h3>OpenData là gì?</h3>
+                                <p>OpenData là nền tảng chia sẻ và quản lý dữ liệu khoa học, giúp các nhà nghiên cứu truy cập và đóng góp các bộ dữ liệu chất lượng cao cho cộng đồng khoa học.</p>
+                            </div>
+                            <div class="content-item">
+                                <h3>Hiểu về các hoạt động trên OpenData</h3>
+                                <p>Khám phá các tính năng chính như tìm kiếm datasets, papers, benchmarks, upload dữ liệu mới và theo dõi các xu hướng nghiên cứu.</p>
+                            </div>
+                            <div class="content-item">
+                                <h3>Cách sử dụng OpenData: hướng dẫn nhanh</h3>
+                                <p>Bắt đầu với các bước cơ bản: tạo tài khoản, tìm kiếm dữ liệu, tải xuống datasets và đóng góp nội dung mới cho cộng đồng.</p>
+                            </div>
+                            <div class="content-item">
+                                <h3>Thuật ngữ trong OpenData</h3>
+                                <p>Tìm hiểu các thuật ngữ quan trọng như Dataset, Paper, Benchmark, Metric, Modality và cách chúng liên quan đến nhau.</p>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="content-section">
+                        <div class="section-icon">
+                            <i class="fas fa-users"></i>
+                        </div>
+                        <h2 class="section-title">Bắt đầu sử dụng cho người đóng góp</h2>
+                        <div class="content-grid">
+                            <div class="content-item">
+                                <h3>Làm quen với môi trường đóng góp</h3>
+                                <p>Học cách điều hướng giao diện người dùng, hiểu quy trình upload và quản lý nội dung của bạn.</p>
+                            </div>
+                            <div class="content-item">
+                                <h3>Mẫu email để giới thiệu OpenData</h3>
+                                <p>Sử dụng các template sẵn có để mời đồng nghiệp và cộng sự tham gia vào cộng đồng OpenData.</p>
+                            </div>
+                            <div class="content-item">
+                                <h3>Cách tạo mội trường đóng góp</h3>
+                                <p>Hướng dẫn thiết lập profile, cài đặt thông báo và tùy chỉnh trải nghiệm sử dụng theo nhu cầu cá nhân.</p>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="content-section">
+                        <div class="section-icon">
+                            <i class="fas fa-graduation-cap"></i>
+                        </div>
+                        <h2 class="section-title">Bắt đầu sử dụng cho nghiên cứu sinh</h2>
+                        <div class="content-grid">
+                            <div class="content-item">
+                                <h3>Làm quen với môi trường nghiên cứu</h3>
+                                <p>Khám phá các công cụ dành riêng cho sinh viên và nghiên cứu sinh để tận dụng tối đa nền tảng.</p>
+                            </div>
+                            <div class="content-item">
+                                <h3>Yêu cầu tham gia một môi trường đóng góp</h3>
+                                <p>Tìm hiểu cách kết nối với các nhóm nghiên cứu, tham gia vào các dự án collaborative và chia sẻ kết quả.</p>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Using OpenData Tab -->
+                <div class="tab-content" id="using-opendata">
+                    <div class="content-section">
+                        <div class="section-icon">
+                            <i class="fas fa-cogs"></i>
+                        </div>
+                        <h2 class="section-title">Dùng OpenData</h2>
+                        <p class="section-subtitle">Hiểu cách mà OpenData hoạt động</p>
+                        
+                        <div class="features-showcase">
+                            <div class="feature-card">
+                                <div class="feature-icon">
+                                    <i class="fas fa-database"></i>
+                                </div>
+                                <h3>Datasets</h3>
+                                <p>Truy cập hàng nghìn bộ dữ liệu từ các nghiên cứu hàng đầu</p>
+                                <a href="../pages/dataset.html" class="feature-link">Khám phá Datasets →</a>
+                            </div>
+                            <div class="feature-card">
+                                <div class="feature-icon">
+                                    <i class="fas fa-file-alt"></i>
+                                </div>
+                                <h3>Papers</h3>
+                                <p>Tìm kiếm và khám phá các bài báo khoa học mới nhất</p>
+                                <a href="../pages/paper.html" class="feature-link">Xem Papers →</a>
+                            </div>
+                            <div class="feature-card">
+                                <div class="feature-icon">
+                                    <i class="fas fa-chart-bar"></i>
+                                </div>
+                                <h3>Benchmarks</h3>
+                                <p>So sánh hiệu suất mô hình trên các benchmark chuẩn</p>
+                                <a href="../pages/benchmark.html" class="feature-link">Xem Benchmarks →</a>
+                            </div>
+                            <div class="feature-card">
+                                <div class="feature-icon">
+                                    <i class="fas fa-upload"></i>
+                                </div>
+                                <h3>Upload</h3>
+                                <p>Đóng góp dữ liệu và nghiên cứu của bạn</p>
+                                <a href="../upload/upload-dataset.html" class="feature-link">Bắt đầu Upload →</a>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="content-section">
+                        <div class="section-icon">
+                            <i class="fas fa-search"></i>
+                        </div>
+                        <h2 class="section-title">Tìm kiếm và khám phá</h2>
+                        <div class="search-guide">
+                            <div class="guide-item">
+                                <div class="guide-number">1</div>
+                                <div class="guide-content">
+                                    <h4>Sử dụng thanh tìm kiếm</h4>
+                                    <p>Nhập từ khóa liên quan đến chủ đề, tên dataset, hoặc tác giả để tìm kiếm nhanh chóng.</p>
+                                </div>
+                            </div>
+                            <div class="guide-item">
+                                <div class="guide-number">2</div>
+                                <div class="guide-content">
+                                    <h4>Sử dụng bộ lọc</h4>
+                                    <p>Áp dụng các bộ lọc theo loại dữ liệu, lĩnh vực nghiên cứu, năm xuất bản để thu hẹp kết quả.</p>
+                                </div>
+                            </div>
+                            <div class="guide-item">
+                                <div class="guide-number">3</div>
+                                <div class="guide-content">
+                                    <h4>Khám phá theo danh mục</h4>
+                                    <p>Duyệt qua các danh mục như Computer Vision, NLP, Audio để tìm nội dung phù hợp.</p>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Video Tutorials Tab -->
+                <div class="tab-content" id="video-tutorials">
+                    <div class="content-section">
+                        <div class="section-icon">
+                            <i class="fas fa-play-circle"></i>
+                        </div>
+                        <h2 class="section-title">Video hướng dẫn</h2>
+                        <p class="section-subtitle">Học cách sử dụng OpenData để sử dụng hiệu quả!</p>
+                        
+                        <div class="video-grid">
+                            <div class="video-card">
+                                <div class="video-thumbnail">
+                                    <i class="fas fa-play-circle"></i>
+                                    <div class="video-duration">5:30</div>
+                                </div>
+                                <div class="video-content">
+                                    <h3>Giới thiệu OpenData</h3>
+                                    <p>Tổng quan về nền tảng và các tính năng chính</p>
+                                    <span class="video-length">5 phút 30 giây</span>
+                                </div>
+                            </div>
+                            
+                            <div class="video-card">
+                                <div class="video-thumbnail">
+                                    <i class="fas fa-play-circle"></i>
+                                    <div class="video-duration">8:15</div>
+                                </div>
+                                <div class="video-content">
+                                    <h3>Tìm kiếm và tải dataset</h3>
+                                    <p>Hướng dẫn chi tiết cách tìm và tải về dữ liệu</p>
+                                    <span class="video-length">8 phút 15 giây</span>
+                                </div>
+                            </div>
+                            
+                            <div class="video-card">
+                                <div class="video-thumbnail">
+                                    <i class="fas fa-play-circle"></i>
+                                    <div class="video-duration">10:45</div>
+                                </div>
+                                <div class="video-content">
+                                    <h3>Upload dataset mới</h3>
+                                    <p>Quy trình upload và các best practices</p>
+                                    <span class="video-length">10 phút 45 giây</span>
+                                </div>
+                            </div>
+                            
+                            <div class="video-card">
+                                <div class="video-thumbnail">
+                                    <i class="fas fa-play-circle"></i>
+                                    <div class="video-duration">6:20</div>
+                                </div>
+                                <div class="video-content">
+                                    <h3>Sử dụng bản đồ tác giả</h3>
+                                    <p>Khám phá và kết nối với các tác giả</p>
+                                    <span class="video-length">6 phút 20 giây</span>
+                                </div>
+                            </div>
+                            
+                            <div class="video-card">
+                                <div class="video-thumbnail">
+                                    <i class="fas fa-play-circle"></i>
+                                    <div class="video-duration">7:50</div>
+                                </div>
+                                <div class="video-content">
+                                    <h3>Cách sử dụng papers và benchmarks</h3>
+                                    <p>Tìm hiểu cách khám phá papers và so sánh benchmarks</p>
+                                    <span class="video-length">7 phút 50 giây</span>
+                                </div>
+                            </div>
+                            
+                            <div class="video-card">
+                                <div class="video-thumbnail">
+                                    <i class="fas fa-play-circle"></i>
+                                    <div class="video-duration">12:30</div>
+                                </div>
+                                <div class="video-content">
+                                    <h3>Quản lý dữ liệu và tối ưu hóa tìm kiếm</h3>
+                                    <p>Mẹo và thủ thuật để sử dụng OpenData hiệu quả</p>
+                                    <span class="video-length">12 phút 30 giây</span>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- FAQ Tab -->
+                <div class="tab-content" id="faq">
+                    <div class="content-section">
+                        <div class="section-icon">
+                            <i class="fas fa-question-circle"></i>
+                        </div>
+                        <h2 class="section-title">Câu hỏi thường gặp</h2>
+                        <p class="section-subtitle">Các câu hỏi thường gặp của người dùng khi sử dụng OpenData</p>
+                        
+                        <div class="faq-container">
+                            <div class="faq-item">
+                                <button class="faq-question">
+                                    <span>OpenData có miễn phí không?</span>
+                                    <i class="fas fa-chevron-down"></i>
+                                </button>
+                                <div class="faq-answer">
+                                    <p>Có, OpenData hoàn toàn miễn phí cho tất cả người dùng. Bạn có thể truy cập, tìm kiếm và tải về dữ liệu mà không mất phí.</p>
+                                </div>
+                            </div>
+                            
+                            <div class="faq-item">
+                                <button class="faq-question">
+                                    <span>Làm thế nào để upload dataset?</span>
+                                    <i class="fas fa-chevron-down"></i>
+                                </button>
+                                <div class="faq-answer">
+                                    <p>Để upload dataset, bạn cần:</p>
+                                    <ol>
+                                        <li>Đăng nhập vào tài khoản của bạn</li>
+                                        <li>Chọn "Upload" từ menu</li>
+                                        <li>Điền thông tin dataset và tải lên file</li>
+                                        <li>Chờ xét duyệt từ hệ thống</li>
+                                    </ol>
+                                </div>
+                            </div>
+                            
+                            <div class="faq-item">
+                                <button class="faq-question">
+                                    <span>Tôi có thể tìm dataset theo lĩnh vực nghiên cứu không?</span>
+                                    <i class="fas fa-chevron-down"></i>
+                                </button>
+                                <div class="faq-answer">
+                                    <p>Có, bạn có thể sử dụng bộ lọc theo modality (Image, Text, Audio, Video, Multimodal) hoặc theo tags để tìm datasets phù hợp với lĩnh vực nghiên cứu của mình.</p>
+                                </div>
+                            </div>
+                            
+                            <div class="faq-item">
+                                <button class="faq-question">
+                                    <span>Làm sao để tìm paper liên quan đến dataset?</span>
+                                    <i class="fas fa-chevron-down"></i>
+                                </button>
+                                <div class="faq-answer">
+                                    <p>Mỗi dataset đều có liên kết đến paper gốc công bố nó. Bạn có thể click vào link paper trong trang chi tiết dataset để đọc nghiên cứu gốc.</p>
+                                </div>
+                            </div>
+                            
+                            <div class="faq-item">
+                                <button class="faq-question">
+                                    <span>Tôi có thể xem thông tin tác giả không?</span>
+                                    <i class="fas fa-chevron-down"></i>
+                                </button>
+                                <div class="faq-answer">
+                                    <p>Có, bạn có thể sử dụng tính năng "Map Author" để xem thông tin chi tiết về tác giả, bao gồm institution, H-index, và các paper đã xuất bản.</p>
+                                </div>
+                            </div>
+                            
+                            <div class="faq-item">
+                                <button class="faq-question">
+                                    <span>Làm sao để cập nhật thông tin tài khoản?</span>
+                                    <i class="fas fa-chevron-down"></i>
+                                </button>
+                                <div class="faq-answer">
+                                    <p>Bạn có thể vào phần Account ở góc trên phải của trang web để cập nhật thông tin cá nhân, thay đổi mật khẩu, và quản lý các dataset/paper của mình.</p>
+                                </div>
+                            </div>
+                            
+                            <div class="faq-item">
+                                <button class="faq-question">
+                                    <span>Tôi có thể yêu cầu thêm dataset mới không?</span>
+                                    <i class="fas fa-chevron-down"></i>
+                                </button>
+                                <div class="faq-answer">
+                                    <p>Có, nếu dataset bạn cần chưa có trên OpenData, bạn có thể upload dataset đó hoặc liên hệ với chúng tôi để yêu cầu thêm dataset vào hệ thống.</p>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Quick Action Cards -->
+            <div class="quick-actions">
+                <h2 class="quick-actions-title">Hành động nhanh</h2>
+                <div class="quick-actions-grid">
+                    <a href="../pages/dataset.html" class="quick-action-card">
+                        <div class="action-icon">
+                            <i class="fas fa-database"></i>
+                        </div>
+                        <h3>Tìm Dataset</h3>
+                        <p>Khám phá hàng nghìn dataset chất lượng cao</p>
+                    </a>
+                    
+                    <a href="../upload/upload-dataset.html" class="quick-action-card">
+                        <div class="action-icon">
+                            <i class="fas fa-upload"></i>
+                        </div>
+                        <h3>Upload Dataset</h3>
+                        <p>Chia sẻ dữ liệu của bạn với cộng đồng</p>
+                    </a>
+                    
+                    <a href="../pages/paper.html" class="quick-action-card">
+                        <div class="action-icon">
+                            <i class="fas fa-file-alt"></i>
+                        </div>
+                        <h3>Tìm Paper</h3>
+                        <p>Khám phá các nghiên cứu mới nhất</p>
+                    </a>
+                    
+                    <a href="../maps/map-author.html" class="quick-action-card">
+                        <div class="action-icon">
+                            <i class="fas fa-users"></i>
+                        </div>
+                        <h3>Tìm Tác giả</h3>
+                        <p>Kết nối với các nhà nghiên cứu</p>
+                    </a>
+                </div>
+            </div>
+        </div>
+
+        <!-- Help Button -->
+        <button class="help-button">
+            <i class="fas fa-question"></i>
+        </button>
+        
+        <!-- Include Help Center Popup -->
+        <div data-include="../components/help-center-popup.html"></div>
+    </div>
+
+    <script src="../js/include.js"></script>
+    <script src="../js/header-dropdown.js"></script>
+    <script src="../js/help-center.js"></script>
+    <script src="../js/getting-started.js"></script>
+</body>
+</html>
